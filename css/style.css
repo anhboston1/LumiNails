@@ -5290,3 +5290,229 @@ nav a#pull {
 
 
 
+/* =========================
+   POPULAR SERVICES SECTION
+   ========================= */
+
+.popular-services {
+  background: #ffffff;
+  padding: 90px 20px;
+}
+
+.popular-services__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.popular-services__header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 48px;
+}
+
+.popular-services__eyebrow {
+  margin: 0 0 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #9a9a9a;
+}
+
+.popular-services__title {
+  margin: 0 0 16px;
+  font-family: "Playfair Display", serif;
+  font-size: 52px;
+  line-height: 1.12;
+  font-weight: 700;
+  color: #2f3147;
+}
+
+.popular-services__subtitle {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #6d7285;
+}
+
+.popular-services__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+.service-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid #ece8eb;
+  border-radius: 18px;
+  padding: 34px 30px;
+  text-align: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 8px 28px rgba(28, 32, 58, 0.04);
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(28, 32, 58, 0.08);
+}
+
+.service-card--featured {
+  background: #fffafb;
+  border-color: #f3d9e1;
+  box-shadow: 0 12px 34px rgba(255, 45, 125, 0.08);
+}
+
+.service-card__badge {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: #ffe8f0;
+  color: #e84b8a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.service-card__title {
+  margin: 0 0 14px;
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #2f3147;
+}
+
+.service-card__desc {
+  margin: 0 0 24px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #6d7285;
+  min-height: 86px;
+}
+
+.service-card__price {
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 700;
+  color: #2f3147;
+}
+
+.popular-services__cta {
+  margin-top: 42px;
+  text-align: center;
+}
+
+.popular-services__button {
+  display: inline-block;
+  padding: 16px 32px;
+  border-radius: 8px;
+  background: #ff2b7a;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.popular-services__button:hover {
+  background: #e3246d;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   TABLET
+   ========================= */
+@media (max-width: 991px) {
+  .popular-services {
+    padding: 72px 20px;
+  }
+
+  .popular-services__title {
+    font-size: 42px;
+  }
+
+  .popular-services__grid {
+    grid-template-columns: 1fr;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  .service-card__desc {
+    min-height: auto;
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 575px) {
+  .popular-services {
+    padding: 60px 16px;
+  }
+
+  .popular-services__header {
+    margin-bottom: 36px;
+  }
+
+  .popular-services__title {
+    font-size: 34px;
+  }
+
+  .popular-services__subtitle {
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .service-card {
+    padding: 28px 22px;
+    border-radius: 16px;
+  }
+
+  .service-card__title {
+    font-size: 24px;
+  }
+
+  .service-card__desc {
+    font-size: 15px;
+  }
+
+  .service-card__price {
+    font-size: 28px;
+  }
+
+  .popular-services__button {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+}
+.hero {
+  background-image: url('hand.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-overlay {
+  background: rgba(0,0,0,0.35);
+}
+
+.hero,
+.hero * {
+  transform: none !important;
+  animation: none !important;
+}
+
+.hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
