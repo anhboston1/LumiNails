@@ -1552,3 +1552,25 @@
   font-size: 14px;
   color: #6f7682;
 }
+
+ .offer-box {
+      margin-top: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(181,141,73,0.18);
+      box-shadow: var(--shadow-soft);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .offer-box .offer-mini {
+      color: #886522;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
