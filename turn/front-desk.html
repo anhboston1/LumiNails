@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi Nails • Front Desk PRO Auto Assign</title>
+  <style>
+    :root{
+      --bg:#f7f4ef; --bg2:#fbf9f5; --panel:#ffffffee; --text:#3c342d; --muted:#7c746a;
+      --line:#d8d0c4; --gold:#c8a66b; --gold-deep:#a78342; --ready:#557260; --info:#6f7f9a;
+      --danger:#b45b5b; --warning:#9b7e4b; --shadow:0 20px 60px rgba(88,67,45,.10);
+      --next:#fff7e7; --requested:#f4f6fb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(200,166,107,.14), transparent 24%),
+        linear-gradient(180deg, var(--bg2), var(--bg));
+      min-height:100vh;
+    }
+    .shell{max-width:1680px;margin:0 auto;padding:20px}
+    .topbar,.hero,.card{
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.8);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .topbar{
+      padding:18px 20px;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      margin-bottom:18px;flex-wrap:wrap;
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-deep);
+    }
+    .eyebrow::before{content:"";width:32px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+    .title{font-family:Georgia,"Times New Roman",serif;font-size:40px;font-weight:700;line-height:1.05;margin:8px 0 0}
+    .muted{color:var(--muted);line-height:1.7}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:#fff;
+      font-size:12px;font-weight:700;
+    }
+    .hero{
+      padding:20px;
+      display:grid;grid-template-columns:repeat(5,1fr);
+      gap:14px;margin-bottom:18px;
+    }
+    .stat{padding:14px 16px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    .stat small{
+      display:block;text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:8px;
+    }
+    .stat strong{font-size:34px;line-height:1}
+    .layout{display:grid;grid-template-columns:430px 1fr;gap:18px;align-items:start}
+    .stack{display:grid;gap:18px}
+    .card{padding:20px}
+    h2{font-family:Georgia,"Times New Roman",serif;font-size:28px;margin:0 0 8px}
+    .field-grid{display:grid;gap:12px}
+    .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .field{display:grid;gap:8px}
+    label{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:700}
+    input,select,button{font:inherit}
+    input,select{
+      width:100%;padding:14px 15px;border-radius:14px;border:1px solid var(--line);background:#fff;outline:none;
+    }
+    input:focus,select:focus{border-color:rgba(200,166,107,.65);box-shadow:0 0 0 4px rgba(200,166,107,.12)}
+    button{border:none;border-radius:14px;padding:13px 14px;cursor:pointer;transition:.15s ease}
+    button:hover{transform:translateY(-1px)}
+    button[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+    .btn-primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;font-weight:800;
+      box-shadow:0 10px 24px rgba(167,131,66,.25);
+    }
+    .btn-secondary{background:#fff;border:1px solid var(--line);font-weight:700;color:var(--text)}
+    .btn-assign{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;font-weight:800;padding:10px 12px}
+    .btn-auto{background:rgba(200,166,107,.14);border:1px solid rgba(200,166,107,.25);color:var(--gold-deep);font-weight:800;padding:10px 12px}
+    .btn-done{background:rgba(85,114,96,.12);border:1px solid rgba(85,114,96,.18);color:var(--ready);font-weight:800;padding:10px 16px}
+    .btn-disabled{opacity:.45;cursor:not-allowed}
+    .callout{
+      margin-top:14px;padding:16px;border-radius:18px;border:1px solid rgba(200,166,107,.22);
+      background:linear-gradient(135deg, rgba(200,166,107,.15), rgba(255,255,255,.9));
+    }
+    .callout strong{display:block;font-size:18px;margin-bottom:6px}
+    .list-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+    .list-head-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .queue-table-wrap{overflow:auto}
+    .queue-table{width:100%;min-width:1320px;border-collapse:collapse}
+    .queue-table th,.queue-table td{border:1px solid #e5ddd1;padding:12px;background:#fff;text-align:left;vertical-align:top}
+    .queue-table th{background:#f1ece3;text-transform:uppercase;letter-spacing:.12em;font-size:11px;color:#6b6258}
+    .queue-row-next td{background:var(--next)}
+    .queue-row-requested td{background:var(--requested)}
+    .idx{
+      display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:999px;
+      background:rgba(200,166,107,.14);color:var(--gold-deep);font-weight:800;
+    }
+    .tag{
+      display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;
+    }
+    .tag.walk{background:rgba(85,114,96,.12);color:var(--ready)}
+    .tag.req{background:rgba(111,127,154,.12);color:var(--info)}
+    .tag.next{background:rgba(200,166,107,.15);color:var(--gold-deep)}
+    .tag.turn{background:rgba(155,126,75,.12);color:#8d6f3f}
+    .tag.serving{background:rgba(111,127,154,.12);color:var(--info)}
+    .tag.done{background:rgba(85,114,96,.12);color:var(--ready)}
+    .tag.blocked{background:rgba(180,91,91,.12);color:var(--danger)}
+    .mini{font-size:12px;color:var(--muted);line-height:1.5;margin-top:6px}
+    .mini.error{color:var(--danger);font-weight:700}
+    .mini.best{color:var(--gold-deep);font-weight:700}
+    .status-ok{margin-bottom:14px;padding:12px 14px;border-radius:14px;background:#f8fff8;border:1px solid #cae5ca;color:#476a47}
+    .status-warn{margin-bottom:14px;padding:12px 14px;border-radius:14px;background:#fff8ef;border:1px solid #ecd7b8;color:#8b6d3e}
+    .empty{padding:22px;text-align:center;color:var(--muted);border:1px dashed #d6cec1;border-radius:16px;background:#fff}
+    .summary-box{margin-top:14px;display:grid;gap:10px}
+    .summary-row{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+    .serving-list{display:grid;gap:14px}
+    .serving-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:16px}
+    .serving-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+    .serving-name{font-size:18px;font-weight:800;margin-bottom:6px}
+    .footer-note{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.7}
+    .hidden{display:none!important}
+    @media (max-width:1320px){.hero{grid-template-columns:1fr 1fr 1fr}.layout{grid-template-columns:1fr}}
+    @media (max-width:760px){.shell{padding:14px}.hero{grid-template-columns:1fr}.three-col,.two-col{grid-template-columns:1fr}.title{font-size:32px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="topbar">
+      <div>
+        <div class="eyebrow">Lumi Nails • Front Desk PRO</div>
+        <div class="title">Quầy lễ tân • 1 tap là chạy</div>
+        <div class="muted">Auto Assign Best + nút Assign khách kế nằm ngay trên header của card Khách đang đợi để thao tác nhanh hơn.</div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <span class="pill">Live update: On</span>
+        <span class="pill" id="updatedAt">Updated --:--:--</span>
+        <select id="sourceKey" style="width:auto; min-width:220px;"></select>
+        <button class="btn-secondary" id="refreshBtn">Refresh</button>
+      </div>
+    </section>
+
+    <section class="hero">
+      <div class="stat"><small>Khách đang chờ</small><strong id="statQueue">0</strong></div>
+      <div class="stat"><small>Đang phục vụ</small><strong id="statServing">0</strong></div>
+      <div class="stat"><small>Thợ rảnh</small><strong id="statReady">0</strong></div>
+      <div class="stat"><small>Done gần nhất</small><strong id="statDone">0</strong></div>
+      <div class="stat"><small>Next nên gọi</small><strong id="statNext">--</strong></div>
+    </section>
+
+    <section class="layout">
+      <aside class="stack">
+        <div class="card">
+          <h2>Tạo khách mới</h2>
+          <div class="muted">Lễ tân nhập tên, chọn dịch vụ, thêm vào queue. Sau đó có thể Auto Assign Best hoặc assign theo từng khách.</div>
+          <div style="height:14px"></div>
+          <div class="field-grid">
+            <div class="field"><label for="clientName">Tên khách</label><input id="clientName" type="text" placeholder="Ví dụ: Christina" /></div>
+            <div class="field"><label for="serviceLine">Nhóm dịch vụ</label><select id="serviceLine"></select></div>
+            <div class="field"><label for="serviceSelect">Tên dịch vụ</label><select id="serviceSelect"></select></div>
+            <div class="three-col">
+              <div class="field"><label for="servicePrice">Giá service</label><input id="servicePrice" readonly /></div>
+              <div class="field"><label for="requestType">Loại khách</label><select id="requestType"><option value="walkin">Walk-in</option><option value="requested">Requested</option></select></div>
+              <div class="field"><label for="requestedTech">Requested thợ</label><select id="requestedTech"><option value="">Chọn thợ nếu requested</option></select></div>
+            </div>
+            <div class="two-col">
+              <button class="btn-primary" id="addBtn">+ Thêm vào queue</button>
+              <button class="btn-secondary" id="assignSuggestedBtn">⚡ Assign khách kế</button>
+            </div>
+          </div>
+
+          <div class="callout">
+            <strong>Gợi ý hệ thống</strong>
+            <div id="suggestionText" class="muted">Chưa có khách trong queue.</div>
+          </div>
+
+          <div class="summary-box">
+            <div class="summary-row">
+              <div><strong>Ngày mode</strong><div class="mini" id="dayModeText">--</div></div>
+              <span class="tag next" id="dayModePill">--</span>
+            </div>
+            <div class="summary-row">
+              <div><strong>Key đang đọc</strong><div class="mini" id="storageKeyText">--</div></div>
+              <span class="tag turn" id="queueOrderText">FIFO</span>
+            </div>
+          </div>
+
+          <div class="footer-note">Front Desk PRO để điều phối. Grid PRO / Staff View dùng để cả team cùng nhìn.</div>
+        </div>
+      </aside>
+
+      <main class="stack">
+        <div class="card">
+          <div class="list-head">
+            <div>
+              <h2>Khách đang đợi</h2>
+              <div class="muted">Nút Assign khách kế nằm ngay trên card để lễ tân thao tác nhanh. Trong bảng vẫn có Auto Assign Best cho từng khách.</div>
+            </div>
+            <div class="list-head-actions">
+              <button class="btn-primary" id="headerAssignNextBtn">⚡ Assign khách kế</button>
+              <span class="tag next" id="queueCountPill">0 khách</span>
+              <span class="tag req">Requested</span>
+              <span class="tag walk">Walk-in</span>
+            </div>
+          </div>
+
+          <div id="statusArea"></div>
+
+          <div class="queue-table-wrap">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th style="width:70px;">#</th>
+                  <th style="width:180px;">Tên khách</th>
+                  <th>Dịch vụ cần làm</th>
+                  <th style="width:230px;">Loại khách</th>
+                  <th style="width:100px;">Turn</th>
+                  <th style="width:110px;">Wait</th>
+                  <th style="width:240px;">Best tech</th>
+                  <th style="width:180px;">Trạng thái</th>
+                  <th style="width:260px;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="queueBody"></tbody>
+            </table>
+          </div>
+          <div id="queueEmpty" class="empty hidden">Hiện chưa có khách nào đang chờ.</div>
+        </div>
+
+        <div class="card">
+          <div class="list-head">
+            <div>
+              <h2>Khách đang phục vụ</h2>
+              <div class="muted">Manager / receptionist có thể bấm Done khi khách xong.</div>
+            </div>
+            <span class="tag next" id="servingCountPill">0 khách</span>
+          </div>
+          <div id="servingList" class="serving-list"></div>
+          <div id="servingEmpty" class="empty hidden">Hiện chưa có khách nào đang phục vụ.</div>
+        </div>
+
+        <div class="card">
+          <div class="list-head">
+            <div>
+              <h2>Done gần nhất</h2>
+              <div class="muted">Đặt cuối cùng để flow nhìn tự nhiên hơn: chờ → đang phục vụ → done.</div>
+            </div>
+            <span class="tag done" id="doneCountPill">0 khách</span>
+          </div>
+          <div class="queue-table-wrap">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th style="width:180px;">Tên khách</th>
+                  <th>Dịch vụ</th>
+                  <th style="width:180px;">Thợ</th>
+                  <th style="width:120px;">Turn</th>
+                  <th style="width:120px;">Done lúc</th>
+                </tr>
+              </thead>
+              <tbody id="doneBody"></tbody>
+            </table>
+          </div>
+          <div id="doneEmpty" class="empty hidden">Chưa có khách done gần đây.</div>
+        </div>
+      </main>
+    </section>
+  </div>
+
+  <script>
+    const CANDIDATE_KEYS = ["lumi-turn-manager-v5","lumi-turn-manager-v5-2","lumi-turn-manager-v4-1","lumi-turn-manager-v4","lumi-turn-manager-v3-1","lumi-turn-manager-v3-roles","lumi-pro-v1"];
+    const SERVICE_LINES = [
+      { key:"mani", label:"Mani" },
+      { key:"dip_powder", label:"Dip Powder" },
+      { key:"g_hybrid_gel", label:"G-Hybrid Gel" },
+      { key:"gel_x", label:"Gel-X" },
+      { key:"pedi", label:"Pedi" },
+      { key:"gel_pedi", label:"Gel Pedi" }
+    ];
+    const SERVICES = {
+      mani: [
+        { id:"quick_hand_reboot", name:"Quick Hand Reboot", price:30 },
+        { id:"ultimate_hand_therapy_experience", name:"Ultimate Hand Therapy Experience", price:69 },
+        { id:"non_toxic_gel_manicure_collagen", name:"Non-Toxic Gel Manicure with collagen glove", price:50 },
+        { id:"dazzle_dry_manicure", name:"Dazzle Dry Manicure", price:45 }
+      ],
+      dip_powder: [
+        { id:"dipping_natural_nails", name:"Dipping On Nature Nails", price:55 },
+        { id:"dipping_with_tips", name:"Dipping With tips", price:65 },
+        { id:"dipping_french", name:"Dipping french", price:65 },
+        { id:"dipping_french_with_tip", name:"Dipping french with tip", price:75 },
+        { id:"dipping_ombre", name:"Dipping ombre", price:65 },
+        { id:"dipping_ombre_with_tip", name:"Dipping ombre with tip", price:75 }
+      ],
+      g_hybrid_gel: [
+        { id:"hybrid_gel_full_set", name:"Hybrid gel Full Set", price:70 },
+        { id:"hybrid_gel_refill", name:"Hybrid gel Refill", price:63 }
+      ],
+      gel_x: [
+        { id:"gel_x_full_set", name:"Gel X Full Set", price:75 },
+        { id:"gel_x_full_set_take_off", name:"Gel X full set with take off", price:80 },
+        { id:"gel_x_refill", name:"Gel X Refill", price:63 }
+      ],
+      pedi: [
+        { id:"classic_lumi_pedicure", name:"Classic Lumi Pedicure", price:45 },
+        { id:"lumi_aroma_spa_pedicure", name:"Lumi Aroma Spa Pedicure", price:67 },
+        { id:"lumi_organic_refresh_pedicure", name:"Lumi Organic Refresh Pedicure", price:79 },
+        { id:"lumi_silk_signature_pedicure", name:"Lumi Silk Signature Pedicure", price:95 },
+        { id:"lumi_royal_ozone_pedicure", name:"Lumi Royal Ozone Pedicure", price:125 }
+      ],
+      gel_pedi: [
+        { id:"classic_lumi_pedicure_gel", name:"Classic Lumi Pedicure + Gel", price:60 },
+        { id:"lumi_aroma_spa_pedicure_gel", name:"Lumi Aroma Spa Pedicure + Gel", price:82 },
+        { id:"lumi_organic_refresh_pedicure_gel", name:"Lumi Organic Refresh Pedicure + Gel", price:94 },
+        { id:"lumi_silk_signature_pedicure_gel", name:"Lumi Silk Signature Pedicure + Gel", price:110 },
+        { id:"lumi_royal_ozone_pedicure_gel", name:"Lumi Royal Ozone Pedicure + Gel", price:140 }
+      ]
+    };
+
+    const els = {
+      sourceKey: document.getElementById("sourceKey"),
+      refreshBtn: document.getElementById("refreshBtn"),
+      updatedAt: document.getElementById("updatedAt"),
+      statQueue: document.getElementById("statQueue"),
+      statServing: document.getElementById("statServing"),
+      statReady: document.getElementById("statReady"),
+      statDone: document.getElementById("statDone"),
+      statNext: document.getElementById("statNext"),
+      clientName: document.getElementById("clientName"),
+      serviceLine: document.getElementById("serviceLine"),
+      serviceSelect: document.getElementById("serviceSelect"),
+      servicePrice: document.getElementById("servicePrice"),
+      requestType: document.getElementById("requestType"),
+      requestedTech: document.getElementById("requestedTech"),
+      addBtn: document.getElementById("addBtn"),
+      assignSuggestedBtn: document.getElementById("assignSuggestedBtn"),
+      headerAssignNextBtn: document.getElementById("headerAssignNextBtn"),
+      suggestionText: document.getElementById("suggestionText"),
+      dayModeText: document.getElementById("dayModeText"),
+      dayModePill: document.getElementById("dayModePill"),
+      storageKeyText: document.getElementById("storageKeyText"),
+      queueOrderText: document.getElementById("queueOrderText"),
+      queueCountPill: document.getElementById("queueCountPill"),
+      statusArea: document.getElementById("statusArea"),
+      queueBody: document.getElementById("queueBody"),
+      queueEmpty: document.getElementById("queueEmpty"),
+      servingList: document.getElementById("servingList"),
+      servingEmpty: document.getElementById("servingEmpty"),
+      servingCountPill: document.getElementById("servingCountPill"),
+      doneBody: document.getElementById("doneBody"),
+      doneEmpty: document.getElementById("doneEmpty"),
+      doneCountPill: document.getElementById("doneCountPill")
+    };
+
+    let lastSnapshot = "";
+
+    function escapeHtml(str){return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+    function detectAvailableKeys(){
+      return CANDIDATE_KEYS.filter(key => {
+        try{
+          const raw = localStorage.getItem(key);
+          if(!raw) return false;
+          const parsed = JSON.parse(raw);
+          return !!(parsed && (Array.isArray(parsed.technicians) || Array.isArray(parsed.staff)));
+        }catch{return false;}
+      });
+    }
+    function populateSourceSelector(){
+      const keys = detectAvailableKeys();
+      const old = els.sourceKey.value;
+      els.sourceKey.innerHTML = keys.length ? keys.map(k => `<option value="${k}">${k}</option>`).join("") : '<option value="">Không tìm thấy data</option>';
+      if(keys.includes(old)) els.sourceKey.value = old;
+    }
+    function readRaw(){ const key = els.sourceKey.value; if(!key) return null; return localStorage.getItem(key); }
+    function readState(){ const raw = readRaw(); if(!raw) return null; try{return JSON.parse(raw);}catch{return null;} }
+    function normalizeTechnician(t, idx){
+      const skills = Array.isArray(t.skills) ? t.skills : (t.skill ? [t.skill] : ["all_services"]);
+      return {
+        id: t.id ?? String(idx + 1), userId:t.userId||null, name:t.name||`Staff ${idx+1}`, role:t.role||"staff",
+        skills, turnsTotal:Number(t.turnsTotal||t.turn||0), status:t.status||"ready", active:t.active!==false,
+        currentClientId:t.currentClientId||null, checkInOrder:Number.isFinite(Number(t.checkInOrder))?Number(t.checkInOrder):null,
+        checkedInAt:t.checkedInAt||null, createdAt:t.createdAt||null
+      };
+    }
+    function normalizeState(raw){
+      if(!raw) return null;
+      return {
+        technicians:(raw.technicians||raw.staff||[]).map(normalizeTechnician),
+        queue:Array.isArray(raw.queue)?raw.queue:[],
+        serving:Array.isArray(raw.serving)?raw.serving:[],
+        history:Array.isArray(raw.history)?raw.history:[],
+        auditLog:Array.isArray(raw.auditLog)?raw.auditLog:[],
+        dayMode:raw.dayMode||"normal",
+        session:raw.session||null
+      };
+    }
+
+    function getServiceOptions(line){ return SERVICES[line] || []; }
+    function getSelectedService(){ const line = els.serviceLine.value; const id = els.serviceSelect.value; return getServiceOptions(line).find(s => s.id === id) || null; }
+    function populateServiceLines(){ els.serviceLine.innerHTML = SERVICE_LINES.map(line => `<option value="${line.key}">${line.label}</option>`).join(""); populateServiceSelect(); }
+    function populateServiceSelect(){ const options = getServiceOptions(els.serviceLine.value); els.serviceSelect.innerHTML = options.map(s => `<option value="${s.id}">${s.name}</option>`).join(""); updatePrice(); populateRequestedTech(); }
+    function updatePrice(){ const s = getSelectedService(); els.servicePrice.value = s ? `$${s.price}` : ""; }
+
+    function lineFromItem(item){
+      if(item.line) return item.line;
+      const service = String(item.service || "").toLowerCase();
+      if(service.includes("gel x") || service.includes("gel-x")) return "gel_x";
+      if(service.includes("dip")) return "dip_powder";
+      if(service.includes("hybrid")) return "g_hybrid_gel";
+      if(service.includes("gel pedi")) return "gel_pedi";
+      if(service.includes("pedi")) return "pedi";
+      return "mani";
+    }
+    function canDoLine(tech, lineKey){ return tech.skills.includes("all_services") || tech.skills.includes(lineKey); }
+    function turnValue(item){ if(typeof item.turnValue === "number") return item.turnValue; const price = Number(item.price || 0); return item.requestType === "requested" ? (price < 65 ? 0.5 : 1) : 1; }
+    function waitTimeText(item){
+      if(!item.createdAt) return "--:--";
+      const diffMs = Date.now() - new Date(item.createdAt).getTime();
+      if(!Number.isFinite(diffMs)) return "--:--";
+      const mins = Math.max(0, Math.round(diffMs / 60000));
+      const hh = String(Math.floor(mins/60)).padStart(2,"0");
+      const mm = String(mins%60).padStart(2,"0");
+      return `${hh}:${mm}`;
+    }
+    function timeShort(iso){ if(!iso) return "--:--"; return new Date(iso).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}); }
+
+    function populateRequestedTech(){
+      const normalized = normalizeState(readState());
+      const techs = normalized ? normalized.technicians.filter(t => t.active && canDoLine(t, els.serviceLine.value)) : [];
+      const current = els.requestedTech.value;
+      els.requestedTech.innerHTML = '<option value="">Chọn thợ nếu requested</option>' + techs.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      if(techs.some(t => String(t.id) === String(current))) els.requestedTech.value = current;
+      els.requestedTech.disabled = els.requestType.value !== "requested";
+    }
+
+    function getSmartCandidates(client, state){
+      let techs = state.technicians.filter(t => t.active);
+      techs = techs.filter(t => canDoLine(t, lineFromItem(client)));
+
+      if(client.requestType === "requested"){
+        const requested = techs.find(t => String(t.id) === String(client.requestedTechId));
+        if(!requested) return {best:null, reason:"Không tìm thấy thợ requested", candidates:[]};
+        if(requested.status !== "ready") return {best:null, reason:`${requested.name} đang bận`, candidates:[requested]};
+        return {best:requested, reason:"Khách yêu cầu", candidates:[requested]};
+      }
+
+      const ready = techs.filter(t => t.status === "ready");
+      if(!ready.length) return {best:null, reason:"Không có thợ phù hợp đang rảnh", candidates:techs};
+
+      const sorted = [...ready].sort((a,b) => {
+        if(Number(a.turnsTotal||0) !== Number(b.turnsTotal||0)) return Number(a.turnsTotal||0) - Number(b.turnsTotal||0);
+        const ac = a.checkInOrder == null ? Number.MAX_SAFE_INTEGER : a.checkInOrder;
+        const bc = b.checkInOrder == null ? Number.MAX_SAFE_INTEGER : b.checkInOrder;
+        if(ac !== bc) return ac - bc;
+        return String(a.name).localeCompare(String(b.name));
+      });
+
+      return {best:sorted[0], reason:"Ít turn nhất", candidates:sorted};
+    }
+
+    function getBestNextCustomer(state){
+      if(!state || !state.queue.length) return null;
+      const queue = [...state.queue].sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
+      for(const client of queue){
+        const smart = getSmartCandidates(client, state);
+        if(smart.best) return {client, tech:smart.best, reason:smart.reason};
+      }
+      return null;
+    }
+
+    function getAssignDisabledReason(item, state){
+      const smart = getSmartCandidates(item, state);
+      return smart.best ? null : smart.reason;
+    }
+
+    function writeRaw(raw){ localStorage.setItem(els.sourceKey.value, JSON.stringify(raw)); }
+
+    function assignToBest(client){
+      const normalized = normalizeState(readState());
+      if(!normalized) return null;
+      const smart = getSmartCandidates(client, normalized);
+      return smart.best;
+    }
+
+    function assignSpecificClient(clientId, techOverrideId = null){
+      const raw = readState();
+      if(!raw) return;
+      const state = normalizeState(raw);
+      const client = state.queue.find(c => String(c.id) === String(clientId));
+      if(!client) return;
+
+      let tech = null;
+      if(techOverrideId){
+        tech = state.technicians.find(t => String(t.id) === String(techOverrideId));
+      } else {
+        tech = assignToBest(client);
+      }
+
+      if(!tech){
+        renderStatus(getAssignDisabledReason(client, state) || "Không có thợ phù hợp đang rảnh để assign khách này.", "warn");
+        return;
+      }
+
+      raw.queue = (raw.queue || []).filter(c => String(c.id) !== String(clientId));
+      const servingItem = {
+        id:`serving_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        clientId:client.id, clientName:client.name, service:client.service, serviceId:client.serviceId, price:client.price,
+        line:client.line, requestType:client.requestType, techId:tech.id, techName:tech.name, startedAt:new Date().toISOString(), assignedBy:"Front Desk PRO"
+      };
+
+      raw.serving = Array.isArray(raw.serving) ? raw.serving : [];
+      raw.serving.unshift(servingItem);
+
+      raw.history = Array.isArray(raw.history) ? raw.history : [];
+      raw.history.unshift({
+        id:`history_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        clientId:client.id, clientName:client.name, service:client.service, serviceId:client.serviceId, price:client.price,
+        line:client.line, requestType:client.requestType, techId:tech.id, techName:tech.name,
+        assignedAt:new Date().toISOString(), assignedBy:"Front Desk PRO", status:"serving", turnValue:turnValue(client)
+      });
+
+      raw.technicians = (raw.technicians || []).map(t => String(t.id) !== String(tech.id) ? t : { ...t, status:"busy", currentClientId:client.id });
+      if(raw.dayMode === "new_day" && client.requestType !== "requested") raw.dayMode = "normal";
+
+      raw.auditLog = Array.isArray(raw.auditLog) ? raw.auditLog : [];
+      raw.auditLog.unshift({
+        id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        action:"assign_client",
+        detail:`Front Desk PRO chia khách ${client.name} cho ${tech.name}`,
+        byName:"Front Desk PRO", byRole:"manager", createdAt:new Date().toISOString()
+      });
+
+      writeRaw(raw);
+      renderStatus(`Đã assign <strong>${escapeHtml(client.name)}</strong> cho <strong>${escapeHtml(tech.name)}</strong>.`, "ok");
+      refreshView(true);
+    }
+
+    function autoAssign(clientId){
+      const normalized = normalizeState(readState());
+      if(!normalized) return;
+      const client = normalized.queue.find(c => String(c.id) === String(clientId));
+      if(!client) return;
+      const tech = assignToBest(client);
+      if(!tech){
+        renderStatus(getAssignDisabledReason(client, normalized) || "Không có thợ phù hợp", "warn");
+        return;
+      }
+      assignSpecificClient(client.id, tech.id);
+    }
+
+    function markDone(servingId){
+      const raw = readState();
+      if(!raw) return;
+      const state = normalizeState(raw);
+      const serving = state.serving.find(s => String(s.id) === String(servingId));
+      if(!serving) return;
+
+      raw.serving = (raw.serving || []).filter(s => String(s.id) !== String(servingId));
+      raw.technicians = (raw.technicians || []).map(t => {
+        if(String(t.id) !== String(serving.techId)) return t;
+        return { ...t, status:"ready", currentClientId:null, turnsTotal:Number(t.turnsTotal || t.turn || 0) + turnValue(serving) };
+      });
+
+      raw.history = Array.isArray(raw.history) ? raw.history : [];
+      const hist = raw.history.find(h => String(h.clientId) === String(serving.clientId) && h.status === "serving");
+      if(hist){
+        hist.status = "done";
+        hist.completedAt = new Date().toISOString();
+        hist.turnValue = turnValue(serving);
+      }
+
+      raw.auditLog = Array.isArray(raw.auditLog) ? raw.auditLog : [];
+      raw.auditLog.unshift({
+        id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        action:"done_client",
+        detail:`Front Desk PRO done khách ${serving.clientName} với ${serving.techName}`,
+        byName:"Front Desk PRO", byRole:"manager", createdAt:new Date().toISOString()
+      });
+
+      writeRaw(raw);
+      renderStatus(`Đã done <strong>${escapeHtml(serving.clientName)}</strong>.`, "ok");
+      refreshView(true);
+    }
+
+    function addClient(){
+      const key = els.sourceKey.value;
+      if(!key){ renderStatus("Chưa chọn được storage key của Lumi system.", "warn"); return; }
+      const raw = readState();
+      if(!raw){ renderStatus("Không đọc được dữ liệu hiện tại để thêm khách.", "warn"); return; }
+
+      const name = els.clientName.value.trim();
+      const service = getSelectedService();
+      const requestType = els.requestType.value;
+      const requestedTechId = els.requestedTech.value;
+
+      if(!name){ renderStatus("Vui lòng nhập tên khách.", "warn"); return; }
+      if(!service){ renderStatus("Vui lòng chọn dịch vụ.", "warn"); return; }
+      if(requestType === "requested" && !requestedTechId){ renderStatus("Khách requested cần chọn thợ.", "warn"); return; }
+
+      raw.queue = Array.isArray(raw.queue) ? raw.queue : [];
+      raw.queue.push({
+        id:`client_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        name, service:service.name, serviceId:service.id, price:service.price, line:els.serviceLine.value,
+        requestType, requestedTechId:requestType === "requested" ? requestedTechId : null, createdAt:new Date().toISOString(), addedBy:"Front Desk PRO"
+      });
+
+      raw.auditLog = Array.isArray(raw.auditLog) ? raw.auditLog : [];
+      raw.auditLog.unshift({
+        id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        action:"add_client",
+        detail:`Front Desk PRO thêm khách ${name} • ${service.name}`,
+        byName:"Front Desk PRO", byRole:"manager", createdAt:new Date().toISOString()
+      });
+
+      writeRaw(raw);
+      els.clientName.value = "";
+      els.requestType.value = "walkin";
+      els.requestedTech.value = "";
+      els.requestedTech.disabled = true;
+      renderStatus(`Đã thêm <strong>${escapeHtml(name)}</strong> vào queue.`, "ok");
+      refreshView(true);
+    }
+
+    function renderStatus(message, type="ok"){ els.statusArea.innerHTML = message ? `<div class="${type === "warn" ? "status-warn" : "status-ok"}">${message}</div>` : ""; }
+
+    function renderSuggestion(state){
+      const best = getBestNextCustomer(state);
+      if(!best){ els.suggestionText.textContent = "Chưa có khách trong queue hoặc chưa có thợ phù hợp đang rảnh."; els.statNext.textContent = "--"; return; }
+      const typeText = best.client.requestType === "requested" ? `Requested ${best.tech.name}` : `Best: ${best.tech.name}`;
+      els.suggestionText.innerHTML = `<strong>${escapeHtml(best.client.name)}</strong> • ${escapeHtml(best.client.service)} • ${typeText} • Turn ${turnValue(best.client)}T`;
+      els.statNext.textContent = best.client.name;
+    }
+
+    function renderQueue(state){
+      const queue = [...state.queue].sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
+      const best = getBestNextCustomer(state);
+
+      els.queueCountPill.textContent = `${queue.length} khách`;
+      els.queueBody.innerHTML = "";
+      els.queueEmpty.classList.toggle("hidden", queue.length > 0);
+      els.headerAssignNextBtn.disabled = !best;
+
+      queue.forEach((item, index) => {
+        const requestedTech = item.requestedTechId ? state.technicians.find(t => String(t.id) === String(item.requestedTechId)) : null;
+        const isRequested = item.requestType === "requested";
+        const isNext = best && best.client && String(best.client.id) === String(item.id);
+        const smart = getSmartCandidates(item, state);
+        const assignAllowed = !!smart.best;
+        const reason = assignAllowed ? smart.reason : (smart.reason || "Không assign được");
+        const bestTechName = smart.best ? smart.best.name : (requestedTech?.name || "—");
+
+        const tr = document.createElement("tr");
+        if(isRequested) tr.classList.add("queue-row-requested");
+        if(isNext) tr.classList.add("queue-row-next");
+
+        tr.innerHTML = `
+          <td><span class="idx">${index + 1}</span></td>
+          <td><strong>${escapeHtml(item.name)}</strong></td>
+          <td>${escapeHtml(item.service)}</td>
+          <td>${isRequested ? `<span class="tag req">Requested • ${escapeHtml(requestedTech?.name || "Chưa rõ")}</span>` : `<span class="tag walk">Walk-in</span>`}</td>
+          <td><span class="tag turn">${turnValue(item)}T</span></td>
+          <td><span class="tag turn" style="background:rgba(111,127,154,.10);color:#5e6e88;">${waitTimeText(item)}</span></td>
+          <td>
+            ${smart.best ? `<span class="tag next">${isNext ? "Next nên gọi" : "Best match"}</span><div class="mini best">${escapeHtml(bestTechName)}</div><div class="mini">${escapeHtml(reason)}</div>`
+                         : `<div class="mini error">${escapeHtml(reason)}</div>`}
+          </td>
+          <td>
+            ${assignAllowed ? `<span class="tag serving">${isRequested ? "Sẵn sàng đúng thợ" : "Sẵn sàng auto assign"}</span>`
+                            : `<span class="tag blocked">Chưa assign được</span><div class="mini error">${escapeHtml(reason)}</div>`}
+          </td>
+          <td>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button class="${assignAllowed ? 'btn-auto' : 'btn-secondary btn-disabled'}" ${assignAllowed ? '' : 'disabled'} data-auto="${escapeHtml(item.id)}">⚡ Auto Assign Best</button>
+              <button class="${assignAllowed ? 'btn-assign' : 'btn-secondary btn-disabled'}" ${assignAllowed ? '' : 'disabled'} data-id="${escapeHtml(item.id)}">Assign</button>
+            </div>
+          </td>
+        `;
+        els.queueBody.appendChild(tr);
+      });
+
+      els.queueBody.querySelectorAll("button[data-id]").forEach(btn => btn.addEventListener("click", () => assignSpecificClient(btn.getAttribute("data-id"))));
+      els.queueBody.querySelectorAll("button[data-auto]").forEach(btn => btn.addEventListener("click", () => autoAssign(btn.getAttribute("data-auto"))));
+    }
+
+    function renderServing(state){
+      const items = [...state.serving].sort((a,b) => new Date(b.startedAt||0) - new Date(a.startedAt||0));
+      els.servingCountPill.textContent = `${items.length} khách`;
+      els.servingList.innerHTML = "";
+      els.servingEmpty.classList.toggle("hidden", items.length > 0);
+
+      items.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "serving-card";
+        div.innerHTML = `
+          <div class="serving-top">
+            <div>
+              <div class="serving-name">${escapeHtml(item.clientName)} với ${escapeHtml(item.techName)}</div>
+              <div class="muted">${escapeHtml(item.service)} • $${escapeHtml(item.price)} • Nhóm: ${escapeHtml(lineFromItem(item))} • Bắt đầu ${timeShort(item.startedAt)}</div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <span class="tag serving">Đang làm khách</span>
+              <span class="${item.requestType === "requested" ? "tag req" : "tag walk"}">${item.requestType === "requested" ? "Requested" : "Walk-in"}</span>
+              <span class="tag turn">Turn khi done: ${turnValue(item)}</span>
+            </div>
+          </div>
+          <div style="margin-top:14px;"><button class="btn-done" data-done="${escapeHtml(item.id)}">Done</button></div>
+        `;
+        els.servingList.appendChild(div);
+      });
+
+      els.servingList.querySelectorAll("button[data-done]").forEach(btn => btn.addEventListener("click", () => markDone(btn.getAttribute("data-done"))));
+    }
+
+    function renderDone(state){
+      const items = [...state.history].filter(item => item.status === "done").sort((a,b) => new Date(b.completedAt || b.assignedAt || 0) - new Date(a.completedAt || a.assignedAt || 0)).slice(0,12);
+      els.doneCountPill.textContent = `${items.length} khách`;
+      els.doneBody.innerHTML = "";
+      els.doneEmpty.classList.toggle("hidden", items.length > 0);
+
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(item.clientName || "")}</strong></td>
+          <td>${escapeHtml(item.service || "")}</td>
+          <td>${escapeHtml(item.techName || "")}</td>
+          <td><span class="tag turn">${turnValue(item)}T</span></td>
+          <td>${timeShort(item.completedAt || item.assignedAt)}</td>
+        `;
+        els.doneBody.appendChild(tr);
+      });
+    }
+
+    function refreshView(force=false){
+      populateSourceSelector();
+      const rawString = readRaw();
+      els.updatedAt.textContent = `Updated ${new Date().toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}`;
+
+      if(!rawString){
+        renderStatus("Không đọc được localStorage của Lumi. Hãy mở file này cùng domain với app hiện tại.", "warn");
+        els.queueBody.innerHTML = ""; els.queueEmpty.classList.remove("hidden");
+        els.servingList.innerHTML = ""; els.servingEmpty.classList.remove("hidden");
+        els.doneBody.innerHTML = ""; els.doneEmpty.classList.remove("hidden");
+        els.statQueue.textContent = "0"; els.statServing.textContent = "0"; els.statReady.textContent = "0"; els.statDone.textContent = "0"; els.statNext.textContent = "--";
+        els.headerAssignNextBtn.disabled = true;
+        return;
+      }
+
+      if(!force && rawString === lastSnapshot) return;
+      lastSnapshot = rawString;
+
+      const normalized = normalizeState(JSON.parse(rawString));
+      if(!normalized){ renderStatus("Dữ liệu đọc được nhưng không đúng format.", "warn"); return; }
+
+      const readyCount = normalized.technicians.filter(t => t.active && t.status === "ready").length;
+      const doneCount = normalized.history.filter(h => h.status === "done").length;
+      els.statQueue.textContent = String(normalized.queue.length);
+      els.statServing.textContent = String(normalized.serving.length);
+      els.statReady.textContent = String(readyCount);
+      els.statDone.textContent = String(doneCount);
+      els.dayModeText.textContent = normalized.dayMode === "new_day" ? "Ưu tiên check-in đầu ngày" : "Fairness bình thường";
+      els.dayModePill.textContent = normalized.dayMode === "new_day" ? "New day" : "Normal";
+      els.storageKeyText.textContent = els.sourceKey.value || "--";
+      els.queueOrderText.textContent = "FIFO";
+      renderSuggestion(normalized);
+      renderQueue(normalized);
+      renderServing(normalized);
+      renderDone(normalized);
+      renderStatus(`Đã đọc data thành công • key: <strong>${escapeHtml(els.sourceKey.value)}</strong> • staff: <strong>${normalized.technicians.length}</strong> • queue: <strong>${normalized.queue.length}</strong> • serving: <strong>${normalized.serving.length}</strong>`, "ok");
+      populateRequestedTech();
+    }
+
+    function assignHeaderNext(){
+      const normalized = normalizeState(readState());
+      const best = normalized ? getBestNextCustomer(normalized) : null;
+      if(!best){ renderStatus("Hiện chưa có khách phù hợp để assign.", "warn"); return; }
+      assignSpecificClient(best.client.id, best.tech.id);
+    }
+
+    els.refreshBtn.addEventListener("click", () => refreshView(true));
+    els.serviceLine.addEventListener("change", populateServiceSelect);
+    els.serviceSelect.addEventListener("change", updatePrice);
+    els.requestType.addEventListener("change", () => { els.requestedTech.disabled = els.requestType.value !== "requested"; });
+    els.sourceKey.addEventListener("change", () => { lastSnapshot = ""; refreshView(true); });
+    els.addBtn.addEventListener("click", addClient);
+    els.assignSuggestedBtn.addEventListener("click", assignHeaderNext);
+    els.headerAssignNextBtn.addEventListener("click", assignHeaderNext);
+
+    populateServiceLines();
+    populateSourceSelector();
+    refreshView(true);
+    window.addEventListener("storage", () => refreshView(true));
+    setInterval(() => refreshView(false), 1200);
+  </script>
+</body>
+</html>

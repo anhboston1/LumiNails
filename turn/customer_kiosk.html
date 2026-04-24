@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lumi Nails • Customer Check-in Kiosk</title>
+<style>
+:root{--bg:#f7f4ef;--bg2:#fbf9f5;--panel:rgba(255,255,255,.94);--text:#3c342d;--muted:#7c746a;--line:#d8d0c4;--gold:#c8a66b;--gold-deep:#a78342;--ready:#557260;--danger:#b45b5b;--shadow:0 22px 70px rgba(88,67,45,.12)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:radial-gradient(circle at top left,rgba(200,166,107,.18),transparent 25%),radial-gradient(circle at bottom right,rgba(220,210,198,.30),transparent 26%),linear-gradient(180deg,var(--bg2),var(--bg));min-height:100vh}
+.shell{max-width:1180px;margin:0 auto;padding:22px}
+.topbar,.card,.success-card{background:var(--panel);border:1px solid rgba(255,255,255,.82);border-radius:30px;box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+.topbar{padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);font-weight:800}
+.eyebrow:before{content:"";width:38px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);display:block}
+h1,h2{font-family:Georgia,"Times New Roman",serif;margin:0;letter-spacing:-.02em;color:var(--text)}
+h1{font-size:clamp(42px,6vw,72px);line-height:.98;margin-top:8px}
+h2{font-size:clamp(28px,4vw,44px);line-height:1.05}
+.muted{color:var(--muted);line-height:1.75;font-size:18px}
+.pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;background:#fff;border:1px solid var(--line);color:var(--gold-deep);font-weight:800;font-size:13px;white-space:nowrap}
+.card{padding:28px;margin-bottom:20px}
+.step-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.step-pill{padding:9px 13px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted);font-size:13px;font-weight:800}
+.step-pill.active{background:rgba(200,166,107,.16);border-color:rgba(200,166,107,.28);color:var(--gold-deep)}
+.field{display:grid;gap:10px;margin-top:18px}
+label{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:900}
+input,select,button{font:inherit}
+input,select{width:100%;border:1px solid var(--line);border-radius:22px;padding:22px 24px;background:#fff;font-size:28px;outline:none}
+input:focus,select:focus{border-color:rgba(200,166,107,.75);box-shadow:0 0 0 5px rgba(200,166,107,.13)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:20px}
+.service-card,.choice-card{background:#fff;border:1px solid var(--line);border-radius:26px;padding:24px;min-height:132px;cursor:pointer;transition:.16s ease;display:flex;flex-direction:column;justify-content:space-between;gap:14px}
+.service-card:hover,.choice-card:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(88,67,45,.10)}
+.service-card.selected,.choice-card.selected{border-color:rgba(200,166,107,.75);background:linear-gradient(135deg,rgba(200,166,107,.18),rgba(255,255,255,.95));box-shadow:0 16px 36px rgba(167,131,66,.16)}
+.service-icon{font-size:34px}
+.service-title,.choice-title{font-size:26px;font-weight:900;line-height:1.1}
+.service-desc,.choice-desc{color:var(--muted);line-height:1.5;font-size:15px}
+.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+button{border:none;border-radius:20px;padding:18px 24px;cursor:pointer;font-weight:900;font-size:18px;transition:.15s ease}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;box-shadow:0 12px 28px rgba(167,131,66,.26);flex:1;min-width:220px}
+.btn-secondary{background:#fff;color:var(--text);border:1px solid var(--line)}
+.summary{display:grid;gap:12px;margin-top:18px}
+.summary-row{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:16px 18px;border-radius:18px;border:1px solid var(--line);background:#fff}
+.summary-row strong{font-size:18px}.summary-row span{color:var(--muted);font-size:18px;text-align:right}
+.success-card{padding:42px 30px;text-align:center;margin-top:20px}
+.success-icon{width:84px;height:84px;border-radius:999px;background:rgba(85,114,96,.12);color:var(--ready);display:grid;place-items:center;margin:0 auto 18px;font-size:42px;font-weight:900}
+.success-card h2{font-size:46px;margin-bottom:10px}
+.success-card p{font-size:22px;color:var(--muted);line-height:1.6;margin:0 auto;max-width:720px}
+.wait-box{margin-top:22px;display:inline-flex;gap:8px;align-items:center;padding:12px 16px;border-radius:999px;background:rgba(200,166,107,.14);color:var(--gold-deep);font-weight:900}
+.hidden{display:none!important}
+.status{margin-top:16px;padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:#fff8ef;color:var(--gold-deep);font-weight:800}
+.mini-admin{font-size:12px;color:var(--muted);margin-top:8px}
+@media(max-width:780px){.shell{padding:14px}.topbar,.card{padding:20px;border-radius:24px}.grid{grid-template-columns:1fr}input,select{font-size:22px;padding:18px 20px}.muted{font-size:16px}.service-title,.choice-title{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <section class="topbar">
+    <div><div class="eyebrow">Lumi Nails • Self Check-in</div><h1>Welcome to Lumi</h1><div class="muted">Please check in below. Our team will call you shortly.</div></div>
+    <div><span class="pill" id="queuePill">Loading...</span><div class="mini-admin">Customer Kiosk • Shared key: lumi-turn-manager-v5</div></div>
+  </section>
+
+  <section id="formArea">
+    <div class="card">
+      <h2 id="stepTitle">Your name</h2>
+      <div class="muted" id="stepSubtitle">Enter your name so we can call you when we are ready.</div>
+      <div class="step-row">
+        <span class="step-pill active" id="pill1">1. Name</span>
+        <span class="step-pill" id="pill2">2. Service</span>
+        <span class="step-pill" id="pill3">3. Request</span>
+        <span class="step-pill" id="pill4">4. Confirm</span>
+      </div>
+
+      <div id="step1">
+        <div class="field"><label for="clientName">Your name</label><input id="clientName" type="text" placeholder="Example: Christina" autocomplete="off" /></div>
+        <div class="buttons"><button class="btn-primary" id="toStep2">Continue</button></div>
+      </div>
+
+      <div id="step2" class="hidden">
+        <div class="grid" id="serviceGrid"></div>
+        <div class="buttons"><button class="btn-secondary" id="backTo1">Back</button><button class="btn-primary" id="toStep3" disabled>Continue</button></div>
+      </div>
+
+      <div id="step3" class="hidden">
+        <div class="grid">
+          <div class="choice-card selected" data-request="walkin"><div><div class="choice-title">No preference</div><div class="choice-desc">First available technician</div></div><div class="service-icon">✨</div></div>
+          <div class="choice-card" data-request="requested"><div><div class="choice-title">Request a technician</div><div class="choice-desc">Choose someone familiar</div></div><div class="service-icon">💅</div></div>
+        </div>
+        <div class="field hidden" id="techSelectWrap"><label for="requestedTech">Choose technician</label><select id="requestedTech"></select></div>
+        <div class="buttons"><button class="btn-secondary" id="backTo2">Back</button><button class="btn-primary" id="toStep4">Continue</button></div>
+      </div>
+
+      <div id="step4" class="hidden">
+        <div class="summary" id="summaryBox"></div>
+        <div class="status" id="statusMsg">Please confirm your check-in.</div>
+        <div class="buttons"><button class="btn-secondary" id="backTo3">Back</button><button class="btn-primary" id="submitBtn">Check in now</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="successArea" class="success-card hidden">
+    <div class="success-icon">✓</div>
+    <h2>You are checked in</h2>
+    <p id="successText">Thank you. Please have a seat — our team will call you shortly.</p>
+    <div class="wait-box" id="waitText">Estimated wait: 10–20 minutes</div>
+    <div class="buttons" style="justify-content:center"><button class="btn-primary" id="newCheckinBtn" style="max-width:340px">Check in another guest</button></div>
+  </section>
+</div>
+
+<script>
+const STORAGE_KEY="lumi-turn-manager-v5";
+const SERVICE_GROUPS=[
+ {line:"mani",label:"Manicure",icon:"💅",desc:"Natural nails, gel manicure, Dazzle Dry",defaultService:{id:"kiosk_mani",name:"Manicure",price:45}},
+ {line:"pedi",label:"Pedicure",icon:"🦶",desc:"Classic, aroma spa, organic pedicure",defaultService:{id:"kiosk_pedi",name:"Pedicure",price:45}},
+ {line:"gel_pedi",label:"Gel Pedicure",icon:"✨",desc:"Pedicure with gel polish",defaultService:{id:"kiosk_gel_pedi",name:"Gel Pedicure",price:60}},
+ {line:"dip_powder",label:"Dip Powder",icon:"🌿",desc:"Dip on natural nails or with tips",defaultService:{id:"kiosk_dip",name:"Dip Powder",price:55}},
+ {line:"gel_x",label:"Gel-X / Extension",icon:"💎",desc:"Gel-X full set or refill",defaultService:{id:"kiosk_gel_x",name:"Gel-X Extensions",price:75}},
+ {line:"g_hybrid_gel",label:"Hybrid Gel",icon:"🤍",desc:"Hybrid gel full set or refill",defaultService:{id:"kiosk_hybrid",name:"Hybrid Gel",price:70}}
+];
+const els={
+ queuePill:document.getElementById("queuePill"),stepTitle:document.getElementById("stepTitle"),stepSubtitle:document.getElementById("stepSubtitle"),
+ pill1:document.getElementById("pill1"),pill2:document.getElementById("pill2"),pill3:document.getElementById("pill3"),pill4:document.getElementById("pill4"),
+ step1:document.getElementById("step1"),step2:document.getElementById("step2"),step3:document.getElementById("step3"),step4:document.getElementById("step4"),
+ clientName:document.getElementById("clientName"),serviceGrid:document.getElementById("serviceGrid"),toStep2:document.getElementById("toStep2"),toStep3:document.getElementById("toStep3"),toStep4:document.getElementById("toStep4"),
+ backTo1:document.getElementById("backTo1"),backTo2:document.getElementById("backTo2"),backTo3:document.getElementById("backTo3"),
+ techSelectWrap:document.getElementById("techSelectWrap"),requestedTech:document.getElementById("requestedTech"),summaryBox:document.getElementById("summaryBox"),statusMsg:document.getElementById("statusMsg"),
+ submitBtn:document.getElementById("submitBtn"),formArea:document.getElementById("formArea"),successArea:document.getElementById("successArea"),successText:document.getElementById("successText"),waitText:document.getElementById("waitText"),newCheckinBtn:document.getElementById("newCheckinBtn")
+};
+let model={name:"",service:null,requestType:"walkin",requestedTechId:null};
+function defaultState(){return{users:[],technicians:[],queue:[],serving:[],history:[],auditLog:[],dayMode:"normal"}}
+function readState(){try{const raw=localStorage.getItem(STORAGE_KEY);return raw?JSON.parse(raw):defaultState()}catch{return defaultState()}}
+function writeState(state){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function uid(prefix){return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`}
+function escapeHtml(str){return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function normalizeTech(t,idx){const skills=Array.isArray(t.skills)?t.skills:(t.skill?[t.skill]:["all_services"]);return{id:t.id||String(idx+1),name:t.name||`Staff ${idx+1}`,role:t.role||"staff",skills,active:t.active!==false,status:t.status||"ready"}}
+function canDoLine(tech,line){return tech.skills.includes("all_services")||tech.skills.includes(line)}
+function getTechsForSelectedService(){const state=readState();const techs=(state.technicians||state.staff||[]).map(normalizeTech);if(!model.service)return[];return techs.filter(t=>t.active&&canDoLine(t,model.service.line))}
+function estimateWait(){const state=readState();const q=Array.isArray(state.queue)?state.queue.length:0;const serving=Array.isArray(state.serving)?state.serving.length:0;const ready=(state.technicians||state.staff||[]).map(normalizeTech).filter(t=>t.active&&t.status==="ready").length;const pressure=Math.max(0,q+serving-ready);if(pressure<=0)return"Estimated wait: 5–10 minutes";if(pressure<=2)return"Estimated wait: 10–20 minutes";if(pressure<=5)return"Estimated wait: 20–35 minutes";return"Estimated wait: 35+ minutes"}
+function updateQueuePill(){const state=readState();const q=Array.isArray(state.queue)?state.queue.length:0;els.queuePill.textContent=`${q} guest${q===1?"":"s"} waiting`}
+function renderServices(){els.serviceGrid.innerHTML=SERVICE_GROUPS.map(group=>`<div class="service-card" data-line="${group.line}"><div><div class="service-icon">${group.icon}</div><div class="service-title">${escapeHtml(group.label)}</div><div class="service-desc">${escapeHtml(group.desc)}</div></div></div>`).join("");els.serviceGrid.querySelectorAll(".service-card").forEach(card=>{card.addEventListener("click",()=>{const line=card.getAttribute("data-line");model.service=SERVICE_GROUPS.find(g=>g.line===line);els.serviceGrid.querySelectorAll(".service-card").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");els.toStep3.disabled=false;populateTechSelect()})})}
+function populateTechSelect(){const techs=getTechsForSelectedService();els.requestedTech.innerHTML='<option value="">Select technician</option>'+techs.map(t=>`<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("")}
+function setStep(step){[els.step1,els.step2,els.step3,els.step4].forEach((el,idx)=>el.classList.toggle("hidden",idx+1!==step));[els.pill1,els.pill2,els.pill3,els.pill4].forEach((el,idx)=>el.classList.toggle("active",idx+1===step));if(step===1){els.stepTitle.textContent="Your name";els.stepSubtitle.textContent="Enter your name so we can call you when we are ready."}if(step===2){els.stepTitle.textContent="What service are you here for?";els.stepSubtitle.textContent="Choose a simple category. Our team can adjust details later."}if(step===3){els.stepTitle.textContent="Do you request a technician?";els.stepSubtitle.textContent="Choose first available, or select a technician you prefer."}if(step===4){els.stepTitle.textContent="Confirm check-in";els.stepSubtitle.textContent="Please review your information before submitting.";renderSummary()}}
+function renderSummary(){const techName=getTechsForSelectedService().find(t=>String(t.id)===String(model.requestedTechId))?.name||"No preference";els.summaryBox.innerHTML=`<div class="summary-row"><strong>Name</strong><span>${escapeHtml(model.name)}</span></div><div class="summary-row"><strong>Service</strong><span>${escapeHtml(model.service?.label||"")}</span></div><div class="summary-row"><strong>Preference</strong><span>${model.requestType==="requested"?"Requested: "+escapeHtml(techName):"First available"}</span></div>`;els.statusMsg.textContent=estimateWait()}
+function addAudit(state,action,detail){state.auditLog=Array.isArray(state.auditLog)?state.auditLog:[];state.auditLog.unshift({id:uid("audit"),action,detail,byName:"Customer Kiosk",byRole:"kiosk",createdAt:new Date().toISOString()});state.auditLog=state.auditLog.slice(0,100)}
+function submitCheckin(){if(!model.name||!model.service){alert("Please complete your check-in.");return}if(model.requestType==="requested"&&!model.requestedTechId){alert("Please select a technician or choose no preference.");return}const state=readState();state.queue=Array.isArray(state.queue)?state.queue:[];const service=model.service.defaultService;const item={id:uid("client"),name:model.name,service:service.name,serviceId:service.id,price:service.price,line:model.service.line,requestType:model.requestType,requestedTechId:model.requestType==="requested"?model.requestedTechId:null,createdAt:new Date().toISOString(),addedBy:"Customer Kiosk",source:"customer_kiosk"};state.queue.push(item);addAudit(state,"customer_checkin",`${model.name} checked in from Customer Kiosk • ${service.name}`);writeState(state);els.formArea.classList.add("hidden");els.successArea.classList.remove("hidden");els.successText.textContent=`Thank you, ${model.name}. Please have a seat — our team will call you shortly.`;els.waitText.textContent=estimateWait();updateQueuePill();setTimeout(()=>resetKiosk(),18000)}
+function resetKiosk(){model={name:"",service:null,requestType:"walkin",requestedTechId:null};els.clientName.value="";els.requestedTech.value="";els.techSelectWrap.classList.add("hidden");els.serviceGrid.querySelectorAll(".service-card").forEach(c=>c.classList.remove("selected"));document.querySelectorAll(".choice-card").forEach(c=>c.classList.remove("selected"));document.querySelector('.choice-card[data-request="walkin"]').classList.add("selected");els.toStep3.disabled=true;els.formArea.classList.remove("hidden");els.successArea.classList.add("hidden");setStep(1);updateQueuePill();els.clientName.focus()}
+els.toStep2.addEventListener("click",()=>{const name=els.clientName.value.trim();if(!name){alert("Please enter your name.");els.clientName.focus();return}model.name=name;setStep(2)});
+els.toStep3.addEventListener("click",()=>{if(!model.service){alert("Please choose a service.");return}populateTechSelect();setStep(3)});
+els.toStep4.addEventListener("click",()=>{if(model.requestType==="requested"){model.requestedTechId=els.requestedTech.value;if(!model.requestedTechId){alert("Please select a technician or choose no preference.");return}}else{model.requestedTechId=null}setStep(4)});
+els.backTo1.addEventListener("click",()=>setStep(1));els.backTo2.addEventListener("click",()=>setStep(2));els.backTo3.addEventListener("click",()=>setStep(3));els.submitBtn.addEventListener("click",submitCheckin);els.newCheckinBtn.addEventListener("click",resetKiosk);
+document.querySelectorAll(".choice-card").forEach(card=>{card.addEventListener("click",()=>{document.querySelectorAll(".choice-card").forEach(c=>c.classList.remove("selected"));card.classList.add("selected");model.requestType=card.getAttribute("data-request");els.techSelectWrap.classList.toggle("hidden",model.requestType!=="requested");if(model.requestType==="requested")populateTechSelect()})});
+els.requestedTech.addEventListener("change",()=>{model.requestedTechId=els.requestedTech.value});
+els.clientName.addEventListener("keydown",e=>{if(e.key==="Enter")els.toStep2.click()});
+renderServices();updateQueuePill();setStep(1);setInterval(updateQueuePill,1500);
+</script>
+</body>
+</html>
