@@ -4,17 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumi Nails • iPad Front Desk</title>
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
-
-  const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-</script>
   <style>
     :root{
       --bg:#f7f4ef; --bg2:#fbf9f5; --panel:#ffffffee; --text:#3c342d; --muted:#7c746a;
@@ -637,123 +626,6 @@
       border:1px solid rgba(85,114,96,.18);
     }
 
-
-    /* LUMI COLOR SYSTEM v3 — matched with Lumi Grid */
-    :root{
-      --lumi-green: rgb(41,153,73);
-      --lumi-green-soft: rgba(41,153,73,.14);
-      --lumi-green-border: rgba(41,153,73,.28);
-      --lumi-green-glow: rgba(41,153,73,.12);
-      --lumi-gold: #c8a66b; --lumi-gold-deep: #a78342;
-      --lumi-gold-soft: rgba(200,166,107,.14); --lumi-gold-border: rgba(200,166,107,.26);
-      --lumi-red: #b45b5b; --lumi-red-soft: rgba(180,91,91,.11); --lumi-red-border: rgba(180,91,91,.22);
-      --lumi-blue: #6f7f9a; --lumi-blue-soft: rgba(111,127,154,.12); --lumi-blue-border: rgba(111,127,154,.20);
-      --lumi-gray: #9b9389; --lumi-gray-soft: rgba(124,116,106,.10); --lumi-gray-border: rgba(124,116,106,.20);
-      --ready: var(--lumi-green); --info: var(--lumi-blue); --danger: var(--lumi-red); --warning: var(--lumi-gold-deep);
-    }
-
-    .tag.available,.tag.done,.tag.walk,.ai-score,.success-dot{
-      background:var(--lumi-green-soft)!important;
-      color:var(--lumi-green)!important;
-      border-color:var(--lumi-green-border)!important;
-      font-weight:900!important;
-      box-shadow:0 0 0 3px var(--lumi-green-glow),0 6px 16px rgba(41,153,73,.08)!important;
-    }
-    .tag.available,.tag.done,.tag.walk{gap:7px!important;align-items:center!important;}
-    .tag.available::before,.tag.done::before,.tag.walk::before{
-      content:"";width:8px;height:8px;border-radius:999px;background:var(--lumi-green);
-      box-shadow:0 0 0 3px rgba(255,255,255,.72);display:inline-block;flex:0 0 auto;
-    }
-    .success-dot::before{background:var(--lumi-green)!important;box-shadow:0 0 0 4px rgba(41,153,73,.12)!important;}
-    .btn-ready{
-      background:linear-gradient(135deg,rgba(41,153,73,.18),rgba(255,255,255,.96))!important;
-      border-color:var(--lumi-green-border)!important;color:var(--lumi-green)!important;
-      box-shadow:0 8px 18px rgba(41,153,73,.10)!important;font-weight:900!important;
-    }
-    .btn-ready:hover{box-shadow:0 12px 24px rgba(41,153,73,.16)!important;}
-    .combo-total,.status-ok{
-      background:linear-gradient(135deg,rgba(41,153,73,.12),rgba(255,255,255,.88))!important;
-      color:var(--lumi-green)!important;border-color:rgba(41,153,73,.18)!important;
-    }
-
-    .tag.refreshing,.tag.cooldown,.refreshing-reminder,.cooldown-note,.tag.simple-mode,.tag.next,.tag.turn,.idx,.next-focus{
-      background:var(--lumi-gold-soft)!important;color:var(--lumi-gold-deep)!important;border-color:var(--lumi-gold-border)!important;
-    }
-    .tag.refreshing,.tag.cooldown{
-      font-weight:850!important;box-shadow:0 0 0 2px rgba(200,166,107,.08)!important;gap:7px!important;align-items:center!important;
-    }
-    .tag.refreshing::before,.tag.cooldown::before{
-      content:"";width:8px;height:8px;border-radius:999px;background:var(--lumi-gold);
-      box-shadow:0 0 0 3px rgba(255,255,255,.72);display:inline-block;flex:0 0 auto;
-    }
-    .cooldown-card{background:linear-gradient(135deg,rgba(200,166,107,.08),#fff)!important;border-color:var(--lumi-gold-border)!important;border-style:dashed!important;}
-
-    .tag.blocked,.tag.wait-critical,.tag.waiting-too-long,.btn-danger{
-      background:var(--lumi-red-soft)!important;color:#9f3f3f!important;border-color:var(--lumi-red-border)!important;
-    }
-    .btn-done{
-      background:linear-gradient(135deg,#b23a3a,#7a1f1f)!important;color:#fff!important;
-      border-color:rgba(122,31,31,.22)!important;box-shadow:0 10px 24px rgba(178,58,58,.20)!important;font-weight:900!important;
-    }
-
-    .tag.req,.tag.serving,.session-pill{
-      background:var(--lumi-blue-soft)!important;color:var(--lumi-blue)!important;border-color:var(--lumi-blue-border)!important;
-    }
-    .tag.break,.btn-break,.btn-break-ready,.break-card{
-      background:var(--lumi-gray-soft)!important;color:#6f665d!important;border-color:var(--lumi-gray-border)!important;
-    }
-
-    .queue-row-next td{
-      background:linear-gradient(90deg,rgba(200,166,107,.18),rgba(255,247,231,.96))!important;
-      border-top-color:rgba(200,166,107,.42)!important;border-bottom-color:rgba(200,166,107,.42)!important;
-    }
-    .queue-row-next td:first-child{box-shadow:inset 5px 0 0 var(--lumi-gold)!important;}
-    .queue-row-next .idx{background:linear-gradient(135deg,var(--lumi-gold),var(--lumi-gold-deep))!important;color:#fff!important;}
-    .queue-row-requested td{background:rgba(111,127,154,.045)!important;}
-
-    .serving-card:has(.tag.available),.serving-card:has(.tag.done){
-      border-color:rgba(41,153,73,.24)!important;
-      box-shadow:0 0 0 2px rgba(41,153,73,.08),0 10px 26px rgba(41,153,73,.06)!important;
-    }
-    .serving-card:has(.tag.cooldown),.serving-card:has(.tag.refreshing){
-      border-color:rgba(200,166,107,.24)!important;background:linear-gradient(135deg,rgba(200,166,107,.045),#fff)!important;
-    }
-    .serving-card:has(.tag.break){opacity:.82;}
-    .auto-flow-on{
-      background:linear-gradient(135deg,rgba(200,166,107,.95),rgba(230,211,163,.96))!important;
-      border-color:rgba(167,131,66,.38)!important;color:#5c4520!important;
-    }
-    .auto-flow-off{background:rgba(255,255,255,.92)!important;border-color:var(--line)!important;color:var(--muted)!important;}
-
-
-        /* Lumi Clean Label System v4 — Main Type + Request + Priority Tag */
-    :root{
-      --lumi-green:41,153,73;
-      --label-walk-bg:rgba(var(--lumi-green),.14);
-      --label-walk-text:rgb(var(--lumi-green));
-      --label-walk-border:rgba(var(--lumi-green),.30);
-      --label-appt-bg:rgba(199,92,117,.13);--label-appt-text:#a64b63;--label-appt-border:rgba(199,92,117,.24);
-      --label-req-bg:rgba(111,127,154,.18);--label-req-text:#526179;--label-req-border:rgba(111,127,154,.30);
-      --label-any-bg:rgba(85,114,96,.10);--label-any-text:#46634f;--label-any-border:rgba(85,114,96,.20);
-      --label-vip-bg:rgba(200,166,107,.20);--label-vip-text:#8a6c36;--label-vip-border:rgba(200,166,107,.38);
-      --label-owner-bg:rgba(60,52,45,.10);--label-owner-text:#3c342d;--label-owner-border:rgba(60,52,45,.22);
-      --label-fix-bg:rgba(180,91,91,.12);--label-fix-text:#8a4545;--label-fix-border:rgba(180,91,91,.22);
-    }
-    .tag.walk,.tag.available{background:var(--label-walk-bg)!important;color:var(--label-walk-text)!important;border:1px solid var(--label-walk-border)!important;box-shadow:0 6px 16px rgba(var(--lumi-green),.08);}
-    .tag.appt{background:var(--label-appt-bg)!important;color:var(--label-appt-text)!important;border:1px solid var(--label-appt-border)!important;}
-    .tag.req{background:var(--label-req-bg)!important;color:var(--label-req-text)!important;border:1px solid var(--label-req-border)!important;}
-    .tag.anytech{background:var(--label-any-bg)!important;color:var(--label-any-text)!important;border:1px solid var(--label-any-border)!important;}
-    .tag.vip{background:var(--label-vip-bg)!important;color:var(--label-vip-text)!important;border:1px solid var(--label-vip-border)!important;box-shadow:0 6px 16px rgba(200,166,107,.10);}
-    .tag.owner{background:var(--label-owner-bg)!important;color:var(--label-owner-text)!important;border:1px solid var(--label-owner-border)!important;}
-    .tag.fix,.tag.redo{background:var(--label-fix-bg)!important;color:var(--label-fix-text)!important;border:1px solid var(--label-fix-border)!important;}
-    .queue-row-appt td{background:linear-gradient(0deg,rgba(199,92,117,.040),rgba(199,92,117,.040)),#fff;}
-    .queue-row-vip td{background:linear-gradient(0deg,rgba(200,166,107,.050),rgba(200,166,107,.050)),#fff;}
-    .queue-row-owner td{background:linear-gradient(0deg,rgba(60,52,45,.035),rgba(60,52,45,.035)),#fff;}
-    .queue-row-fix td,.queue-row-redo td{background:linear-gradient(0deg,rgba(180,91,91,.045),rgba(180,91,91,.045)),#fff;}
-    .label-stack{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-    .logic-note{margin-top:8px;padding:10px 12px;border-radius:14px;background:rgba(200,166,107,.10);border:1px solid rgba(200,166,107,.20);color:var(--gold-deep);font-size:12px;font-weight:800;line-height:1.45;}
-
-
   </style>
 </head>
 <body>
@@ -836,17 +708,11 @@
               <div id="comboTotal" class="combo-total">Total: $0 • 0 service</div>
             </div>
 
-                        <div class="three-col">
+            <div class="three-col">
               <div class="field"><label for="servicePrice">Giá dịch vụ</label><input id="servicePrice" readonly /></div>
-              <div class="field"><label for="guestType">Main type</label><select id="guestType"><option value="walkin">Walk-in</option><option value="appt">Appt</option></select></div>
-              <div class="field"><label for="requestType">Tech request</label><select id="requestType"><option value="walkin">Any Tech</option><option value="requested">Requested Tech</option></select></div>
+              <div class="field"><label for="requestType">Loại khách</label><select id="requestType"><option value="walkin">Khách trực tiếp</option><option value="requested">Khách yêu cầu</option></select></div>
+              <div class="field"><label for="requestedTech">Thợ yêu cầu</label><select id="requestedTech"><option value="">Chọn thợ nếu khách yêu cầu</option></select></div>
             </div>
-            <div class="two-col">
-              <div class="field"><label for="requestedTech">Requested tech</label><select id="requestedTech"><option value="">Choose tech if Requested Tech Tech</option></select></div>
-              <div class="field"><label for="priorityTag">Priority tag</label><select id="priorityTag"><option value="none">None</option><option value="vip">VIP</option><option value="owner">Owner Guest</option><option value="fix">Fix</option><option value="redo">Redo</option></select></div>
-            </div>
-            <div class="logic-note">Logic mới: <strong>Walk-in / Appt</strong> là loại khách. <strong>Any Tech / Requested Tech</strong> quyết định ai được làm. <strong>VIP / Owner Guest / Fix / Redo</strong> chỉ là tag ưu tiên/ghi chú.</div>
-
             <div class="two-col single-action">
               <button class="btn-primary" id="addBtn">+ Thêm vào danh sách</button>
             </div>
@@ -882,13 +748,9 @@
             <div class="list-head-actions">
               <button class="btn-primary" id="headerAssignNextBtn">⚡ Gọi khách tiếp theo</button>
               <span class="tag next" id="queueCountPill">0 khách</span>
-              <span class="tag walk">● Walk-in</span>
-              <span class="tag appt">◷ Appt</span>
-              <span class="tag anytech">✓ Any Tech</span>
-              <span class="tag req">🎯 Requested Tech</span>
-              <span class="tag vip">◆ VIP</span>
-              <span class="tag owner">★ Owner Guest</span>
+              <span class="tag req">Khách yêu cầu</span>
               <span id="autoFlowPill" class="tag auto-flow-mini-off">Auto Flow OFF</span>
+              <span class="tag walk">Khách trực tiếp</span>
             </div>
           </div>
 
@@ -976,7 +838,7 @@
   <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
   <div id="requestTechModal" class="modal-overlay" aria-hidden="true">
     <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="requestTechTitle">
-      <h3 id="requestTechTitle" class="modal-title">🎯 Request tech</h3>
+      <h3 id="requestTechTitle" class="modal-title">🎯 Yêu cầu thợ</h3>
       <div id="requestTechSub" class="modal-sub">Chọn thợ mà khách muốn yêu cầu.</div>
       <label for="requestTechSelect">Thợ yêu cầu</label>
       <select id="requestTechSelect" class="tech-select"></select>
@@ -1104,9 +966,7 @@
       singleServiceBox: document.getElementById("singleServiceBox"),
       comboServiceBox: document.getElementById("comboServiceBox"),
       servicePrice: document.getElementById("servicePrice"),
-      guestType: document.getElementById("guestType"),
       requestType: document.getElementById("requestType"),
-      priorityTag: document.getElementById("priorityTag"),
       requestedTech: document.getElementById("requestedTech"),
       addBtn: document.getElementById("addBtn"),
       headerAssignNextBtn: document.getElementById("headerAssignNextBtn"),
@@ -1535,7 +1395,7 @@
         }
       }
       const current = els.requestedTech.value;
-      els.requestedTech.innerHTML = '<option value="">Choose tech if Requested Tech</option>' + techs.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
+      els.requestedTech.innerHTML = '<option value="">Chọn thợ nếu khách yêu cầu</option>' + techs.map(t => `<option value="${t.id}">${escapeHtml(t.name)}</option>`).join("");
       if(techs.some(t => String(t.id) === String(current))) els.requestedTech.value = current;
       els.requestedTech.disabled = els.requestType.value !== "requested";
     }
@@ -1761,7 +1621,7 @@
       raw.auditLog.unshift({
         id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
         action:"convert_walkin_to_requested",
-        detail:`Manager chuyển khách ${client.name} from Walk-in to Requested ${selectedTech.name} vì khách yêu cầu thợ cụ thể`,
+        detail:`Manager chuyển khách ${client.name} từ Khách trực tiếp sang Yêu cầu ${selectedTech.name} vì khách yêu cầu thợ cụ thể`,
         clientId:client.id,
         clientName:client.name,
         requestedTechId:selectedTech.id,
@@ -2058,7 +1918,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
       for(const client of queue){
         if(client.requestType === "requested" && String(client.requestedTechId) === String(tech.id) && canDoLine(tech, lineFromItem(client))){
-          return {client, reason:"Requested client is waiting for this tech"};
+          return {client, reason:"Khách requested đang chờ thợ này"};
         }
       }
 
@@ -2307,9 +2167,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       if(!name){ renderStatus("Vui lòng nhập tên khách.", "warn"); return; }
 
       const combo = isComboMode();
-      const guestType = els.guestType?.value || "walkin";
       const requestType = els.requestType.value;
-      const priorityTag = els.priorityTag?.value || "none";
       const requestedTechId = requestType === "requested" ? els.requestedTech.value : "";
 
       if(requestType === "requested" && !requestedTechId){
@@ -2335,9 +2193,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
           serviceId:service.id,
           price:service.price,
           line:els.serviceLine.value,
-          guestType,
           requestType,
-          priorityTag,
           requestedTechId:requestType === "requested" ? requestedTechId : null,
           createdAt:now,
           addedBy:frontDeskSession?.name || "Front Desk PRO"
@@ -2349,9 +2205,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
           detail:`${frontDeskSession?.name || "Front Desk"} added ${name}: ${service.name}`,
           clientName:name,
           service:service.name,
-          guestType,
           requestType,
-          priorityTag,
           requestedTechId:requestedTechId || null,
           byName:frontDeskSession?.name || "Front Desk PRO",
           byRole:frontDeskSession?.role || "manager",
@@ -2385,9 +2239,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
               serviceId:svc.serviceId,
               price:svc.price,
               line:svc.line,
-              guestType,
               requestType: requestType === "requested" || svc.splitTechId ? "requested" : "walkin",
-              priorityTag,
               requestedTechId: subJobRequestedTechId,
               originalRequestType:requestType,
               originalRequestedTechId:requestedTechId || null,
@@ -2405,9 +2257,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
             comboId,
             clientName:name,
             serviceCount:details.length,
-            guestType,
             requestType,
-            priorityTag,
             requestedTechId:requestedTechId || null,
             byName:frontDeskSession?.name || "Front Desk PRO",
             byRole:frontDeskSession?.role || "manager",
@@ -2430,9 +2280,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
             line:summary.line,
             services:details.map(s=>({service:s.name,serviceId:s.serviceId,price:s.price,line:s.line})),
             serviceCount:details.length,
-            guestType,
             requestType,
-            priorityTag,
             requestedTechId:requestType === "requested" ? requestedTechId : null,
             comboTicket:true,
             createdAt:now,
@@ -2447,9 +2295,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
             clientName:name,
             serviceCount:details.length,
             total:summary.total,
-            guestType,
             requestType,
-            priorityTag,
             requestedTechId:requestedTechId || null,
             byName:frontDeskSession?.name || "Front Desk PRO",
             byRole:frontDeskSession?.role || "manager",
@@ -2463,9 +2309,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       }
 
       els.clientName.value="";
-      if(els.guestType) els.guestType.value="walkin";
       els.requestType.value="walkin";
-      if(els.priorityTag) els.priorityTag.value="none";
       els.requestedTech.value="";
       if(isComboMode()) resetComboBuilder();
       populateServiceSelect();
@@ -2809,38 +2653,10 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       setTimeout(() => toast.remove(), 3100);
     }
 
-
-        const LUMI_GUEST_TYPES = { walkin:{cls:"walk",icon:"●",text:"Walk-in"}, appt:{cls:"appt",icon:"◷",text:"Appt"} };
-    const LUMI_REQUEST_TYPES = { walkin:{cls:"anytech",icon:"✓",text:"Any Tech"}, requested:{cls:"req",icon:"🎯",text:"Requested"} };
-    const LUMI_PRIORITY_TAGS = { vip:{cls:"vip",icon:"◆",text:"VIP"}, owner:{cls:"owner",icon:"★",text:"Owner Guest"}, fix:{cls:"fix",icon:"✚",text:"Fix"}, redo:{cls:"redo",icon:"↺",text:"Redo"} };
-    function labelMeta(type){ return LUMI_REQUEST_TYPES[type] || LUMI_GUEST_TYPES[type] || LUMI_PRIORITY_TAGS[type] || LUMI_GUEST_TYPES.walkin; }
-    function guestTypeOf(item){ if(item?.guestType) return item.guestType; if(item?.originalRequestType === "appt" || item?.requestType === "appt") return "appt"; return "walkin"; }
-    function priorityTagOf(item){ if(!item?.priorityTag || item.priorityTag === "none") return ""; return item.priorityTag; }
-    function requestTypeLabel(item, state, includeTech = true){
-      const reqType = item?.requestType === "requested" ? "requested" : "walkin";
-      const meta = LUMI_REQUEST_TYPES[reqType];
-      let text = `${meta.icon} ${meta.text}`;
-      if(reqType === "requested" && includeTech){
-        const tech = item.requestedTechId && state?.technicians ? state.technicians.find(t => String(t.id) === String(item.requestedTechId)) : null;
-        text += tech ? ` • ${tech.name}` : " • Tech";
-      }
-      return text;
-    }
-    function labelTag(meta, text){ return `<span class="tag ${meta.cls}">${escapeHtml(text)}</span>`; }
-    function requestTypeTag(item, state, includeTech = true){
-      const guestMeta = LUMI_GUEST_TYPES[guestTypeOf(item)] || LUMI_GUEST_TYPES.walkin;
-      const reqMeta = LUMI_REQUEST_TYPES[item?.requestType === "requested" ? "requested" : "walkin"];
-      const tags = [labelTag(guestMeta, `${guestMeta.icon} ${guestMeta.text}`), labelTag(reqMeta, requestTypeLabel(item, state, includeTech))];
-      const p = priorityTagOf(item);
-      if(p && LUMI_PRIORITY_TAGS[p]){ const pm = LUMI_PRIORITY_TAGS[p]; tags.push(labelTag(pm, `${pm.icon} ${pm.text}`)); }
-      return `<div class="label-stack">${tags.join("")}</div>`;
-    }
-
-
     function renderSuggestion(state){
       const best = getBestNextCustomer(state);
       if(!best){ els.suggestionText.textContent = "Chưa có khách trong danh sách chờ hoặc chưa có thợ phù hợp đang sẵn sàng."; els.statNext.textContent = "--"; return; }
-      const typeText = best.client.requestType === "requested" ? `Requested ${best.tech.name}` : `${requestTypeLabel(best.client, state, false)} • Suggested: ${best.tech.name}`;
+      const typeText = best.client.requestType === "requested" ? `Yêu cầu ${best.tech.name}` : `Đề xuất: ${best.tech.name}`;
       els.suggestionText.innerHTML = `<strong>${escapeHtml(best.client.name)}</strong> • ${escapeHtml(best.client.service)} • ${typeText} • Turn ${turnValue(best.client,state)}T`;
       els.statNext.textContent = best.client.name;
     }
@@ -2868,11 +2684,6 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
         const tr = document.createElement("tr");
         if(isRequested) tr.classList.add("queue-row-requested");
-        if(guestTypeOf(item) === "appt") tr.classList.add("queue-row-appt");
-        if(priorityTagOf(item) === "vip") tr.classList.add("queue-row-vip");
-        if(priorityTagOf(item) === "owner") tr.classList.add("queue-row-owner");
-        if(priorityTagOf(item) === "fix") tr.classList.add("queue-row-fix");
-        if(priorityTagOf(item) === "redo") tr.classList.add("queue-row-redo");
         if(isNext) tr.classList.add("queue-row-next");
         if(waitClass) tr.classList.add(waitClass);
 
@@ -2880,7 +2691,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
           <td><span class="idx">${index + 1}</span></td>
           <td><strong>${escapeHtml(item.name)}</strong></td>
           <td>${escapeHtml(item.service)}${item.comboTicket ? `<div class="mini"><span class="tag combo">Combo</span> ${item.serviceCount || item.services?.length || 1} services • Total $${item.price || 0}</div>` : ""}${item.splitJob ? `<div class="mini"><span class="tag split">Split ${item.subJobIndex || ""}/${item.comboServiceCount || ""}</span> ${escapeHtml(item.comboParentName || item.clientName || "")}</div>` : ""}</td>
-          <td>${requestTypeTag(item, state, true)}</td>
+          <td>${isRequested ? `<span class="tag req">Yêu cầu • ${escapeHtml(requestedTech?.name || "Chưa rõ")}</span>` : `<span class="tag walk">Khách trực tiếp</span>`}</td>
           <td><span class="tag turn">${turnValue(item,state)}T</span></td>
           <td><span class="tag ${waitPriority === "normal" ? "turn" : waitPriority === "critical" ? "wait-critical" : `wait-${waitPriority}`}" style="${waitPriority === "normal" ? "background:rgba(111,127,154,.10);color:#5e6e88;" : ""}">${waitTimeText(item)}</span>${waitPriorityTag(item)}</td>
           <td>
@@ -2895,8 +2706,8 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
           <td>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
               ${isRequested
-                ? `<button class="btn-warning ${waitAdvice ? "btn-pulse" : ""}" data-convert="${escapeHtml(item.id)}">↔ Best fit tech${waitAdvice ? " · Ask" : ""}</button>`
-                : `<button class="btn-secondary" data-request="${escapeHtml(item.id)}">🎯 Request tech</button>`}
+                ? `<button class="btn-warning ${waitAdvice ? "btn-pulse" : ""}" data-convert="${escapeHtml(item.id)}">↔ Thợ phù hợp${waitAdvice ? " · Nên hỏi" : ""}</button>`
+                : `<button class="btn-secondary" data-request="${escapeHtml(item.id)}">🎯 Yêu cầu thợ</button>`}
             </div>
           </td>
         `;
@@ -2964,7 +2775,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
               </div>
               <div style="display:flex; gap:10px; flex-wrap:wrap;">
                 <span class="tag serving">Đang phục vụ</span>
-                ${requestTypeTag(item, state, true)}
+                <span class="${item.requestType === "requested" ? "tag req" : "tag walk"}">${item.requestType === "requested" ? "Khách yêu cầu" : "Walk-in"}</span>
                 <span class="tag turn">Turn khi xong: ${turnValue(item)}</span>
               </div>
             </div>
@@ -3235,8 +3046,6 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
     els.refreshBtn.addEventListener("click", () => refreshView(true));
     if(els.serviceLine) els.serviceLine.addEventListener("change", () => { populateServiceSelect(); updateDeadClickStates(); });
     if(els.serviceSelect) els.serviceSelect.addEventListener("change", () => { updatePrice(); updateDeadClickStates(); });
-    els.guestType?.addEventListener("change", updateDeadClickStates);
-    els.priorityTag?.addEventListener("change", updateDeadClickStates);
     els.requestType.addEventListener("change", () => { els.requestedTech.disabled = els.requestType.value !== "requested"; populateRequestedTech(); updateDeadClickStates(); });
 
     if(els.addServiceBtn) els.addServiceBtn.addEventListener("click", (event) => { event.preventDefault(); addComboService(); });

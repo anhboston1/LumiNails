@@ -4,17 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumi Nails • iPad Front Desk</title>
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
-
-  const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-</script>
   <style>
     :root{
       --bg:#f7f4ef; --bg2:#fbf9f5; --panel:#ffffffee; --text:#3c342d; --muted:#7c746a;
@@ -754,6 +743,49 @@
     .logic-note{margin-top:8px;padding:10px 12px;border-radius:14px;background:rgba(200,166,107,.10);border:1px solid rgba(200,166,107,.20);color:var(--gold-deep);font-size:12px;font-weight:800;line-height:1.45;}
 
 
+
+    /* Kiosk Confirmation System */
+    .queue-row-confirm td{
+      background:linear-gradient(90deg,rgba(200,166,107,.16),rgba(255,250,240,.96))!important;
+      border-top-color:rgba(200,166,107,.42)!important;
+      border-bottom-color:rgba(200,166,107,.42)!important;
+    }
+    .queue-row-confirm td:first-child{box-shadow:inset 5px 0 0 var(--lumi-gold, #c8a66b)!important;}
+    .tag.confirm{background:rgba(200,166,107,.18)!important;color:#8a6c36!important;border:1px solid rgba(200,166,107,.32)!important;}
+    .tag.kiosk{background:rgba(111,127,154,.13)!important;color:#526179!important;border:1px solid rgba(111,127,154,.22)!important;}
+    .tag.combo-hold{background:rgba(180,91,91,.11)!important;color:#9a4646!important;border:1px solid rgba(180,91,91,.20)!important;}
+    .btn-confirm-kiosk{background:linear-gradient(135deg,var(--lumi-gold, #c8a66b),var(--lumi-gold-deep, #a78342))!important;color:#fff!important;font-weight:900!important;padding:10px 12px;}
+
+
+    /* Kiosk Confirm Panel v2 */
+    .confirm-modal-card{width:min(920px,100%);max-height:92vh;overflow:auto}
+    .confirm-panel-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .confirm-panel-section{border:1px solid var(--line);background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,250,240,.72));border-radius:20px;padding:15px}
+    .confirm-panel-section h4{margin:0 0 10px;font-size:18px;font-family:Georgia,"Times New Roman",serif;color:var(--text)}
+    .confirm-panel-row{display:grid;gap:8px;margin-top:10px}
+    .confirm-radio-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .confirm-choice{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 12px;font-weight:900;cursor:pointer}
+    .confirm-choice input{width:18px;height:18px;min-height:18px;accent-color:rgb(41,153,73)}
+    .confirm-preset-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+    .confirm-preset{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px;text-align:left;font-weight:900;min-height:58px}
+    .confirm-preset.active{border-color:rgba(200,166,107,.65);background:linear-gradient(135deg,rgba(200,166,107,.16),rgba(255,255,255,.96));color:var(--gold-deep)}
+    .confirm-split-box{margin-top:12px;padding:12px;border-radius:16px;background:rgba(41,153,73,.10);border:1px solid rgba(41,153,73,.22);color:rgb(31,122,59);font-weight:850;line-height:1.45}
+    .confirm-warning{margin-top:12px;padding:12px;border-radius:16px;background:rgba(180,91,91,.10);border:1px solid rgba(180,91,91,.20);color:var(--danger);font-weight:850;line-height:1.45}
+    .confirm-mini{font-size:12px;color:var(--muted);line-height:1.45;font-weight:750;margin-top:6px}
+    .confirm-summary{margin-top:12px;padding:12px;border-radius:16px;background:rgba(200,166,107,.12);border:1px solid rgba(200,166,107,.22);color:var(--gold-deep);font-weight:900;line-height:1.45}
+    @media(max-width:900px){.confirm-panel-grid,.confirm-preset-grid{grid-template-columns:1fr}}
+    .confirm-note{margin-top:8px;padding:9px 10px;border-radius:13px;background:rgba(200,166,107,.10);border:1px solid rgba(200,166,107,.20);color:#8a6c36;font-size:12px;font-weight:800;line-height:1.45}
+
+
+    /* Kiosk Confirm Custom Combo v2 */
+    .kc-custom-combo-box{margin-top:12px;padding:14px;border-radius:18px;border:1px solid rgba(200,166,107,.24);background:linear-gradient(135deg,rgba(200,166,107,.08),rgba(255,255,255,.94));}
+    .kc-custom-combo-title{font-weight:900;color:var(--gold-deep);margin-bottom:5px;font-size:14px;}
+    .kc-custom-combo-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px;}
+    .kc-service-check{display:flex;align-items:center;gap:9px;padding:12px 13px;border-radius:16px;border:1px solid var(--line);background:#fff;font-weight:900;color:var(--text);cursor:pointer;user-select:none;}
+    .kc-service-check input{width:18px;height:18px;min-height:18px;accent-color:rgb(41,153,73);}
+    .kc-service-check.active{border-color:rgba(41,153,73,.34);background:rgba(41,153,73,.09);color:rgb(28,116,58);}
+    @media (max-width:760px){.kc-custom-combo-grid{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -984,6 +1016,77 @@
       <div class="modal-actions">
         <button type="button" class="btn-secondary" id="requestTechCancelBtn">Hủy</button>
         <button type="button" class="btn-primary" id="requestTechConfirmBtn">Xác nhận yêu cầu</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="kioskConfirmModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card confirm-modal-card" role="dialog" aria-modal="true" aria-labelledby="kioskConfirmTitle">
+      <h3 id="kioskConfirmTitle" class="modal-title">✓ Confirm kiosk check-in</h3>
+      <div id="kioskConfirmSub" class="modal-sub">Confirm service details before Auto Flow or assignment.</div>
+
+      <div class="confirm-panel-grid">
+        <div class="confirm-panel-section">
+          <h4>1. Guest type</h4>
+          <div class="confirm-radio-row">
+            <label class="confirm-choice"><input type="radio" name="kcGuestType" value="walkin" checked> Walk-in</label>
+            <label class="confirm-choice"><input type="radio" name="kcGuestType" value="appt"> Appt</label>
+          </div>
+          <div class="confirm-mini">Kiosk answer can be adjusted here if customer selected wrong option.</div>
+
+          <h4 style="margin-top:18px">2. Technician request</h4>
+          <div class="confirm-radio-row">
+            <label class="confirm-choice"><input type="radio" name="kcRequestType" value="walkin" checked> Any Tech</label>
+            <label class="confirm-choice"><input type="radio" name="kcRequestType" value="requested"> Requested Tech</label>
+          </div>
+          <div class="confirm-panel-row" id="kcRequestedTechWrap">
+            <label for="kcRequestedTech">Requested technician</label>
+            <select id="kcRequestedTech" class="tech-select"></select>
+            <div class="confirm-mini">Use this when customer wants Tina/Linh/etc. If customer is flexible, keep Any Tech.</div>
+          </div>
+        </div>
+
+        <div class="confirm-panel-section">
+          <h4>3. Service confirmation</h4>
+          <div class="confirm-radio-row">
+            <label class="confirm-choice"><input type="radio" name="kcServiceMode" value="single" checked> Single service</label>
+            <label class="confirm-choice"><input type="radio" name="kcServiceMode" value="combo"> Combo / Multiple</label>
+          </div>
+
+          <div id="kcSingleServiceBox">
+            <div class="confirm-panel-row">
+              <label for="kcPrimaryLine">Primary service group</label>
+              <select id="kcPrimaryLine" class="tech-select"></select>
+            </div>
+            <div class="confirm-panel-row">
+              <label for="kcPrimaryService">Exact service</label>
+              <select id="kcPrimaryService" class="tech-select"></select>
+            </div>
+          </div>
+
+          <div id="kcComboServiceBox" class="hidden">
+            <div class="confirm-mini">Choose a quick combo, or use Custom Combo to select more than one service group.</div>
+            <div class="confirm-preset-grid" id="kcComboPresets"></div>
+            <div id="kcCustomComboBox" class="kc-custom-combo-box hidden">
+              <div class="kc-custom-combo-title">Custom Combo — select all service groups</div>
+              <div class="confirm-mini">Use this when the guest says things like “pedi + dip + gel-x”. Exact service/price can still be adjusted later.</div>
+              <div id="kcCustomComboGrid" class="kc-custom-combo-grid"></div>
+            </div>
+            <label class="confirm-choice" style="margin-top:12px"><input type="checkbox" id="kcSplitCombo"> Split into separate jobs / technicians</label>
+            <div class="confirm-split-box">If split is ON, the system creates separate queue jobs so Mani and Pedi can be assigned fairly to different techs.</div>
+          </div>
+
+          <div id="kcConfirmSummary" class="confirm-summary">Review details before confirming.</div>
+          <div id="kcConfirmWarning" class="confirm-warning hidden"></div>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="kcCancelBtn">Cancel</button>
+        <button type="button" class="btn-secondary" id="kcConfirmOnlyBtn">Confirm Only</button>
+        <button type="button" class="btn-primary" id="kcConfirmAssignBtn">Confirm & Assign</button>
       </div>
     </div>
   </div>
@@ -1569,6 +1672,7 @@
       if(!state || !state.queue.length) return null;
       const queue = [...state.queue].sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         const smart = getSmartCandidates(client, state);
         if(smart.best) return {client, tech:smart.best, reason:smart.reason};
       }
@@ -1576,6 +1680,7 @@
     }
 
     function getAssignDisabledReason(item, state){
+      if(needsFrontDeskConfirmation(item)) return "Needs Front Desk confirmation before assigning.";
       const smart = getSmartCandidates(item, state);
       return smart.best ? null : smart.reason;
     }
@@ -1585,6 +1690,7 @@
     function assignToBest(client){
       const normalized = normalizeState(readState());
       if(!normalized) return null;
+      if(needsFrontDeskConfirmation(client)) return null;
       const smart = getSmartCandidates(client, normalized);
       return smart.best;
     }
@@ -1827,6 +1933,10 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       const state = normalizeState(raw);
       const client = state.queue.find(c => String(c.id) === String(clientId));
       if(!client) return;
+      if(needsFrontDeskConfirmation(client)){
+        renderStatus("Khách này check-in từ kiosk và cần Front Desk confirm trước khi assign.", "warn");
+        return;
+      }
       const expected = getSmartCandidates(client, state).best;
 
       let tech = null;
@@ -1907,6 +2017,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
       // Requested clients for this exact tech first.
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         if(
           client.requestType === "requested" &&
           String(client.requestedTechId) === String(tech.id) &&
@@ -1918,6 +2029,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
       // Walk-in/Open clients: strict FIFO, only if this tech is eligible.
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         if(client.requestType === "requested") continue;
         if(!canDoLine(tech, lineFromItem(client))) continue;
         return { client, tech, reason:"Walk-in đầu tiên phù hợp" };
@@ -2496,7 +2608,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       if(!state || !Array.isArray(state.queue) || !Array.isArray(state.technicians)) return null;
 
       const openQueue = [...state.queue]
-        .filter(c => c.requestType !== "requested")
+        .filter(c => c.requestType !== "requested" && !needsFrontDeskConfirmation(c))
         .sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
 
       if(!openQueue.length) return null;
@@ -2837,6 +2949,286 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
     }
 
 
+
+    function needsFrontDeskConfirmation(item){
+      return !!(item && (item.needsConfirmation || item.confirmationStatus === "pending"));
+    }
+
+    function kioskBadgeTags(item){
+      const tags = [];
+      if(item?.source === "customer_kiosk" || item?.addedBy === "Customer Kiosk") tags.push('<span class="tag kiosk">📱 Kiosk</span>');
+      if(needsFrontDeskConfirmation(item)) tags.push('<span class="tag confirm">Needs Confirm</span>');
+      if(item?.line === "combo" || item?.serviceLine === "combo" || item?.comboGroupOnly) tags.push('<span class="tag combo-hold">Combo / Multiple Services</span>');
+      return tags.length ? `<div class="label-stack" style="margin-top:8px">${tags.join("")}</div>` : "";
+    }
+
+    let kioskConfirmClientId = null;
+    let kioskConfirmComboPreset = "mani_pedi";
+    let kioskConfirmCustomLines = ["pedi","mani"];
+    const KIOSK_COMBO_PRESETS = [
+      {id:"mani_pedi", label:"Mani + Pedi", lines:["mani","pedi"]},
+      {id:"gel_pedi_mani", label:"Gel Pedi + Mani", lines:["gel_pedi","mani"]},
+      {id:"dip_pedi", label:"Dip + Pedi", lines:["dip_powder","pedi"]},
+      {id:"gelx_pedi", label:"Gel-X + Pedi", lines:["gel_x","pedi"]},
+      {id:"hybrid_pedi", label:"Hybrid Gel + Pedi", lines:["g_hybrid_gel","pedi"]},
+      {id:"custom_combo", label:"Custom Combo", lines:[]}
+    ];
+
+    function confirmKioskClient(clientId){
+      if(!requireFrontDeskLogin()) return;
+      openKioskConfirmPanel(clientId);
+    }
+
+    function getKioskConfirmEls(){
+      return {
+        modal:document.getElementById("kioskConfirmModal"),
+        sub:document.getElementById("kioskConfirmSub"),
+        requestedTechWrap:document.getElementById("kcRequestedTechWrap"),
+        requestedTech:document.getElementById("kcRequestedTech"),
+        singleBox:document.getElementById("kcSingleServiceBox"),
+        comboBox:document.getElementById("kcComboServiceBox"),
+        primaryLine:document.getElementById("kcPrimaryLine"),
+        primaryService:document.getElementById("kcPrimaryService"),
+        presets:document.getElementById("kcComboPresets"),
+        customComboBox:document.getElementById("kcCustomComboBox"),
+        customComboGrid:document.getElementById("kcCustomComboGrid"),
+        splitCombo:document.getElementById("kcSplitCombo"),
+        summary:document.getElementById("kcConfirmSummary"),
+        warning:document.getElementById("kcConfirmWarning"),
+        cancelBtn:document.getElementById("kcCancelBtn"),
+        confirmOnlyBtn:document.getElementById("kcConfirmOnlyBtn"),
+        confirmAssignBtn:document.getElementById("kcConfirmAssignBtn")
+      };
+    }
+
+    function openKioskConfirmPanel(clientId){
+      const raw = readState();
+      const state = normalizeState(raw);
+      const client = state.queue.find(c => String(c.id) === String(clientId));
+      if(!client) return;
+      kioskConfirmClientId = clientId;
+      const k = getKioskConfirmEls();
+      if(!k.modal) return;
+
+      const isCombo = client.line === "combo" || client.serviceLine === "combo" || client.comboGroupOnly;
+      k.sub.textContent = `${client.name} • ${client.service || "Service group"} • confirm before assignment.`;
+
+      document.querySelectorAll('input[name="kcGuestType"]').forEach(r => r.checked = r.value === (guestTypeOf(client)==="appt" ? "appt" : "walkin"));
+      document.querySelectorAll('input[name="kcRequestType"]').forEach(r => r.checked = r.value === (client.requestType === "requested" ? "requested" : "walkin"));
+      document.querySelectorAll('input[name="kcServiceMode"]').forEach(r => r.checked = r.value === (isCombo ? "combo" : "single"));
+
+      k.primaryLine.innerHTML = realServiceLines().map(line => `<option value="${line.key}">${escapeHtml(line.label)}</option>`).join("");
+      k.primaryLine.value = realServiceLines().some(l => l.key === lineFromItem(client)) ? lineFromItem(client) : "pedi";
+      renderKioskConfirmPrimaryServices(client.serviceId || "");
+
+      k.requestedTech.innerHTML = '<option value="">Choose technician</option>' + state.technicians.filter(t=>t.active).map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.name)} • ${Number(t.turnsTotal||0)}T</option>`).join("");
+      k.requestedTech.value = client.requestedTechId || "";
+      kioskConfirmComboPreset = isCombo ? "custom_combo" : "mani_pedi";
+      kioskConfirmCustomLines = Array.isArray(client.comboServices) && client.comboServices.length
+        ? client.comboServices.map(s=>s.line).filter(Boolean)
+        : (isCombo ? [lineFromItem(client), "mani"].filter((v,i,a)=>v && v!=="combo" && a.indexOf(v)===i) : ["pedi","mani"]);
+      if(kioskConfirmCustomLines.length < 2) kioskConfirmCustomLines = ["pedi","mani"];
+      renderKioskConfirmComboPresets();
+      renderKioskConfirmCustomCombo();
+      if(k.splitCombo) k.splitCombo.checked = !!client.splitCombo;
+      updateKioskConfirmPanel();
+      k.modal.classList.add("show");
+      k.modal.setAttribute("aria-hidden","false");
+    }
+
+    function closeKioskConfirmPanel(){
+      const k = getKioskConfirmEls();
+      if(k.modal){
+        k.modal.classList.remove("show");
+        k.modal.setAttribute("aria-hidden","true");
+      }
+      kioskConfirmClientId = null;
+    }
+
+    function renderKioskConfirmPrimaryServices(selectedId=""){
+      const k = getKioskConfirmEls();
+      const line = k.primaryLine?.value || "pedi";
+      const options = getServiceOptions(line);
+      k.primaryService.innerHTML = options.map(s=>`<option value="${escapeHtml(s.id)}" ${s.id===selectedId?"selected":""}>${escapeHtml(s.name)} • $${s.price}</option>`).join("");
+      if(selectedId && options.some(s=>s.id===selectedId)) k.primaryService.value = selectedId;
+    }
+
+    function renderKioskConfirmComboPresets(){
+      const k = getKioskConfirmEls();
+      if(!k.presets) return;
+      k.presets.innerHTML = KIOSK_COMBO_PRESETS.map(p=>`<button type="button" class="confirm-preset ${p.id===kioskConfirmComboPreset?"active":""}" data-kc-preset="${p.id}">${escapeHtml(p.label)}</button>`).join("");
+      k.presets.querySelectorAll('[data-kc-preset]').forEach(btn=>btn.addEventListener("click",()=>{
+        kioskConfirmComboPreset=btn.getAttribute("data-kc-preset");
+        if(kioskConfirmComboPreset === "custom_combo" && kioskConfirmCustomLines.length < 2) kioskConfirmCustomLines = ["pedi","mani"];
+        renderKioskConfirmComboPresets();
+        renderKioskConfirmCustomCombo();
+        updateKioskConfirmPanel();
+      }));
+    }
+
+    function renderKioskConfirmCustomCombo(){
+      const k = getKioskConfirmEls();
+      if(!k.customComboBox || !k.customComboGrid) return;
+      const isCustom = kioskConfirmComboPreset === "custom_combo";
+      k.customComboBox.classList.toggle("hidden", !isCustom);
+      if(!isCustom) return;
+      const lines = realServiceLines();
+      k.customComboGrid.innerHTML = lines.map(line => {
+        const checked = kioskConfirmCustomLines.includes(line.key);
+        return `<label class="kc-service-check ${checked?"active":""}"><input type="checkbox" value="${escapeHtml(line.key)}" ${checked?"checked":""}> ${escapeHtml(line.label)}</label>`;
+      }).join("");
+      k.customComboGrid.querySelectorAll('input[type="checkbox"]').forEach(input=>{
+        input.addEventListener("change",()=>{
+          const selected = [...k.customComboGrid.querySelectorAll('input[type="checkbox"]:checked')].map(i=>i.value);
+          kioskConfirmCustomLines = selected;
+          renderKioskConfirmCustomCombo();
+          updateKioskConfirmPanel();
+        });
+      });
+    }
+
+    function selectedKioskConfirmData(){
+      const k = getKioskConfirmEls();
+      const guestType = document.querySelector('input[name="kcGuestType"]:checked')?.value || "walkin";
+      const requestType = document.querySelector('input[name="kcRequestType"]:checked')?.value || "walkin";
+      const serviceMode = document.querySelector('input[name="kcServiceMode"]:checked')?.value || "single";
+      const techId = requestType === "requested" ? (k.requestedTech?.value || "") : "";
+      const split = serviceMode === "combo" && !!k.splitCombo?.checked;
+
+      if(serviceMode === "single"){
+        const line = k.primaryLine?.value || "pedi";
+        const svc = getServiceOptions(line).find(s => s.id === k.primaryService?.value) || getServiceOptions(line)[0] || {id:"service",name:"Service",price:0};
+        return {guestType,requestType,requestedTechId:techId,serviceMode,split:false,services:[{line,serviceId:svc.id,name:svc.name,price:Number(svc.price||0)}]};
+      }
+
+      const preset = KIOSK_COMBO_PRESETS.find(p => p.id === kioskConfirmComboPreset) || KIOSK_COMBO_PRESETS[0];
+      const comboLines = preset.id === "custom_combo" ? kioskConfirmCustomLines : preset.lines;
+      const cleanedLines = [...new Set(comboLines)].filter(Boolean);
+      const services = cleanedLines.map(line => {
+        const svc = getServiceOptions(line)[0] || {id:line,name:line,price:0};
+        return {line,serviceId:svc.id,name:svc.name,price:Number(svc.price||0)};
+      });
+      const comboLabel = preset.id === "custom_combo"
+        ? (services.length ? services.map(s=>s.name).join(" + ") : "Custom Combo")
+        : preset.label;
+      return {guestType,requestType,requestedTechId:techId,serviceMode,split,comboPreset:preset.id,comboLabel,services};
+    }
+
+    function updateKioskConfirmPanel(){
+      const k = getKioskConfirmEls();
+      const data = selectedKioskConfirmData();
+      if(k.requestedTechWrap) k.requestedTechWrap.classList.toggle("hidden", data.requestType !== "requested");
+      if(k.singleBox) k.singleBox.classList.toggle("hidden", data.serviceMode !== "single");
+      if(k.comboBox) k.comboBox.classList.toggle("hidden", data.serviceMode !== "combo");
+      const total = data.services.reduce((sum,s)=>sum+Number(s.price||0),0);
+      const requestText = data.requestType === "requested" ? `Requested tech${data.requestedTechId?" selected":" missing"}` : "Any Tech";
+      k.summary.innerHTML = `${data.guestType === "appt" ? "📅 Appt" : "🟢 Walk-in"} • ${requestText}<br>${data.serviceMode === "combo" ? `🧩 ${escapeHtml(data.comboLabel)}${data.split ? " • Split jobs ON" : " • Single combo ticket"}` : escapeHtml(data.services[0]?.name || "Service")} • $${total}`;
+      if(data.requestType === "requested" && !data.requestedTechId){
+        k.warning.textContent = "Please choose a technician, or switch to Any Tech.";
+        k.warning.classList.remove("hidden");
+      } else if(data.serviceMode === "combo" && data.services.length < 2){
+        k.warning.textContent = "Please select at least 2 service groups for Custom Combo.";
+        k.warning.classList.remove("hidden");
+      } else {
+        k.warning.classList.add("hidden");
+      }
+    }
+
+    function applyKioskConfirmation(assignAfter=false){
+      if(!requireFrontDeskLogin()) return;
+      if(!kioskConfirmClientId) return;
+      const data = selectedKioskConfirmData();
+      if(data.requestType === "requested" && !data.requestedTechId){ alert("Please select a requested technician or choose Any Tech."); return; }
+      if(data.serviceMode === "combo" && data.services.length < 2){ alert("Please select at least 2 service groups for Custom Combo."); return; }
+
+      const raw = readState();
+      if(!raw) return;
+      raw.queue = Array.isArray(raw.queue) ? raw.queue : [];
+      const client = raw.queue.find(c => String(c.id) === String(kioskConfirmClientId));
+      if(!client) return;
+      const now = new Date().toISOString();
+      const total = data.services.reduce((sum,s)=>sum+Number(s.price||0),0);
+      const base = {
+        ...client,
+        guestType:data.guestType,
+        sourceType:data.guestType,
+        requestType:data.requestType,
+        requestedTechId:data.requestType === "requested" ? data.requestedTechId : null,
+        needsConfirmation:false,
+        confirmationStatus:"confirmed",
+        confirmedAt:now,
+        confirmedBy:frontDeskSession?.name || "Front Desk PRO",
+        comboConfirmed:data.serviceMode === "combo",
+        splitCombo:data.split,
+        comboServices:data.services
+      };
+
+      let newIds = [];
+      if(data.serviceMode === "combo" && data.split){
+        const groupId = `split_${Date.now()}_${Math.random().toString(36).slice(2,6)}`;
+        const splitJobs = data.services.map((svc,idx)=>({
+          ...base,
+          id:`${client.id}_job_${idx+1}`,
+          parentClientId:client.id,
+          splitGroupId:groupId,
+          service:svc.name,
+          serviceId:svc.serviceId,
+          line:svc.line,
+          price:svc.price,
+          turnValue:idx===0 ? 1 : 0.5,
+          createdAt:client.createdAt || now,
+          notes:`Split combo job ${idx+1}/${data.services.length}`
+        }));
+        raw.queue = raw.queue.flatMap(c => String(c.id) === String(kioskConfirmClientId) ? splitJobs : [c]);
+        newIds = splitJobs.map(j=>j.id);
+      } else {
+        const svc = data.serviceMode === "combo"
+          ? {line:"combo", serviceId:`combo_${data.comboPreset || "custom"}`, name:data.comboLabel || data.services.map(s=>s.name).join(" + "), price:total}
+          : data.services[0];
+        raw.queue = raw.queue.map(c => String(c.id) === String(kioskConfirmClientId) ? {
+          ...base,
+          service:svc.name,
+          serviceId:svc.serviceId,
+          line:svc.line,
+          price:svc.price,
+          turnValue:data.serviceMode === "combo" ? 1 : turnValue(c, normalizeState(raw))
+        } : c);
+        newIds = [client.id];
+      }
+
+      raw.auditLog = Array.isArray(raw.auditLog) ? raw.auditLog : [];
+      raw.auditLog.unshift({
+        id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        action:"confirm_kiosk_checkin_panel",
+        detail:`${frontDeskSession?.name || "Front Desk"} confirmed ${client.name} • ${data.serviceMode === "combo" ? (data.split ? "Combo split" : "Combo") : data.services[0]?.name}`,
+        clientId:client.id,
+        clientName:client.name,
+        service:data.serviceMode === "combo" ? data.comboLabel : data.services[0]?.name,
+        byName:frontDeskSession?.name || "Front Desk PRO",
+        byRole:frontDeskSession?.role || "manager",
+        createdAt:now
+      });
+
+      writeRaw(raw);
+      closeKioskConfirmPanel();
+      lastSnapshot = "";
+      renderStatus(`Đã confirm <strong>${escapeHtml(client.name)}</strong>${data.split ? " và tách combo thành nhiều job" : ""}.`, "ok");
+      refreshView(true);
+
+      if(assignAfter){
+        setTimeout(()=>{
+          if(data.split){
+            if(autoFlowEnabled) runAutoFlow();
+            else renderStatus("Combo đã split. Bấm assign từng job hoặc bật Auto Flow.", "ok");
+          } else {
+            assignSpecificClient(newIds[0]);
+          }
+        },80);
+      } else if(autoFlowEnabled){
+        runAutoFlow();
+      }
+    }
+
     function renderSuggestion(state){
       const best = getBestNextCustomer(state);
       if(!best){ els.suggestionText.textContent = "Chưa có khách trong danh sách chờ hoặc chưa có thợ phù hợp đang sẵn sàng."; els.statNext.textContent = "--"; return; }
@@ -2858,15 +3250,16 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
         const requestedTech = item.requestedTechId ? state.technicians.find(t => String(t.id) === String(item.requestedTechId)) : null;
         const isRequested = item.requestType === "requested";
         const isNext = best && best.client && String(best.client.id) === String(item.id);
-        const smart = getSmartCandidates(item, state);
-        const assignAllowed = !!smart.best;
-        const reason = assignAllowed ? smart.reason : (smart.reason || "Chưa thể phục vụ");
+        const smart = needsFrontDeskConfirmation(item) ? {best:null, reason:"Needs Front Desk confirmation"} : getSmartCandidates(item, state);
+        const assignAllowed = !!smart.best && !needsFrontDeskConfirmation(item);
+        const reason = needsFrontDeskConfirmation(item) ? "Needs Front Desk confirmation" : (assignAllowed ? smart.reason : (smart.reason || "Chưa thể phục vụ"));
         const bestTechName = smart.best ? smart.best.name : (requestedTech?.name || "—");
         const waitPriority = getWaitPriority(item);
         const waitClass = waitPriority !== "normal" ? `queue-row-wait-${waitPriority}` : "";
         const waitAdvice = requestedAnyTechAdvice(item, smart);
 
         const tr = document.createElement("tr");
+        if(needsFrontDeskConfirmation(item)) tr.classList.add("queue-row-confirm");
         if(isRequested) tr.classList.add("queue-row-requested");
         if(guestTypeOf(item) === "appt") tr.classList.add("queue-row-appt");
         if(priorityTagOf(item) === "vip") tr.classList.add("queue-row-vip");
@@ -2878,7 +3271,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
         tr.innerHTML = `
           <td><span class="idx">${index + 1}</span></td>
-          <td><strong>${escapeHtml(item.name)}</strong></td>
+          <td><strong>${escapeHtml(item.name)}</strong>${kioskBadgeTags(item)}${needsFrontDeskConfirmation(item) ? `<div class="confirm-note">Confirm guest details before Auto Flow or assignment.</div>` : ""}</td>
           <td>${escapeHtml(item.service)}${item.comboTicket ? `<div class="mini"><span class="tag combo">Combo</span> ${item.serviceCount || item.services?.length || 1} services • Total $${item.price || 0}</div>` : ""}${item.splitJob ? `<div class="mini"><span class="tag split">Split ${item.subJobIndex || ""}/${item.comboServiceCount || ""}</span> ${escapeHtml(item.comboParentName || item.clientName || "")}</div>` : ""}</td>
           <td>${requestTypeTag(item, state, true)}</td>
           <td><span class="tag turn">${turnValue(item,state)}T</span></td>
@@ -2888,13 +3281,13 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
                          : `<div class="mini error">${escapeHtml(reason)}</div>`}
           </td>
           <td>
-            ${assignAllowed ? `<span class="tag serving">${isRequested ? "Sẵn sàng phục vụ" : "Sẵn sàng phục vụ"}</span>`
+            ${needsFrontDeskConfirmation(item) ? `<span class="tag confirm">Needs Confirm</span><div class="mini">Kiosk check-in cần lễ tân xác nhận.</div>` : assignAllowed ? `<span class="tag serving">Sẵn sàng phục vụ</span>`
                             : `<span class="tag blocked">Chưa thể phục vụ</span><div class="mini error">${escapeHtml(reason)}</div>`}
             ${waitAdvice}
           </td>
           <td>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              ${isRequested
+              ${needsFrontDeskConfirmation(item) ? `<button class="btn-confirm-kiosk" data-confirm-kiosk="${escapeHtml(item.id)}">✓ Confirm</button>` : isRequested
                 ? `<button class="btn-warning ${waitAdvice ? "btn-pulse" : ""}" data-convert="${escapeHtml(item.id)}">↔ Best fit tech${waitAdvice ? " · Ask" : ""}</button>`
                 : `<button class="btn-secondary" data-request="${escapeHtml(item.id)}">🎯 Request tech</button>`}
             </div>
@@ -2903,6 +3296,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
         els.queueBody.appendChild(tr);
       });
 
+      els.queueBody.querySelectorAll("button[data-confirm-kiosk]").forEach(btn => btn.addEventListener("click", () => confirmKioskClient(btn.getAttribute("data-confirm-kiosk"))));
       els.queueBody.querySelectorAll("button[data-convert]").forEach(btn => btn.addEventListener("click", () => convertRequestedToAnyTech(btn.getAttribute("data-convert"))));
       els.queueBody.querySelectorAll("button[data-request]").forEach(btn => btn.addEventListener("click", () => convertWalkinToRequested(btn.getAttribute("data-request"))));
       updateDeadClickStates();
@@ -3251,6 +3645,16 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
     if(els.requestTechSelect) els.requestTechSelect.addEventListener("change", () => { updateRequestTechPreview(); updateDeadClickStates(); });
     if(els.requestTechCancelBtn) els.requestTechCancelBtn.addEventListener("click", closeRequestTechModal);
+    const kc = getKioskConfirmEls();
+    if(kc.cancelBtn) kc.cancelBtn.addEventListener("click", closeKioskConfirmPanel);
+    if(kc.confirmOnlyBtn) kc.confirmOnlyBtn.addEventListener("click", () => applyKioskConfirmation(false));
+    if(kc.confirmAssignBtn) kc.confirmAssignBtn.addEventListener("click", () => applyKioskConfirmation(true));
+    document.querySelectorAll('input[name="kcGuestType"],input[name="kcRequestType"],input[name="kcServiceMode"]').forEach(el=>el.addEventListener("change", () => { renderKioskConfirmCustomCombo(); updateKioskConfirmPanel(); }));
+    if(kc.primaryLine) kc.primaryLine.addEventListener("change", () => { renderKioskConfirmPrimaryServices(); updateKioskConfirmPanel(); });
+    if(kc.primaryService) kc.primaryService.addEventListener("change", updateKioskConfirmPanel);
+    if(kc.requestedTech) kc.requestedTech.addEventListener("change", updateKioskConfirmPanel);
+    if(kc.splitCombo) kc.splitCombo.addEventListener("change", updateKioskConfirmPanel);
+
     if(els.requestTechConfirmBtn) els.requestTechConfirmBtn.addEventListener("click", confirmRequestTech);
     if(els.requestTechModal) els.requestTechModal.addEventListener("click", (event) => { if(event.target === els.requestTechModal) closeRequestTechModal(); });
     window.addEventListener("keydown", (event) => { if(event.key === "Escape" && els.requestTechModal?.classList.contains("show")) closeRequestTechModal(); });

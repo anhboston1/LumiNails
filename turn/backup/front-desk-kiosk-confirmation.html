@@ -4,17 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumi Nails • iPad Front Desk</title>
-   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-  const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
-
-  const supabaseClient = supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
-</script>
   <style>
     :root{
       --bg:#f7f4ef; --bg2:#fbf9f5; --panel:#ffffffee; --text:#3c342d; --muted:#7c746a;
@@ -753,6 +742,20 @@
     .label-stack{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
     .logic-note{margin-top:8px;padding:10px 12px;border-radius:14px;background:rgba(200,166,107,.10);border:1px solid rgba(200,166,107,.20);color:var(--gold-deep);font-size:12px;font-weight:800;line-height:1.45;}
 
+
+
+    /* Kiosk Confirmation System */
+    .queue-row-confirm td{
+      background:linear-gradient(90deg,rgba(200,166,107,.16),rgba(255,250,240,.96))!important;
+      border-top-color:rgba(200,166,107,.42)!important;
+      border-bottom-color:rgba(200,166,107,.42)!important;
+    }
+    .queue-row-confirm td:first-child{box-shadow:inset 5px 0 0 var(--lumi-gold, #c8a66b)!important;}
+    .tag.confirm{background:rgba(200,166,107,.18)!important;color:#8a6c36!important;border:1px solid rgba(200,166,107,.32)!important;}
+    .tag.kiosk{background:rgba(111,127,154,.13)!important;color:#526179!important;border:1px solid rgba(111,127,154,.22)!important;}
+    .tag.combo-hold{background:rgba(180,91,91,.11)!important;color:#9a4646!important;border:1px solid rgba(180,91,91,.20)!important;}
+    .btn-confirm-kiosk{background:linear-gradient(135deg,var(--lumi-gold, #c8a66b),var(--lumi-gold-deep, #a78342))!important;color:#fff!important;font-weight:900!important;padding:10px 12px;}
+    .confirm-note{margin-top:8px;padding:9px 10px;border-radius:13px;background:rgba(200,166,107,.10);border:1px solid rgba(200,166,107,.20);color:#8a6c36;font-size:12px;font-weight:800;line-height:1.45}
 
   </style>
 </head>
@@ -1569,6 +1572,7 @@
       if(!state || !state.queue.length) return null;
       const queue = [...state.queue].sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         const smart = getSmartCandidates(client, state);
         if(smart.best) return {client, tech:smart.best, reason:smart.reason};
       }
@@ -1576,6 +1580,7 @@
     }
 
     function getAssignDisabledReason(item, state){
+      if(needsFrontDeskConfirmation(item)) return "Needs Front Desk confirmation before assigning.";
       const smart = getSmartCandidates(item, state);
       return smart.best ? null : smart.reason;
     }
@@ -1585,6 +1590,7 @@
     function assignToBest(client){
       const normalized = normalizeState(readState());
       if(!normalized) return null;
+      if(needsFrontDeskConfirmation(client)) return null;
       const smart = getSmartCandidates(client, normalized);
       return smart.best;
     }
@@ -1827,6 +1833,10 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       const state = normalizeState(raw);
       const client = state.queue.find(c => String(c.id) === String(clientId));
       if(!client) return;
+      if(needsFrontDeskConfirmation(client)){
+        renderStatus("Khách này check-in từ kiosk và cần Front Desk confirm trước khi assign.", "warn");
+        return;
+      }
       const expected = getSmartCandidates(client, state).best;
 
       let tech = null;
@@ -1907,6 +1917,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
       // Requested clients for this exact tech first.
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         if(
           client.requestType === "requested" &&
           String(client.requestedTechId) === String(tech.id) &&
@@ -1918,6 +1929,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
       // Walk-in/Open clients: strict FIFO, only if this tech is eligible.
       for(const client of queue){
+        if(needsFrontDeskConfirmation(client)) continue;
         if(client.requestType === "requested") continue;
         if(!canDoLine(tech, lineFromItem(client))) continue;
         return { client, tech, reason:"Walk-in đầu tiên phù hợp" };
@@ -2496,7 +2508,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
       if(!state || !Array.isArray(state.queue) || !Array.isArray(state.technicians)) return null;
 
       const openQueue = [...state.queue]
-        .filter(c => c.requestType !== "requested")
+        .filter(c => c.requestType !== "requested" && !needsFrontDeskConfirmation(c))
         .sort((a,b) => new Date(a.createdAt||0) - new Date(b.createdAt||0));
 
       if(!openQueue.length) return null;
@@ -2837,6 +2849,61 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
     }
 
 
+
+    function needsFrontDeskConfirmation(item){
+      return !!(item && (item.needsConfirmation || item.confirmationStatus === "pending"));
+    }
+
+    function kioskBadgeTags(item){
+      const tags = [];
+      if(item?.source === "customer_kiosk" || item?.addedBy === "Customer Kiosk") tags.push('<span class="tag kiosk">📱 Kiosk</span>');
+      if(needsFrontDeskConfirmation(item)) tags.push('<span class="tag confirm">Needs Confirm</span>');
+      if(item?.line === "combo" || item?.serviceLine === "combo" || item?.comboGroupOnly) tags.push('<span class="tag combo-hold">Combo / Multiple Services</span>');
+      return tags.length ? `<div class="label-stack" style="margin-top:8px">${tags.join("")}</div>` : "";
+    }
+
+    function confirmKioskClient(clientId){
+      if(!requireFrontDeskLogin()) return;
+      const raw = readState();
+      if(!raw) return;
+      const state = normalizeState(raw);
+      const client = state.queue.find(c => String(c.id) === String(clientId));
+      if(!client) return;
+
+      const isCombo = client.line === "combo" || client.serviceLine === "combo" || client.comboGroupOnly;
+      const message = isCombo
+        ? `Confirm kiosk check-in for ${client.name}?\n\nThis guest selected Combo / Multiple Services. Please confirm the exact services at the front desk before final assignment.`
+        : `Confirm kiosk check-in for ${client.name}?\n\nService group: ${client.service || "Service group"}`;
+      if(!window.confirm(message)) return;
+
+      raw.queue = (raw.queue || []).map(c => String(c.id) === String(clientId) ? {
+        ...c,
+        needsConfirmation:false,
+        confirmationStatus:"confirmed",
+        confirmedAt:new Date().toISOString(),
+        confirmedBy:frontDeskSession?.name || "Front Desk PRO"
+      } : c);
+
+      raw.auditLog = Array.isArray(raw.auditLog) ? raw.auditLog : [];
+      raw.auditLog.unshift({
+        id:`audit_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+        action:"confirm_kiosk_checkin",
+        detail:`${frontDeskSession?.name || "Front Desk"} confirmed kiosk check-in for ${client.name}${isCombo ? " • Combo / Multiple Services" : ""}`,
+        clientId:client.id,
+        clientName:client.name,
+        service:client.service || "",
+        byName:frontDeskSession?.name || "Front Desk PRO",
+        byRole:frontDeskSession?.role || "manager",
+        createdAt:new Date().toISOString()
+      });
+
+      writeRaw(raw);
+      lastSnapshot = "";
+      renderStatus(`Đã confirm <strong>${escapeHtml(client.name)}</strong>. Khách đã sẵn sàng để assign.`, "ok");
+      refreshView(true);
+      if(autoFlowEnabled) runAutoFlow();
+    }
+
     function renderSuggestion(state){
       const best = getBestNextCustomer(state);
       if(!best){ els.suggestionText.textContent = "Chưa có khách trong danh sách chờ hoặc chưa có thợ phù hợp đang sẵn sàng."; els.statNext.textContent = "--"; return; }
@@ -2858,15 +2925,16 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
         const requestedTech = item.requestedTechId ? state.technicians.find(t => String(t.id) === String(item.requestedTechId)) : null;
         const isRequested = item.requestType === "requested";
         const isNext = best && best.client && String(best.client.id) === String(item.id);
-        const smart = getSmartCandidates(item, state);
-        const assignAllowed = !!smart.best;
-        const reason = assignAllowed ? smart.reason : (smart.reason || "Chưa thể phục vụ");
+        const smart = needsFrontDeskConfirmation(item) ? {best:null, reason:"Needs Front Desk confirmation"} : getSmartCandidates(item, state);
+        const assignAllowed = !!smart.best && !needsFrontDeskConfirmation(item);
+        const reason = needsFrontDeskConfirmation(item) ? "Needs Front Desk confirmation" : (assignAllowed ? smart.reason : (smart.reason || "Chưa thể phục vụ"));
         const bestTechName = smart.best ? smart.best.name : (requestedTech?.name || "—");
         const waitPriority = getWaitPriority(item);
         const waitClass = waitPriority !== "normal" ? `queue-row-wait-${waitPriority}` : "";
         const waitAdvice = requestedAnyTechAdvice(item, smart);
 
         const tr = document.createElement("tr");
+        if(needsFrontDeskConfirmation(item)) tr.classList.add("queue-row-confirm");
         if(isRequested) tr.classList.add("queue-row-requested");
         if(guestTypeOf(item) === "appt") tr.classList.add("queue-row-appt");
         if(priorityTagOf(item) === "vip") tr.classList.add("queue-row-vip");
@@ -2878,7 +2946,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
 
         tr.innerHTML = `
           <td><span class="idx">${index + 1}</span></td>
-          <td><strong>${escapeHtml(item.name)}</strong></td>
+          <td><strong>${escapeHtml(item.name)}</strong>${kioskBadgeTags(item)}${needsFrontDeskConfirmation(item) ? `<div class="confirm-note">Confirm guest details before Auto Flow or assignment.</div>` : ""}</td>
           <td>${escapeHtml(item.service)}${item.comboTicket ? `<div class="mini"><span class="tag combo">Combo</span> ${item.serviceCount || item.services?.length || 1} services • Total $${item.price || 0}</div>` : ""}${item.splitJob ? `<div class="mini"><span class="tag split">Split ${item.subJobIndex || ""}/${item.comboServiceCount || ""}</span> ${escapeHtml(item.comboParentName || item.clientName || "")}</div>` : ""}</td>
           <td>${requestTypeTag(item, state, true)}</td>
           <td><span class="tag turn">${turnValue(item,state)}T</span></td>
@@ -2888,13 +2956,13 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
                          : `<div class="mini error">${escapeHtml(reason)}</div>`}
           </td>
           <td>
-            ${assignAllowed ? `<span class="tag serving">${isRequested ? "Sẵn sàng phục vụ" : "Sẵn sàng phục vụ"}</span>`
+            ${needsFrontDeskConfirmation(item) ? `<span class="tag confirm">Needs Confirm</span><div class="mini">Kiosk check-in cần lễ tân xác nhận.</div>` : assignAllowed ? `<span class="tag serving">Sẵn sàng phục vụ</span>`
                             : `<span class="tag blocked">Chưa thể phục vụ</span><div class="mini error">${escapeHtml(reason)}</div>`}
             ${waitAdvice}
           </td>
           <td>
             <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              ${isRequested
+              ${needsFrontDeskConfirmation(item) ? `<button class="btn-confirm-kiosk" data-confirm-kiosk="${escapeHtml(item.id)}">✓ Confirm</button>` : isRequested
                 ? `<button class="btn-warning ${waitAdvice ? "btn-pulse" : ""}" data-convert="${escapeHtml(item.id)}">↔ Best fit tech${waitAdvice ? " · Ask" : ""}</button>`
                 : `<button class="btn-secondary" data-request="${escapeHtml(item.id)}">🎯 Request tech</button>`}
             </div>
@@ -2903,6 +2971,7 @@ Chỉ chuyển sang thợ phù hợp khác nếu khách đã đồng ý không c
         els.queueBody.appendChild(tr);
       });
 
+      els.queueBody.querySelectorAll("button[data-confirm-kiosk]").forEach(btn => btn.addEventListener("click", () => confirmKioskClient(btn.getAttribute("data-confirm-kiosk"))));
       els.queueBody.querySelectorAll("button[data-convert]").forEach(btn => btn.addEventListener("click", () => convertRequestedToAnyTech(btn.getAttribute("data-convert"))));
       els.queueBody.querySelectorAll("button[data-request]").forEach(btn => btn.addEventListener("click", () => convertWalkinToRequested(btn.getAttribute("data-request"))));
       updateDeadClickStates();

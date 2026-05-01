@@ -140,6 +140,85 @@
       .title{font-size:26px}
       .focus-name{font-size:24px}
     }
+
+    /* Staff Action System */
+    .staff-action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center}
+    .btn-finish{background:linear-gradient(135deg,#b23a3a,#7a1f1f);color:#fff;font-weight:900;box-shadow:0 10px 24px rgba(178,58,58,.20);min-width:140px}
+    .btn-ready{background:linear-gradient(135deg,rgba(85,114,96,.18),rgba(255,255,255,.96));border:1px solid rgba(85,114,96,.34);color:#46634f;font-weight:900;min-width:150px}
+    .btn-break{background:rgba(124,116,106,.10);border:1px solid rgba(124,116,106,.24);color:#6f665d;font-weight:900;min-width:112px}
+    .action-hint{font-size:12px;color:var(--muted);line-height:1.5;margin-top:8px;font-weight:700}
+    .cooldown-card{border-radius:22px;padding:18px;border:1px dashed rgba(200,166,107,.45);background:linear-gradient(135deg,rgba(200,166,107,.09),rgba(255,255,255,.95))}
+    .break-card{border-radius:22px;padding:18px;border:1px dashed rgba(124,116,106,.35);background:linear-gradient(135deg,rgba(124,116,106,.06),rgba(255,255,255,.95))}
+    .ready-card{border-radius:22px;padding:18px;border:1px solid rgba(85,114,96,.20);background:linear-gradient(135deg,rgba(85,114,96,.09),rgba(255,255,255,.95))}
+    .auto-flow-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;border:1px solid rgba(200,166,107,.24);background:rgba(200,166,107,.14);color:var(--gold-deep);margin-top:10px}
+    button[disabled]{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+  
+    /* Staff View v2 Pro Polish */
+    .smart-panel{
+      border-radius:24px;
+      padding:18px;
+      border:1px solid rgba(200,166,107,.24);
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.16),transparent 38%),
+        linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,250,240,.86));
+      box-shadow:0 16px 46px rgba(88,67,45,.09);
+    }
+    .smart-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:10px}
+    .smart-title{color:var(--gold-deep);font-weight:900;letter-spacing:.02em}
+    .smart-body{color:var(--text);font-size:15px;line-height:1.55;font-weight:800}
+    .smart-reason{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.55;font-weight:700}
+    .priority-pill{
+      display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;
+      font-size:12px;font-weight:900;background:rgba(85,114,96,.12);color:var(--ready);
+      border:1px solid rgba(85,114,96,.20);white-space:nowrap;
+    }
+    .priority-pill.gold{background:rgba(200,166,107,.16);color:var(--gold-deep);border-color:rgba(200,166,107,.24)}
+    .mini-queue-grid{display:grid;gap:10px;margin-top:12px}
+    .mini-queue-card{
+      background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px 14px;
+      display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;
+    }
+    .mini-queue-name{font-weight:900;font-size:16px}
+    .mini-queue-meta{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.5;font-weight:700}
+    .mode-chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .mode-chip{
+      display:inline-flex;align-items:center;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900;
+      border:1px solid rgba(92,74,58,.12);background:#fff;color:var(--text);
+    }
+    .mode-chip.ready{background:rgba(85,114,96,.12);color:var(--ready);border-color:rgba(85,114,96,.20)}
+    .mode-chip.busy{background:rgba(111,127,154,.12);color:var(--info);border-color:rgba(111,127,154,.20)}
+    .mode-chip.cooldown{background:rgba(200,166,107,.16);color:var(--gold-deep);border-color:rgba(200,166,107,.24)}
+    .mode-chip.break{background:rgba(124,116,106,.10);color:var(--muted);border-color:rgba(124,116,106,.18)}
+
+  
+    /* Lumi status wording: internal ready/cooldown, display Available/Refreshing */
+    .tag.available,
+    .status-available,
+    .mode-chip.available{
+      background:rgba(85,114,96,.12)!important;
+      color:var(--ready,#557260)!important;
+      border:1px solid rgba(85,114,96,.20)!important;
+    }
+    .tag.refreshing,
+    .status-refreshing,
+    .mode-chip.refreshing{
+      background:rgba(200,166,107,.16)!important;
+      color:var(--gold-deep,#a78342)!important;
+      border:1px solid rgba(200,166,107,.26)!important;
+    }
+    .refreshing-reminder{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:linear-gradient(135deg,rgba(200,166,107,.14),rgba(255,255,255,.92));
+      border:1px solid rgba(200,166,107,.26);
+      color:var(--gold-deep,#a78342);
+      font-size:12px;
+      font-weight:850;
+      line-height:1.5;
+    }
+
   </style>
 </head>
 <body>
@@ -156,10 +235,7 @@
         <label for="loginPin">PIN</label>
         <input id="loginPin" type="password" placeholder="Ví dụ: 1234" />
       </div>
-      <div class="field">
-        <label for="sourceKey">Storage key</label>
-        <select id="sourceKey"></select>
-      </div>
+      <input type="hidden" id="sourceKey" value="lumi-turn-manager-v5" />
       <div class="two-col">
         <button class="btn-primary" id="loginBtn">Vào Staff View</button>
         <button class="btn-secondary" id="demoBtn">Demo thợ đầu tiên</button>
@@ -190,6 +266,8 @@
       </section>
 
       <div id="statusArea"></div>
+
+      <section class="smart-panel" id="smartPanel"></section>
 
       <section class="stack">
         <div class="focus-card">
@@ -260,7 +338,9 @@
   </div>
 
   <script>
-    const CANDIDATE_KEYS = ["lumi-turn-manager-v5","lumi-turn-manager-v5-2","lumi-turn-manager-v4-1","lumi-turn-manager-v4","lumi-turn-manager-v3-1","lumi-turn-manager-v3-roles","lumi-pro-v1"];
+    const STORAGE_KEY = "lumi-turn-manager-v5";
+    const AUTO_FLOW_STORAGE_KEY = "lumi-frontdesk-auto-flow";
+    const CANDIDATE_KEYS = [STORAGE_KEY];
     let currentSession = null;
     let lastSnapshot = "";
 
@@ -292,24 +372,50 @@
       doneEmpty: document.getElementById("doneEmpty")
     };
 
+
+    function statusDisplayLabel(status){
+      if(status === "ready") return "Available";
+      if(status === "cooldown") return "Refreshing";
+      if(status === "busy") return "Busy";
+      if(status === "break") return "Break";
+      if(status === "off") return "Off";
+      return status || "--";
+    }
+
+    function statusDisplayClass(status){
+      if(status === "ready") return "available";
+      if(status === "cooldown") return "refreshing";
+      return status || "";
+    }
+
+    function refreshingMinutes(tech){
+      if(!tech || tech.status !== "cooldown") return 0;
+      const base = tech.refreshingStartedAt || tech.statusChangedAt || tech.checkedInAt;
+      if(!base) return 0;
+      const diff = Date.now() - new Date(base).getTime();
+      if(!Number.isFinite(diff)) return 0;
+      return Math.max(0, Math.floor(diff / 60000));
+    }
+
+    function refreshingReminderHtml(tech){
+      const mins = refreshingMinutes(tech);
+      if(mins < 5) return "";
+      return `<div class="refreshing-reminder">✨ ${escapeHtml(tech.name || "Tech")} has been Refreshing for ${mins} min. Check if they are Available — no auto-assign happens until Available is tapped.</div>`;
+    }
+
+
     function escapeHtml(str){return String(str||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
-    function detectAvailableKeys(){
-      return CANDIDATE_KEYS.filter(key => {
-        try{
-          const raw = localStorage.getItem(key);
-          if(!raw) return false;
-          const parsed = JSON.parse(raw);
-          return !!(parsed && (Array.isArray(parsed.technicians) || Array.isArray(parsed.staff)));
-        }catch{return false;}
-      });
-    }
-    function populateSourceSelector(){
-      const keys = detectAvailableKeys();
-      const old = els.sourceKey.value;
-      els.sourceKey.innerHTML = keys.length ? keys.map(k => `<option value="${k}">${k}</option>`).join("") : '<option value="">Không tìm thấy data</option>';
-      if(keys.includes(old)) els.sourceKey.value = old;
-    }
-    function readRaw(){ const key = els.sourceKey.value; if(!key) return null; return localStorage.getItem(key); }
+
+    const DEFAULT_TURN_SETTINGS={simpleMode:true,requestedThreshold:65,requestedBelowTurn:0.5,requestedAtOrAboveTurn:1,walkInTurn:1};
+    function normalizeTurnSettings(settings={}){return {simpleMode:(settings.simpleMode ?? DEFAULT_TURN_SETTINGS.simpleMode) === true,requestedThreshold:Number(settings.requestedThreshold ?? DEFAULT_TURN_SETTINGS.requestedThreshold),requestedBelowTurn:Number(settings.requestedBelowTurn ?? DEFAULT_TURN_SETTINGS.requestedBelowTurn),requestedAtOrAboveTurn:Number(settings.requestedAtOrAboveTurn ?? DEFAULT_TURN_SETTINGS.requestedAtOrAboveTurn),walkInTurn:Number(settings.walkInTurn ?? DEFAULT_TURN_SETTINGS.walkInTurn)};}
+    function getTurnSettings(state=null){return normalizeTurnSettings((state && state.turnSettings) || DEFAULT_TURN_SETTINGS);}
+    function isAutoFlowOn(){return localStorage.getItem(AUTO_FLOW_STORAGE_KEY) === "on";}
+    function writeState(state){localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
+    function uid(prefix){return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;}
+
+    function detectAvailableKeys(){ return [STORAGE_KEY]; }
+    function populateSourceSelector(){ if(els.sourceKey) els.sourceKey.value = STORAGE_KEY; }
+    function readRaw(){ return localStorage.getItem(STORAGE_KEY); }
     function readState(){ const raw = readRaw(); if(!raw) return null; try{return JSON.parse(raw);}catch{return null;} }
 
     function normalizeTechnician(t, idx){
@@ -321,9 +427,12 @@
         role: t.role || "staff",
         skills,
         turnsTotal: Number(t.turnsTotal || t.turn || 0),
-        status: t.status || "ready",
+        status: t.status || "available",
         active: t.active !== false,
         currentClientId: t.currentClientId || null,
+        refreshingStartedAt: t.refreshingStartedAt || null,
+        breakReason: t.breakReason || null,
+        statusChangedAt: t.statusChangedAt || t.checkedInAt || t.createdAt || null,
         checkInOrder: Number.isFinite(Number(t.checkInOrder)) ? Number(t.checkInOrder) : null
       };
     }
@@ -335,6 +444,8 @@
         queue: Array.isArray(raw.queue) ? raw.queue : [],
         serving: Array.isArray(raw.serving) ? raw.serving : [],
         history: Array.isArray(raw.history) ? raw.history : [],
+        auditLog: Array.isArray(raw.auditLog) ? raw.auditLog : [],
+        turnSettings: normalizeTurnSettings(raw.turnSettings),
         dayMode: raw.dayMode || "normal"
       };
     }
@@ -350,7 +461,13 @@
       return "mani";
     }
     function canDoLine(tech, lineKey){ return tech.skills.includes("all_services") || tech.skills.includes(lineKey); }
-    function turnValue(item){ if(typeof item.turnValue === "number") return item.turnValue; const price = Number(item.price || 0); return item.requestType === "requested" ? (price < 65 ? 0.5 : 1) : 1; }
+    function turnValue(item,state=null){
+      if(typeof item.turnValue === "number") return item.turnValue;
+      const settings=getTurnSettings(state);
+      if(settings.simpleMode) return 1;
+      const price = Number(item.price || 0);
+      return item.requestType === "requested" ? (price < settings.requestedThreshold ? settings.requestedBelowTurn : settings.requestedAtOrAboveTurn) : settings.walkInTurn;
+    }
     function waitTimeText(item){
       if(!item.createdAt) return "--:--";
       const diffMs = Date.now() - new Date(item.createdAt).getTime();
@@ -384,10 +501,10 @@
         return {best:requested, reason:"Khách yêu cầu"};
       }
 
-      const ready = techs.filter(t => t.status === "ready");
-      if(!ready.length) return {best:null, reason:"Không có thợ phù hợp đang rảnh"};
+      const available = techs.filter(t => t.status === "ready");
+      if(!available.length) return {best:null, reason:"Không có thợ phù hợp đang rảnh"};
 
-      const sorted = [...ready].sort((a,b) => {
+      const sorted = [...available].sort((a,b) => {
         if(Number(a.turnsTotal||0) !== Number(b.turnsTotal||0)) return Number(a.turnsTotal||0) - Number(b.turnsTotal||0);
         const ac = a.checkInOrder == null ? Number.MAX_SAFE_INTEGER : a.checkInOrder;
         const bc = b.checkInOrder == null ? Number.MAX_SAFE_INTEGER : b.checkInOrder;
@@ -468,12 +585,121 @@
       showLogin(true);
     }
 
+
+    function addAudit(state, action, detail, extra={}){
+      state.auditLog = Array.isArray(state.auditLog) ? state.auditLog : [];
+      state.auditLog.unshift({id:uid("audit"),action,detail,byName:currentSession?.username||"Staff View",byRole:"staff",createdAt:new Date().toISOString(),...extra});
+      state.auditLog = state.auditLog.slice(0,200);
+    }
+    function findBestNextCustomer(state){
+      if(!state || !Array.isArray(state.queue) || !state.queue.length) return null;
+      const queue=[...state.queue].sort((a,b)=>new Date(a.createdAt||0)-new Date(b.createdAt||0));
+      for(const client of queue){const smart=getSmartCandidates(client,state); if(smart.best) return {client,tech:smart.best,reason:smart.reason};}
+      return null;
+    }
+    function assignClientToTech(state, clientId, techId, meta={}){
+      const client=state.queue.find(c=>String(c.id)===String(clientId));
+      const tech=state.technicians.find(t=>String(t.id)===String(techId));
+      if(!client||!tech) return null;
+      state.queue=state.queue.filter(c=>String(c.id)!==String(clientId));
+      const servingItem={id:uid("serving"),clientId:client.id,clientName:client.name,service:client.service,serviceId:client.serviceId,price:client.price,line:client.line,requestType:client.requestType,requestedTechId:client.requestedTechId||null,techId:tech.id,techName:tech.name,startedAt:new Date().toISOString(),assignedBy:meta.assignedBy||"Staff View Auto Flow",turnValue:turnValue(client,state)};
+      state.serving=Array.isArray(state.serving)?state.serving:[]; state.serving.unshift(servingItem);
+      state.history=Array.isArray(state.history)?state.history:[];
+      state.history.unshift({id:uid("history"),clientId:client.id,clientName:client.name,service:client.service,serviceId:client.serviceId,price:client.price,line:client.line,requestType:client.requestType,requestedTechId:client.requestedTechId||null,techId:tech.id,techName:tech.name,assignedAt:new Date().toISOString(),assignedBy:meta.assignedBy||"Staff View Auto Flow",status:"serving",turnValue:turnValue(client,state),routingReason:meta.reason||""});
+      state.technicians=state.technicians.map(t=>String(t.id)===String(tech.id)?{...t,status:"busy",currentClientId:client.id,statusChangedAt:new Date().toISOString(),refreshingStartedAt:null,breakReason:null}:t);
+      addAudit(state,"staff_auto_flow_assign",`Staff View Auto Flow xếp ${client.name} cho ${tech.name}`,{clientId:client.id,techId:tech.id,reason:meta.reason||""});
+      return {client,tech};
+    }
+    function runStaffAutoFlow(state){
+      if(!isAutoFlowOn()) return null;
+      const best=findBestNextCustomer(state);
+      if(!best||!best.client||!best.tech) return null;
+      if(best.tech.status!=="available"||best.tech.active===false) return null;
+      return assignClientToTech(state,best.client.id,best.tech.id,{assignedBy:"Staff View Auto Flow",reason:`Auto Flow ON • ${best.reason||""}`});
+    }
+    function finishCurrentClient(servingId){
+      const raw=readState(); const state=normalizeState(raw); const tech=findLoggedInTech(state); if(!state||!tech) return;
+      const item=state.serving.find(s=>String(s.id)===String(servingId)&&String(s.techId)===String(tech.id));
+      if(!item){renderStatus("Không tìm thấy khách đang phục vụ của bạn.","warn"); return;}
+      if(!confirm(`Xác nhận hoàn tất ${item.clientName}?\
+\
+Sau khi Finish, bạn sẽ vào Refreshing. Khi available, bấm Available để nhận khách tiếp theo.`)) return;
+      const completedAt=new Date().toISOString(); const completedTurn=turnValue(item,state);
+      state.serving=state.serving.filter(s=>String(s.id)!==String(servingId));
+      state.history=Array.isArray(state.history)?state.history:[];
+      state.history.unshift({...item,status:"done",completedAt,turnValue:completedTurn,completedBy:"Staff View"});
+      state.technicians=state.technicians.map(t=>String(t.id)!==String(tech.id)?t:{...t,turnsTotal:Number(t.turnsTotal||0)+completedTurn,status:"cooldown",currentClientId:null,refreshingStartedAt:completedAt,statusChangedAt:completedAt});
+      addAudit(state,"staff_finish_client",`${tech.name} hoàn tất ${item.clientName} từ Staff View`,{clientId:item.clientId,techId:tech.id,turnValue:completedTurn});
+      writeState(state); lastSnapshot=""; renderStatus(`Đã Finish <strong>${escapeHtml(item.clientName)}</strong>. Bạn đang Refreshing — bấm Available khi available nhận khách mới.`,"ok"); refreshView(true);
+    }
+    function markReady(){
+      let state=normalizeState(readState()); const tech=findLoggedInTech(state); if(!state||!tech) return;
+      state.technicians=state.technicians.map(t=>String(t.id)===String(tech.id)?{...t,status:"ready",currentClientId:null,refreshingStartedAt:null,breakReason:null,statusChangedAt:new Date().toISOString()}:t);
+      addAudit(state,"staff_available",`${tech.name} bấm Available từ Staff View`,{techId:tech.id});
+      const assigned=runStaffAutoFlow(state); writeState(state); lastSnapshot="";
+      if(assigned) renderStatus(`Bạn đã Available. Auto Flow đã xếp <strong>${escapeHtml(assigned.client.name)}</strong> cho <strong>${escapeHtml(assigned.tech.name)}</strong>.`,"ok");
+      else renderStatus(`Bạn đã Available. ${isAutoFlowOn()?"Auto Flow đang ON nhưng chưa có khách phù hợp.":"Auto Flow đang OFF."}`,"ok");
+      refreshView(true);
+    }
+    function markBreak(){
+      let state=normalizeState(readState()); const tech=findLoggedInTech(state); if(!state||!tech) return;
+      const reason=prompt("Lý do Break?\
+1. Lunch\
+2. Restroom\
+3. Personal\
+4. Short break","1"); if(reason===null) return;
+      const reasons={"1":"Lunch","2":"Restroom","3":"Personal","4":"Short break"}; const breakReason=reasons[reason]||reason||"Break";
+      state.technicians=state.technicians.map(t=>String(t.id)===String(tech.id)?{...t,status:"break",currentClientId:null,refreshingStartedAt:null,breakReason,statusChangedAt:new Date().toISOString()}:t);
+      addAudit(state,"staff_break",`${tech.name} chuyển sang Break từ Staff View • ${breakReason}`,{techId:tech.id,reason:breakReason});
+      writeState(state); lastSnapshot=""; renderStatus("Bạn đang Break. Bấm Available khi quay lại.","ok"); refreshView(true);
+    }
+
     function renderCurrentClientBox(state, tech){
       const serving = getCurrentServingForTech(state, tech);
-      if(!serving.length){
-        els.currentClientBox.innerHTML = `<div class="empty">Hiện bạn chưa có khách đang phục vụ.</div>`;
+
+      if(tech.status === "cooldown"){
+        els.currentClientBox.innerHTML = `
+          <div class="refreshing-card">
+            <div class="focus-name">${escapeHtml(tech.name)} đang Refreshing</div>
+            <div class="focus-meta">Bạn vừa hoàn tất khách. Khi đã dọn xong / available nhận khách mới, bấm Available.</div>
+            <div class="staff-action-row">
+              <button class="btn-ready" id="staffReadyBtn">→ Available</button>
+              <button class="btn-break" id="staffBreakBtn">☕ Break</button>
+            </div>
+            <div class="action-hint">Available sẽ kích hoạt Auto Flow nếu Front Desk đang bật Auto Flow.</div>
+            <div class="auto-flow-chip">${isAutoFlowOn() ? "⚡ Auto Flow ON" : "Auto Flow OFF"}</div>${refreshingReminderHtml(tech)}
+          </div>
+        `;
+        document.getElementById("staffReadyBtn")?.addEventListener("click", markReady);
+        document.getElementById("staffBreakBtn")?.addEventListener("click", markBreak);
         return;
       }
+
+      if(tech.status === "break"){
+        els.currentClientBox.innerHTML = `
+          <div class="break-card">
+            <div class="focus-name">${escapeHtml(tech.name)} đang Break</div>
+            <div class="focus-meta">Bạn sẽ không nhận khách mới cho đến khi bấm Available.</div>
+            <div class="staff-action-row"><button class="btn-ready" id="staffReadyBtn">→ Available</button></div>
+            <div class="action-hint">Available = quay lại nhận khách phù hợp tiếp theo.</div>
+          </div>
+        `;
+        document.getElementById("staffReadyBtn")?.addEventListener("click", markReady);
+        return;
+      }
+
+      if(!serving.length){
+        els.currentClientBox.innerHTML = `
+          <div class="available-card">
+            <div class="focus-name">${tech.status === "ready" ? "Bạn đang Available" : "Hiện bạn chưa có khách đang phục vụ"}</div>
+            <div class="focus-meta">${tech.status === "ready" ? "Bạn đang available nhận khách phù hợp." : "Chưa có khách đang phục vụ."}</div>
+            ${tech.status === "ready" ? `<div class="staff-action-row"><button class="btn-break" id="staffBreakBtn">☕ Break</button></div><div class="action-hint">Break nếu bạn cần nghỉ trước khi nhận khách mới.</div>` : ""}
+          </div>
+        `;
+        document.getElementById("staffBreakBtn")?.addEventListener("click", markBreak);
+        return;
+      }
+
       const item = serving[0];
       els.currentClientBox.innerHTML = `
         <div class="focus-name">${escapeHtml(item.clientName || "")}</div>
@@ -481,9 +707,12 @@
           ${escapeHtml(item.service || "")}<br/>
           Bắt đầu: ${timeShort(item.startedAt)}<br/>
           Loại khách: ${item.requestType === "requested" ? "Requested" : "Walk-in"}<br/>
-          Turn khi done: ${turnValue(item)}T
+          Turn khi done: ${turnValue(item,state)}T
         </div>
+        <div class="staff-action-row"><button class="btn-finish" id="staffFinishBtn">✓ Finish</button></div>
+        <div class="action-hint">Finish = hoàn tất khách và chuyển bạn sang Refreshing. Sau đó bấm Available khi available nhận khách mới.</div>
       `;
+      document.getElementById("staffFinishBtn")?.addEventListener("click", () => finishCurrentClient(item.id));
     }
 
     function renderNextClientBox(state, tech){
@@ -546,6 +775,133 @@
       });
     }
 
+
+    function safeWaitMinutes(item){
+      if(!item || !item.createdAt) return 0;
+      const t = new Date(item.createdAt).getTime();
+      if(!Number.isFinite(t)) return 0;
+      return Math.max(0, Math.round((Date.now() - t) / 60000));
+    }
+
+    function safeAvailableMinutes(tech){
+      const base = tech.statusChangedAt || tech.checkedInAt || tech.createdAt || new Date().toISOString();
+      const t = new Date(base).getTime();
+      if(!Number.isFinite(t)) return 0;
+      return Math.max(0, Math.round((Date.now() - t) / 60000));
+    }
+
+    function buildStaffSmartSuggestion(state, tech){
+      const current = getCurrentServingForTech(state, tech);
+      const next = getNextForTech(state, tech);
+      const autoFlow = typeof isAutoFlowOn === "function" ? isAutoFlowOn() : false;
+
+      if(current.length){
+        const item = current[0];
+        return {
+          title:"Current Service",
+          score:"Busy",
+          body:`Bạn đang phục vụ ${item.clientName || ""}.`,
+          reason:`${item.service || ""} • Turn khi Finish: ${turnValue(item,state)}T • Auto Flow ${autoFlow ? "ON" : "OFF"}`
+        };
+      }
+
+      if(tech.status === "cooldown"){
+        if(next){
+          return {
+            title:"Smart Reminder Suggestion",
+            score:"Available when you are",
+            body:`Có khách phù hợp đang chờ: ${next.client.name || ""}.`,
+            reason:`${next.client.service || ""} • Wait ${safeWaitMinutes(next.client)} phút • Bấm Available khi bạn thật sự available.`
+          };
+        }
+        return {
+          title:"Refreshing",
+          score:"Take a short reset",
+          body:"Bạn đang Refreshing. Chưa có khách phù hợp đang chờ bạn.",
+          reason:`Auto Flow ${autoFlow ? "ON" : "OFF"} • Bấm Available khi bạn available.`
+        };
+      }
+
+      if(tech.status === "break"){
+        return {
+          title:"Break Mode",
+          score:"Not receiving",
+          body:"Bạn đang Break và sẽ không nhận khách mới.",
+          reason:"Bấm Available khi quay lại làm việc."
+        };
+      }
+
+      if(tech.status === "ready"){
+        if(next){
+          return {
+            title:"Next Best Match",
+            score:"Likely next",
+            body:`Bạn có thể là thợ phù hợp tiếp theo cho ${next.client.name || ""}.`,
+            reason:`${next.client.service || ""} • ${next.reason || ""} • Wait ${safeWaitMinutes(next.client)} phút • Auto Flow ${autoFlow ? "ON" : "OFF"}`
+          };
+        }
+        return {
+          title:"Available",
+          score:"Available",
+          body:"Bạn đang Available. Hiện chưa có khách phù hợp trong queue.",
+          reason:`Available khoảng ${safeAvailableMinutes(tech)} phút • Auto Flow ${autoFlow ? "ON" : "OFF"}`
+        };
+      }
+
+      return {
+        title:"Staff Status",
+        score:tech.status || "Status",
+        body:`Trạng thái hiện tại: ${tech.status || "--"}.`,
+        reason:`Auto Flow ${autoFlow ? "ON" : "OFF"}`
+      };
+    }
+
+    function renderSmartPanel(state, tech){
+      try{
+        const panel = document.getElementById("smartPanel");
+        if(!panel || !state || !tech) return;
+
+        const suggestion = buildStaffSmartSuggestion(state, tech);
+        const related = getRelatedQueueForTech(state, tech).slice(0,3);
+        const statusClass = tech.status === "busy" ? "busy" : tech.status === "cooldown" ? "refreshing" : tech.status === "break" ? "break" : "available";
+        const autoFlow = typeof isAutoFlowOn === "function" ? isAutoFlowOn() : false;
+
+        const miniQueue = related.length ? `
+          <div class="mini-queue-grid">
+            ${related.map(({client, reason}) => `
+              <div class="mini-queue-card">
+                <div>
+                  <div class="mini-queue-name">${escapeHtml(client.name || "")}</div>
+                  <div class="mini-queue-meta">${escapeHtml(client.service || "")}<br/>Wait ${safeWaitMinutes(client)} phút • ${escapeHtml(reason || "")}</div>
+                </div>
+                <span class="${client.requestType === "requested" ? "tag req" : "tag walk"}">${client.requestType === "requested" ? "Requested" : "Walk-in"}</span>
+              </div>
+            `).join("")}
+          </div>
+        ` : "";
+
+        panel.innerHTML = `
+          <div class="smart-head">
+            <div>
+              <div class="smart-title">✨ ${escapeHtml(suggestion.title)}</div>
+              <div class="smart-body">${escapeHtml(suggestion.body)}</div>
+              <div class="smart-reason">${escapeHtml(suggestion.reason)}</div>
+            </div>
+            <span class="priority-pill ${suggestion.score === "Likely next" || suggestion.score === "Available when you are" ? "gold" : ""}">${escapeHtml(suggestion.score)}</span>
+          </div>
+          <div class="mode-chip-row">
+            <span class="mode-chip ${statusClass}">Status: ${escapeHtml(tech.status || "--")}</span>
+            <span class="mode-chip">Turn: ${Number(tech.turnsTotal || 0)}T</span>
+            <span class="mode-chip ${autoFlow ? "available" : ""}">Auto Flow: ${autoFlow ? "ON" : "OFF"}</span>
+          </div>
+          ${miniQueue}
+        `;
+      }catch(err){
+        console.error("Smart panel error:", err);
+      }
+    }
+
+
     function refreshView(force=false){
       populateSourceSelector();
       const rawString = readRaw();
@@ -580,13 +936,14 @@
       els.statTurn.textContent = String(tech.turnsTotal || 0);
       els.statServing.textContent = String(getCurrentServingForTech(state, tech).length);
       els.statWaiting.textContent = String(getRelatedQueueForTech(state, tech).length);
-      els.statStatus.textContent = tech.status === "busy" ? "Busy" : tech.status === "ready" ? "Ready" : tech.status;
+      els.statStatus.textContent = tech.status === "busy" ? "Busy" : tech.status === "ready" ? "Available" : tech.status;
 
+      renderSmartPanel(state, tech);
       renderCurrentClientBox(state, tech);
       renderNextClientBox(state, tech);
       renderRelatedQueue(state, tech);
       renderDone(state, tech);
-      renderStatus(`Đã đồng bộ Staff View cho <strong>${escapeHtml(tech.name)}</strong>. Đây là màn hình read-only, không có nút Done hoặc assign.`, "ok");
+      renderStatus(`Đã đồng bộ Staff View cho <strong>${escapeHtml(tech.name)}</strong>. Staff có thể Finish → Refreshing → Available. Auto Flow chỉ chạy khi Front Desk bật ON.`, "ok");
     }
 
 
@@ -595,7 +952,7 @@
       const u = params.get('u');
       const p = params.get('p');
       const k = params.get('k');
-      if(k && els.sourceKey){ els.sourceKey.value = k; }
+      if(els.sourceKey){ els.sourceKey.value = STORAGE_KEY; }
       if(u && p){
         els.loginUsername.value = u;
         els.loginPin.value = p;
@@ -608,13 +965,22 @@
     els.refreshBtn.addEventListener("click", () => refreshView(true));
     els.logoutBtn.addEventListener("click", logout);
     [els.loginUsername, els.loginPin].forEach(el => el.addEventListener("keydown", e => { if(e.key === "Enter") login(); }));
-    els.sourceKey.addEventListener("change", () => { lastSnapshot = ""; if(currentSession) refreshView(true); });
+    if(els.sourceKey) els.sourceKey.addEventListener("change", () => { lastSnapshot = ""; if(currentSession) refreshView(true); });
 
     populateSourceSelector();
     showLogin(true);
     autoLoginFromQuery();
     window.addEventListener("storage", () => { if(currentSession) refreshView(true); });
     setInterval(() => { if(currentSession) refreshView(false); }, 1200);
+  
+    window.addEventListener("error", (event) => {
+      console.error("Staff View error:", event.error || event.message);
+      const area = document.getElementById("statusArea");
+      if(area && !document.getElementById("loginScreen").classList.contains("hidden")){
+        area.innerHTML = `<div class="status-warn">Có lỗi script: ${escapeHtml(event.message || "Unknown error")}</div>`;
+      }
+    });
+
   </script>
 </body>
 </html>

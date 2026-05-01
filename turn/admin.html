@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lumi Nails • Admin Panel</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+</script>
   <style>
     :root{
       --bg:#f7f4ef; --bg2:#fbf9f5; --panel:rgba(255,255,255,.94);
@@ -79,6 +90,44 @@
     .badge-row,.mini-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .empty{padding:20px;text-align:center;color:var(--muted);border-radius:18px;border:1px dashed rgba(92,74,58,.2);background:rgba(255,255,255,.62);font-size:14px}
     .footer-note{margin-top:14px;color:var(--muted);font-size:12px;line-height:1.7}
+
+    .simple-mode-box{
+      border-radius:20px;
+      border:1px solid rgba(200,166,107,.24);
+      background:linear-gradient(135deg,rgba(200,166,107,.13),rgba(255,255,255,.94));
+      padding:16px 18px;
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom:12px;
+    }
+    .simple-mode-box input[type="checkbox"]{
+      width:22px;
+      height:22px;
+      margin-top:2px;
+      accent-color:var(--gold-deep);
+      flex:0 0 auto;
+    }
+    .simple-mode-box label{
+      text-transform:none;
+      letter-spacing:0;
+      color:var(--text);
+      font-size:16px;
+      font-weight:900;
+      line-height:1.35;
+    }
+    .simple-mode-desc{
+      margin-top:5px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      font-weight:500;
+    }
+    .turn-fields-disabled{
+      opacity:.46;
+      filter:grayscale(.15);
+    }
+
     @media (max-width:1200px){.hero{grid-template-columns:1fr}.layout{grid-template-columns:1fr}}
     @media (max-width:820px){.shell{padding:16px}.login-card,.card,.hero{padding:18px;border-radius:24px}.two-col,.three-col,.btn-row{grid-template-columns:1fr}.topbar,.item-top{flex-direction:column;align-items:flex-start}}
   </style>
@@ -138,11 +187,14 @@
             <div class="tab-list">
               <button class="tab-btn active" id="tabDayBtn" type="button">Day Control<span class="tab-desc">Reset đầu ngày, check-in, xem priority order</span></button>
               <button class="tab-btn" id="tabStaffBtn" type="button">Staff Admin<span class="tab-desc">Thêm / sửa nhân viên, role, skills, active status</span></button>
+              <button class="tab-btn" id="tabTurnBtn" type="button">Turn Settings<span class="tab-desc">Cấu hình cách tính turn cho requested / walk-in</span></button>
             </div>
             <div class="status-box" id="dayStatusBox">
               <div class="status-title">Day status</div>
               <div class="muted" id="dayStatusText">--</div>
             </div>
+            <div id="checkinBanner" class="status-warn hidden">⚠️ Chưa check-in đủ. Vui lòng cho thợ check-in để bắt đầu chia khách công bằng.</div>
+
             <div class="summary-list">
               <div class="summary-row">
                 <div><strong>Role hiện tại</strong><div class="meta" id="roleSummary">--</div></div>
@@ -160,9 +212,9 @@
         <main class="stack">
           <div id="dayTab">
             <div class="card">
-              <div class="callout"><h3>Day Control</h3><p>Dùng đầu ngày để mở New Day, reset thứ tự cũ, rồi cho thợ check-in. Reset Day sẽ xóa queue / serving / history của ngày cũ để board sạch cho ngày mới. Full Reset là nút nguy hiểm, chỉ Owner dùng.</p></div>
+              <div class="callout"><h3>Day Control</h3><p>Dùng đầu ngày để mở New Day, reset thứ tự cũ, rồi cho thợ check-in. 🌅 Start New Day sẽ xóa queue / serving / history của ngày cũ để board sạch cho ngày mới. Sau đó thợ cần check-in lại để xác định thứ tự ưu tiên.</p></div>
               <div class="btn-row">
-                <button class="btn-primary" id="safeResetBtn" type="button">Reset Day (Safe)</button>
+                <button class="btn-primary" id="safeResetBtn" type="button">🌅 Start New Day</button>
                 <button class="btn-danger" id="fullResetBtn" type="button">Full Reset (Danger)</button>
               </div>
               <div class="field-grid" style="margin-top:18px;">
@@ -196,6 +248,32 @@
               <div id="staffAdminList" class="list"></div>
             </div>
           </div>
+
+          <div id="turnTab" class="hidden">
+            <div class="card">
+              <div class="callout"><h3>Turn Settings</h3><p>Cấu hình rule tính turn cho Front Desk PRO. Rule này được lưu chung vào localStorage nên Front Desk sẽ tự đọc và áp dụng ngay.</p></div>
+              <div class="field-grid">
+                <div class="simple-mode-box">
+                  <input id="simpleTurnMode" type="checkbox" />
+                  <div>
+                    <label for="simpleTurnMode">✨ Recommended Mode — all services = 1 Turn</label>
+                    <div class="simple-mode-desc">Recommended for most salons. Requested and Walk-in are both counted as 1T. You can switch to Advanced rules anytime.</div>
+                  </div>
+                </div>
+                <div id="advancedTurnFields">
+                <div class="three-col">
+                  <div class="field"><label for="requestedThreshold">Requested threshold ($)</label><input id="requestedThreshold" type="number" min="0" step="1" /></div>
+                  <div class="field"><label for="requestedBelowTurn">Requested dưới threshold</label><input id="requestedBelowTurn" type="number" min="0" step="0.25" /></div>
+                  <div class="field"><label for="requestedAtOrAboveTurn">Requested từ threshold trở lên</label><input id="requestedAtOrAboveTurn" type="number" min="0" step="0.25" /></div>
+                </div>
+                <div class="field"><label for="walkInTurn">Walk-in turn mặc định</label><input id="walkInTurn" type="number" min="0" step="0.25" /></div>
+                </div>
+                <div class="btn-row"><button class="btn-primary" id="saveTurnSettingsBtn" type="button">Lưu Turn Settings</button><button class="btn-secondary" id="resetTurnSettingsBtn" type="button">Reset Default</button></div>
+              </div>
+              <div class="status-box" style="margin-top:16px;"><div class="status-title">Preview rule</div><div class="muted" id="turnSettingsPreview">--</div></div>
+              <div class="footer-note">Recommended Mode is ON by default: Requested / Walk-in đều = 1T. Tắt mode này để dùng Advanced threshold rules.</div>
+            </div>
+          </div>
         </main>
       </section>
     </section>
@@ -205,13 +283,15 @@
     const STORAGE_KEY='lumi-turn-manager-v5';
     const ROLE_OWNER='owner', ROLE_MANAGER='manager', ROLE_STAFF='staff', ALL_SKILL='all_services';
     const SERVICE_LINES=[{key:'mani',label:'Mani'},{key:'dip_powder',label:'Dip Powder'},{key:'g_hybrid_gel',label:'G-Hybrid Gel'},{key:'gel_x',label:'Gel-X'},{key:'pedi',label:'Pedi'},{key:'gel_pedi',label:'Gel Pedi'}];
-    function defaultState(){return {users:[],technicians:[],queue:[],serving:[],history:[],auditLog:[],session:null,dayMode:'new_day'};}
+    const DEFAULT_TURN_SETTINGS={simpleMode:true,requestedThreshold:65,requestedBelowTurn:0.5,requestedAtOrAboveTurn:1,walkInTurn:1};
+    function normalizeTurnSettings(settings={}){return {simpleMode:(settings.simpleMode ?? DEFAULT_TURN_SETTINGS.simpleMode) === true,requestedThreshold:Number(settings.requestedThreshold ?? DEFAULT_TURN_SETTINGS.requestedThreshold),requestedBelowTurn:Number(settings.requestedBelowTurn ?? DEFAULT_TURN_SETTINGS.requestedBelowTurn),requestedAtOrAboveTurn:Number(settings.requestedAtOrAboveTurn ?? DEFAULT_TURN_SETTINGS.requestedAtOrAboveTurn),walkInTurn:Number(settings.walkInTurn ?? DEFAULT_TURN_SETTINGS.walkInTurn)};}
+    function defaultState(){return {users:[],technicians:[],queue:[],serving:[],history:[],auditLog:[],session:null,dayMode:'new_day',turnSettings:normalizeTurnSettings()};}
     function createTurnMap(){const m={}; SERVICE_LINES.forEach(line=>m[`turn_${line.key}`]=0); return m;}
-    function normalizeTechnician(tech){const n={...tech,...createTurnMap()}; SERVICE_LINES.forEach(line=>n[`turn_${line.key}`]=Number(tech[`turn_${line.key}`]||0)); n.skills=Array.isArray(tech.skills)?tech.skills:(tech.skill?[tech.skill]:[ALL_SKILL]); n.turnsTotal=Number(tech.turnsTotal||0); n.checkInOrder=Number.isFinite(Number(tech.checkInOrder))?Number(tech.checkInOrder):null; n.checkedInAt=tech.checkedInAt||null; n.active=tech.active!==false; n.status=tech.status||'ready'; n.role=tech.role||ROLE_STAFF; n.currentClientId=tech.currentClientId||null; n.createdAt=tech.createdAt||null; delete n.skill; return n;}
-    function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return defaultState(); const p=JSON.parse(raw); return {users:p.users||[],technicians:(p.technicians||[]).map(normalizeTechnician),queue:p.queue||[],serving:p.serving||[],history:p.history||[],auditLog:p.auditLog||[],session:p.session||null,dayMode:p.dayMode||'new_day'};}catch{return defaultState();}}
+    function normalizeTechnician(tech){const n={...tech,...createTurnMap()}; SERVICE_LINES.forEach(line=>n[`turn_${line.key}`]=Number(tech[`turn_${line.key}`]||0)); n.skills=Array.isArray(tech.skills)?tech.skills:(tech.skill?[tech.skill]:[ALL_SKILL]); n.turnsTotal=Number(tech.turnsTotal||0); n.checkInOrder=Number.isFinite(Number(tech.checkInOrder))?Number(tech.checkInOrder):null; n.checkedInAt=tech.checkedInAt||null; n.active=tech.active!==false; n.status=tech.status||'ready'; n.role=tech.role||ROLE_STAFF; n.currentClientId=tech.currentClientId||null; n.cooldownStartedAt=tech.cooldownStartedAt||null; n.breakReason=tech.breakReason||null; n.statusChangedAt=tech.statusChangedAt||tech.checkedInAt||tech.createdAt||null; n.createdAt=tech.createdAt||null; delete n.skill; return n;}
+    function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY); if(!raw) return defaultState(); const p=JSON.parse(raw); return {users:p.users||[],technicians:(p.technicians||[]).map(normalizeTechnician),queue:p.queue||[],serving:p.serving||[],history:p.history||[],auditLog:p.auditLog||[],session:p.session||null,dayMode:p.dayMode||'new_day',turnSettings:normalizeTurnSettings(p.turnSettings)};}catch{return defaultState();}}
     const state=loadState(); let activeTab='day'; let editingTechId=null;
 
-    const els={loginScreen:document.getElementById('loginScreen'), appScreen:document.getElementById('appScreen'), loginUsername:document.getElementById('loginUsername'), loginPin:document.getElementById('loginPin'), loginBtn:document.getElementById('loginBtn'), demoBtn:document.getElementById('demoBtn'), logoutBtn:document.getElementById('logoutBtn'), sessionInfo:document.getElementById('sessionInfo'), modePill:document.getElementById('modePill'), statStaff:document.getElementById('statStaff'), statCheckedIn:document.getElementById('statCheckedIn'), statActive:document.getElementById('statActive'), dayModeBadge:document.getElementById('dayModeBadge'), dayStatusBox:document.getElementById('dayStatusBox'), dayStatusText:document.getElementById('dayStatusText'), roleSummary:document.getElementById('roleSummary'), roleBadge:document.getElementById('roleBadge'), tabDayBtn:document.getElementById('tabDayBtn'), tabStaffBtn:document.getElementById('tabStaffBtn'), dayTab:document.getElementById('dayTab'), staffTab:document.getElementById('staffTab'), safeResetBtn:document.getElementById('safeResetBtn'), fullResetBtn:document.getElementById('fullResetBtn'), checkInList:document.getElementById('checkInList'), priorityList:document.getElementById('priorityList'), staffName:document.getElementById('staffName'), staffUsername:document.getElementById('staffUsername'), staffPin:document.getElementById('staffPin'), staffRole:document.getElementById('staffRole'), staffSkills:document.getElementById('staffSkills'), saveStaffBtn:document.getElementById('saveStaffBtn'), cancelEditBtn:document.getElementById('cancelEditBtn'), editModeText:document.getElementById('editModeText'), staffAdminList:document.getElementById('staffAdminList'), staffCountPill:document.getElementById('staffCountPill')};
+    const els={loginScreen:document.getElementById('loginScreen'), appScreen:document.getElementById('appScreen'), loginUsername:document.getElementById('loginUsername'), loginPin:document.getElementById('loginPin'), loginBtn:document.getElementById('loginBtn'), demoBtn:document.getElementById('demoBtn'), logoutBtn:document.getElementById('logoutBtn'), sessionInfo:document.getElementById('sessionInfo'), modePill:document.getElementById('modePill'), statStaff:document.getElementById('statStaff'), statCheckedIn:document.getElementById('statCheckedIn'), statActive:document.getElementById('statActive'), dayModeBadge:document.getElementById('dayModeBadge'), dayStatusBox:document.getElementById('dayStatusBox'), dayStatusText:document.getElementById('dayStatusText'), roleSummary:document.getElementById('roleSummary'), roleBadge:document.getElementById('roleBadge'), tabDayBtn:document.getElementById('tabDayBtn'), tabStaffBtn:document.getElementById('tabStaffBtn'), tabTurnBtn:document.getElementById('tabTurnBtn'), dayTab:document.getElementById('dayTab'), staffTab:document.getElementById('staffTab'), turnTab:document.getElementById('turnTab'), safeResetBtn:document.getElementById('safeResetBtn'), fullResetBtn:document.getElementById('fullResetBtn'), checkInList:document.getElementById('checkInList'), priorityList:document.getElementById('priorityList'), staffName:document.getElementById('staffName'), staffUsername:document.getElementById('staffUsername'), staffPin:document.getElementById('staffPin'), staffRole:document.getElementById('staffRole'), staffSkills:document.getElementById('staffSkills'), saveStaffBtn:document.getElementById('saveStaffBtn'), cancelEditBtn:document.getElementById('cancelEditBtn'), editModeText:document.getElementById('editModeText'), staffAdminList:document.getElementById('staffAdminList'), staffCountPill:document.getElementById('staffCountPill'), requestedThreshold:document.getElementById('requestedThreshold'), requestedBelowTurn:document.getElementById('requestedBelowTurn'), requestedAtOrAboveTurn:document.getElementById('requestedAtOrAboveTurn'), walkInTurn:document.getElementById('walkInTurn'), simpleTurnMode:document.getElementById('simpleTurnMode'), advancedTurnFields:document.getElementById('advancedTurnFields'), saveTurnSettingsBtn:document.getElementById('saveTurnSettingsBtn'), resetTurnSettingsBtn:document.getElementById('resetTurnSettingsBtn'), turnSettingsPreview:document.getElementById('turnSettingsPreview')};
 
     function saveState(){localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
     function uid(prefix){return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`;}
@@ -247,20 +327,20 @@
     function initSelects(){els.staffSkills.innerHTML=[`<option value="${ALL_SKILL}">All Services</option>`].concat(SERVICE_LINES.map(line=>`<option value="${line.key}">${line.label}</option>`)).join('');}
     function bindEvents(){
       els.loginBtn.addEventListener('click', login); els.demoBtn.addEventListener('click', demoLogin); els.logoutBtn.addEventListener('click', logout);
-      els.tabDayBtn.addEventListener('click', ()=>switchTab('day')); els.tabStaffBtn.addEventListener('click', ()=>switchTab('staff'));
+      els.tabDayBtn.addEventListener('click', ()=>switchTab('day')); els.tabStaffBtn.addEventListener('click', ()=>switchTab('staff')); els.tabTurnBtn.addEventListener('click', ()=>switchTab('turn'));
       els.safeResetBtn.addEventListener('click', ()=>confirmReset('safe')); els.fullResetBtn.addEventListener('click', ()=>confirmReset('full'));
-      els.saveStaffBtn.addEventListener('click', saveStaff); els.cancelEditBtn.addEventListener('click', resetStaffForm);
+      els.saveStaffBtn.addEventListener('click', saveStaff); els.cancelEditBtn.addEventListener('click', resetStaffForm); els.saveTurnSettingsBtn.addEventListener('click', saveTurnSettings); els.resetTurnSettingsBtn.addEventListener('click', resetTurnSettings);
       [els.loginUsername, els.loginPin].forEach(input=>input.addEventListener('keydown', e=>{if(e.key==='Enter') login();}));
-      [els.staffName, els.staffUsername, els.staffPin].forEach(input=>input.addEventListener('keydown', e=>{if(e.key==='Enter') saveStaff();}));
+      [els.staffName, els.staffUsername, els.staffPin].forEach(input=>input.addEventListener('keydown', e=>{if(e.key==='Enter') saveStaff();})); [els.requestedThreshold,els.requestedBelowTurn,els.requestedAtOrAboveTurn,els.walkInTurn].forEach(input=>input.addEventListener('input', renderTurnSettingsPreview)); els.simpleTurnMode.addEventListener('change',()=>{toggleSimpleModeUI(); renderTurnSettingsPreview();});
     }
 
     function login(){const username=els.loginUsername.value.trim().toLowerCase(); const pin=els.loginPin.value.trim(); const user=state.users.find(u=>u.username.toLowerCase()===username && u.pin===pin); if(!user){alert('Sai username hoặc PIN.'); return;} if(![ROLE_OWNER,ROLE_MANAGER].includes(user.role)){alert('Chỉ Owner / Manager mới vào được Admin Panel.'); return;} state.session={userId:user.id, loginAt:new Date().toISOString()}; saveState(); addAudit('login_admin_panel', `${user.name} đăng nhập Admin Panel`); els.loginPin.value=''; refreshView();}
     function demoLogin(){const owner=state.users.find(u=>u.username==='owner'); if(!owner) return; state.session={userId:owner.id, loginAt:new Date().toISOString()}; saveState(); refreshView();}
     function logout(){if(currentUser()) addAudit('logout_admin_panel', `${currentUser().name} đăng xuất Admin Panel`); state.session=null; saveState(); refreshView();}
-    function switchTab(tab){activeTab=tab; els.tabDayBtn.classList.toggle('active', tab==='day'); els.tabStaffBtn.classList.toggle('active', tab==='staff'); els.dayTab.classList.toggle('hidden', tab!=='day'); els.staffTab.classList.toggle('hidden', tab!=='staff'); els.modePill.textContent=tab==='day'?'Day Control':'Staff Admin';}
+    function switchTab(tab){activeTab=tab; els.tabDayBtn.classList.toggle('active', tab==='day'); els.tabStaffBtn.classList.toggle('active', tab==='staff'); els.tabTurnBtn.classList.toggle('active', tab==='turn'); els.dayTab.classList.toggle('hidden', tab!=='day'); els.staffTab.classList.toggle('hidden', tab!=='staff'); els.turnTab.classList.toggle('hidden', tab!=='turn'); els.modePill.textContent=tab==='day'?'Day Control':tab==='staff'?'Staff Admin':'Turn Settings'; if(tab==='turn') populateTurnSettingsForm();}
 
     function getNextCheckInOrder(){const orders=state.technicians.map(t=>Number.isFinite(t.checkInOrder)?t.checkInOrder:0); return (orders.length?Math.max(...orders):0)+1;}
-    function checkInTech(techId){requirePermission(canSafeReset,'Bạn không có quyền check-in.'); if(state.dayMode!=='new_day'){alert('Check-in chỉ dùng khi đang ở New Day mode.'); return;} const tech=state.technicians.find(t=>t.id===techId); if(!tech||tech.checkInOrder!=null) return; tech.checkInOrder=getNextCheckInOrder(); tech.checkedInAt=new Date().toISOString(); tech.active=true; if(tech.status==='off') tech.status='ready'; addAudit('check_in', `${tech.name} check in #${tech.checkInOrder}`); saveState(); refreshView();}
+    function checkInTech(techId){requirePermission(canSafeReset,'Bạn không có quyền check-in.'); if(state.dayMode!=='new_day'){alert('Check-in chỉ dùng khi đang ở New Day mode.'); return;} const tech=state.technicians.find(t=>t.id===techId); if(!tech||tech.checkInOrder!=null) return; tech.checkInOrder=getNextCheckInOrder(); tech.checkedInAt=new Date().toISOString(); tech.active=true; tech.status='ready'; tech.currentClientId=null; tech.cooldownStartedAt=null; tech.breakReason=null; tech.statusChangedAt=new Date().toISOString(); addAudit('check_in', `${tech.name} check in #${tech.checkInOrder}`); saveState(); refreshView();}
     function confirmReset(type){let message=''; if(type==='safe') message='Reset Day?\n\n- Reset check-in\n- Reset turn\n- Xóa queue / serving / history của ngày cũ\n- Clear tech slots / trạng thái busy'; else message='⚠️ FULL RESET?\n\n- Xóa queue\n- Xóa serving\n- Xóa history\n- Reset toàn bộ system\n\nKHÔNG THỂ UNDO'; if(confirm(message)){ if(type==='safe') safeReset(); if(type==='full') fullReset();}}
     function safeReset(){
       requirePermission(canSafeReset,'Chỉ Owner / Manager mới dùng Safe Reset.');
@@ -278,15 +358,18 @@
         turnsTotal:0,
         status:'ready',
         currentClientId:null,
+        cooldownStartedAt:null,
+        breakReason:null,
+        statusChangedAt:new Date().toISOString(),
         active:tech.active!==false,
         ...createTurnMap()
       }));
 
-      addAudit('safe_reset_day','Reset Day (Safe) từ Admin Panel: clear queue / serving / history / slots ngày cũ');
+      addAudit('safe_reset_day','🌅 Start New Day từ Admin Panel: clear queue / serving / history / slots ngày cũ');
       saveState();
       refreshView();
     }
-    function fullReset(){requirePermission(canFullReset,'Chỉ Owner mới dùng Full Reset.'); state.dayMode='new_day'; state.queue=[]; state.serving=[]; state.history=[]; state.auditLog=[]; state.technicians=state.technicians.map(tech=>({...tech,checkInOrder:null,checkedInAt:null,turnsTotal:0,status:'ready',currentClientId:null,active:true,...createTurnMap()})); saveState(); refreshView();}
+    function fullReset(){requirePermission(canFullReset,'Chỉ Owner mới dùng Full Reset.'); state.dayMode='new_day'; state.queue=[]; state.serving=[]; state.history=[]; state.auditLog=[]; state.technicians=state.technicians.map(tech=>({...tech,checkInOrder:null,checkedInAt:null,turnsTotal:0,status:'ready',currentClientId:null,cooldownStartedAt:null,breakReason:null,statusChangedAt:new Date().toISOString(),active:true,...createTurnMap()})); saveState(); refreshView();}
     function getPriorityOrder(){return [...state.technicians].filter(t=>t.checkInOrder!=null).sort((a,b)=>a.checkInOrder-b.checkInOrder);}
 
     function saveStaff(){
@@ -297,10 +380,25 @@
       if(!canCreateRole(role)){alert('Vai trò của bạn không được tạo / sửa role này.'); return;}
 
       if(editingTechId){
-        const tech=state.technicians.find(t=>t.id===editingTechId); const user=getUserByTechId(editingTechId); if(!tech||!user) return;
-        if(!canEditTech(user.role)){alert('Bạn không có quyền sửa tài khoản này.'); return;}
-        const duplicate=state.users.find(u=>u.username.toLowerCase()===username && u.id!==user.id); if(duplicate){alert('Username này đã tồn tại.'); return;}
-        user.name=name; user.username=username; user.pin=pin; user.role=role;
+        const tech=state.technicians.find(t=>t.id===editingTechId);
+        let user=getUserByTechId(editingTechId);
+        if(!tech) return;
+
+        const currentRole=(user && user.role) || tech.role || ROLE_STAFF;
+        if(!canEditTech(currentRole)){alert('Bạn không có quyền sửa tài khoản này.'); return;}
+
+        const duplicate=state.users.find(u=>u.username.toLowerCase()===username && (!user || u.id!==user.id));
+        if(duplicate){alert('Username này đã tồn tại.'); return;}
+
+        if(!user){
+          const userId=uid('user');
+          user={id:userId,username,pin,name,role};
+          state.users.push(user);
+          tech.userId=userId;
+        } else {
+          user.name=name; user.username=username; user.pin=pin; user.role=role;
+        }
+
         tech.name=name; tech.role=role; tech.skills=skills;
         addAudit('edit_staff', `Sửa nhân viên ${name} (${roleLabel(role)})`);
       } else {
@@ -315,14 +413,27 @@
 
     function startEditTech(techId){
       requirePermission(canManageStaff,'Bạn không có quyền quản lý nhân viên.');
-      const tech=state.technicians.find(t=>t.id===techId), user=getUserByTechId(techId); if(!tech||!user) return;
-      if(!canEditTech(user.role)){alert('Bạn không có quyền sửa tài khoản này.'); return;}
+      const tech=state.technicians.find(t=>t.id===techId);
+      if(!tech) return;
+
+      let user=getUserByTechId(techId);
+      const role=(user && user.role) || tech.role || ROLE_STAFF;
+
+      if(!canEditTech(role)){alert('Bạn không có quyền sửa tài khoản này.'); return;}
+
       editingTechId=techId;
-      els.staffName.value=tech.name||''; els.staffUsername.value=user.username||''; els.staffPin.value=user.pin||'';
-      populateRoleOptions(); els.staffRole.value=user.role;
+      els.staffName.value=tech.name||'';
+      els.staffUsername.value=user?.username || String(tech.name||'').toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+      els.staffPin.value=user?.pin || '';
+      populateRoleOptions();
+      els.staffRole.value=role;
+
       const skills=Array.isArray(tech.skills)?tech.skills:[ALL_SKILL];
       Array.from(els.staffSkills.options).forEach(option=>option.selected=skills.includes(option.value));
-      els.editModeText.textContent=`Đang edit: ${tech.name}`;
+
+      els.editModeText.textContent=user
+        ? `Đang edit: ${tech.name}`
+        : `Đang edit: ${tech.name} — nhân viên này chưa có user account. Khi lưu, hệ thống sẽ tạo username/PIN.`;
     }
 
     function resetStaffForm(){
@@ -339,20 +450,59 @@
 
     function toggleTechActive(techId){
       requirePermission(canManageStaff,'Bạn không có quyền quản lý nhân viên.');
-      const tech=state.technicians.find(t=>t.id===techId), user=getUserByTechId(techId); if(!tech||!user) return;
-      if(!canEditTech(user.role)){alert('Bạn không có quyền đổi trạng thái tài khoản này.'); return;}
-      if(tech.status==='busy'){alert('Thợ đang phục vụ khách nên chưa thể tắt active.'); return;}
-      tech.active=!tech.active; tech.status=tech.active?'ready':'off'; addAudit('toggle_staff_active', `${tech.name} → ${tech.active?'Active':'Inactive'}`); saveState(); renderStaffAdminList(); refreshStats();
+      const tech=state.technicians.find(t=>t.id===techId);
+      if(!tech) return;
+
+      const user=getUserByTechId(techId);
+      const role=(user && user.role) || tech.role || ROLE_STAFF;
+      if(!canEditTech(role)){alert('Bạn không có quyền đổi trạng thái tài khoản này.'); return;}
+
+      if(tech.status==='busy'){
+        alert('Thợ đang phục vụ khách nên chưa thể chuyển sang Break.');
+        return;
+      }
+
+      if(tech.status==='break'){
+        tech.status='ready';
+        tech.active=true;
+        tech.currentClientId=null;
+        tech.breakReason=null;
+        tech.statusChangedAt=new Date().toISOString();
+        addAudit('set_staff_ready', `${tech.name} → Ready`);
+      } else {
+        tech.status='break';
+        tech.active=true;
+        tech.currentClientId=null;
+        tech.breakReason='Admin set Break';
+        tech.cooldownStartedAt=null;
+        tech.statusChangedAt=new Date().toISOString();
+        addAudit('set_staff_break', `${tech.name} → Break từ Admin Panel`);
+      }
+
+      saveState();
+      renderStaffAdminList();
+      refreshStats();
     }
 
     function deleteTech(techId){
       requirePermission(canManageStaff,'Bạn không có quyền quản lý nhân viên.');
-      const tech=state.technicians.find(t=>t.id===techId), user=getUserByTechId(techId); if(!tech||!user) return;
-      if(!canEditTech(user.role)){alert('Bạn không có quyền xóa tài khoản này.'); return;}
+      const tech=state.technicians.find(t=>t.id===techId);
+      if(!tech) return;
+
+      const user=getUserByTechId(techId);
+      const role=(user && user.role) || tech.role || ROLE_STAFF;
+
+      if(!canEditTech(role)){alert('Bạn không có quyền xóa tài khoản này.'); return;}
       if(tech.status==='busy'){alert('Không thể xóa thợ đang phục vụ khách.'); return;}
       if(!confirm(`Xóa ${tech.name}?`)) return;
-      state.technicians=state.technicians.filter(t=>t.id!==techId); state.users=state.users.filter(u=>u.id!==user.id);
-      addAudit('delete_staff', `Xóa nhân viên ${tech.name}`); saveState(); renderStaffAdminList(); refreshStats();
+
+      state.technicians=state.technicians.filter(t=>t.id!==techId);
+      if(user) state.users=state.users.filter(u=>u.id!==user.id);
+
+      addAudit('delete_staff', `Xóa nhân viên ${tech.name}`);
+      saveState();
+      renderStaffAdminList();
+      refreshStats();
     }
 
     function refreshStats(){
@@ -394,8 +544,8 @@
         const user=getUserByTechId(tech.id);
         const techRole=(user && user.role) || tech.role || ROLE_STAFF;
         const roleClass=techRole===ROLE_OWNER?'role-owner':techRole===ROLE_MANAGER?'role-manager':'success';
-        const statusClass=tech.active?(tech.status==='busy'?'info':'success'):'danger';
-        const statusText=tech.active?(tech.status==='busy'?'Busy':'Active'):'Inactive';
+        const statusClass=!tech.active?'danger':tech.status==='busy'?'info':tech.status==='break'?'warning':'success';
+        const statusText=!tech.active?'Inactive':tech.status==='busy'?'Busy':tech.status==='break'?'Break':'Ready';
         const canEdit=canEditTech(techRole);
         const username=user ? user.username : '(no user)';
         const pin=user ? user.pin : '--';
@@ -413,11 +563,113 @@
           </div>
           <div class="mini-actions">
             <button class="btn-secondary" ${!canEdit?'disabled':''} onclick="startEditTech('${tech.id}')">Edit</button>
-            <button class="btn-warning" ${!canEdit?'disabled':''} onclick="toggleTechActive('${tech.id}')">${tech.active?'Set Inactive':'Set Active'}</button>
+            <button class="btn-warning" ${!canEdit?'disabled':''} onclick="toggleTechActive('${tech.id}')">${tech.status==='break'?'Set Ready':'Break'}</button>
             <button class="btn-danger" ${!canEdit?'disabled':''} onclick="deleteTech('${tech.id}')">Delete</button>
           </div>
         </div>`;
       }).join('');
+    }
+
+
+    function makeStaffLink(user){
+      const base = 'staff_view_qr_login.html';
+      const params = new URLSearchParams({u:user.username,p:user.pin,k:els.sourceKey ? els.sourceKey.value : 'lumi-turn-manager-v5'});
+      return `${base}?${params.toString()}`;
+    }
+
+    function makeQrSrc(url){
+      return `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(url)}`;
+    }
+
+    function copyText(text){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(()=>alert('Đã copy link.'));
+      } else {
+        prompt('Copy link:', text);
+      }
+    }
+
+    function renderQrLogins(){
+      const users = (state.users || []).filter(u => ['staff','manager','owner'].includes(u.role));
+      if(!users.length){
+        els.qrLoginGrid.innerHTML = '<div class="empty">Chưa có user để tạo QR.</div>';
+        return;
+      }
+      els.qrLoginGrid.innerHTML = users.map(user => {
+        const tech = state.technicians.find(t => String(t.userId) === String(user.id));
+        const link = makeStaffLink(user);
+        return `
+          <div class="qr-card">
+            <div class="name">${escapeHtml(user.name)}</div>
+            <div class="meta">@${escapeHtml(user.username)} • ${escapeHtml(roleLabel(user.role))}</div>
+            <div class="qr-box"><img src="${makeQrSrc(link)}" alt="QR login for ${escapeHtml(user.name)}"></div>
+            <div class="link-box">${escapeHtml(link)}</div>
+            <div class="mini-actions"><button class="btn-secondary" data-copy-link="${escapeHtml(link)}">Copy link</button></div>
+            <div class="meta">Skills: ${escapeHtml(getSkillLabel((tech && tech.skills) || ['all_services']))}</div>
+          </div>`;
+      }).join('');
+      els.qrLoginGrid.querySelectorAll('button[data-copy-link]').forEach(btn=>btn.addEventListener('click',()=>copyText(btn.getAttribute('data-copy-link'))));
+    }
+
+    function populateTurnSettingsForm(){
+      const s=normalizeTurnSettings(state.turnSettings);
+      els.simpleTurnMode.checked=!!s.simpleMode;
+      els.requestedThreshold.value=s.requestedThreshold;
+      els.requestedBelowTurn.value=s.requestedBelowTurn;
+      els.requestedAtOrAboveTurn.value=s.requestedAtOrAboveTurn;
+      els.walkInTurn.value=s.walkInTurn;
+      toggleSimpleModeUI();
+      renderTurnSettingsPreview();
+    }
+
+    function toggleSimpleModeUI(){
+      const simple=!!els.simpleTurnMode.checked;
+      [els.requestedThreshold,els.requestedBelowTurn,els.requestedAtOrAboveTurn,els.walkInTurn].forEach(input=>{
+        input.disabled=simple;
+      });
+      if(els.advancedTurnFields){
+        els.advancedTurnFields.classList.toggle('turn-fields-disabled', simple);
+      }
+    }
+
+    function getTurnSettingsFromForm(){
+      return normalizeTurnSettings({
+        simpleMode:els.simpleTurnMode.checked,
+        requestedThreshold:els.requestedThreshold.value,
+        requestedBelowTurn:els.requestedBelowTurn.value,
+        requestedAtOrAboveTurn:els.requestedAtOrAboveTurn.value,
+        walkInTurn:els.walkInTurn.value
+      });
+    }
+
+    function renderTurnSettingsPreview(){
+      const s=getTurnSettingsFromForm();
+      if(s.simpleMode){
+        els.turnSettingsPreview.innerHTML=`✨ <strong>Recommended Mode ON</strong><br/>Requested = <strong>1T</strong><br/>Walk-in = <strong>1T</strong><br/>Fast, simple, and fair for most salons.`;
+        return;
+      }
+      els.turnSettingsPreview.innerHTML=`Requested dưới <strong>$${s.requestedThreshold}</strong> = <strong>${s.requestedBelowTurn}T</strong><br/>Requested từ <strong>$${s.requestedThreshold}</strong> trở lên = <strong>${s.requestedAtOrAboveTurn}T</strong><br/>Walk-in mặc định = <strong>${s.walkInTurn}T</strong>`;
+    }
+
+    function saveTurnSettings(){
+      requirePermission(canSafeReset,'Chỉ Owner / Manager mới được sửa Turn Settings.');
+      const settings=getTurnSettingsFromForm();
+      if([settings.requestedThreshold,settings.requestedBelowTurn,settings.requestedAtOrAboveTurn,settings.walkInTurn].some(v=>!Number.isFinite(v)||v<0)){alert('Vui lòng nhập số hợp lệ.'); return;}
+      state.turnSettings=settings;
+      addAudit('update_turn_settings',settings.simpleMode
+        ? 'Cập nhật Turn Settings: Simple Mode ON — Requested / Walk-in = 1T'
+        : `Cập nhật Turn Settings: requested < $${settings.requestedThreshold} = ${settings.requestedBelowTurn}T, requested >= $${settings.requestedThreshold} = ${settings.requestedAtOrAboveTurn}T, walk-in = ${settings.walkInTurn}T`);
+      saveState();
+      renderTurnSettingsPreview();
+      alert('Đã lưu Turn Settings. Front Desk PRO sẽ áp dụng rule mới.');
+    }
+
+    function resetTurnSettings(){
+      requirePermission(canSafeReset,'Chỉ Owner / Manager mới được reset Turn Settings.');
+      state.turnSettings=normalizeTurnSettings(DEFAULT_TURN_SETTINGS);
+      addAudit('reset_turn_settings','Reset Turn Settings về default');
+      saveState();
+      populateTurnSettingsForm();
     }
 
     function refreshView(){
@@ -427,6 +679,7 @@
       renderCheckInList();
       renderPriorityList();
       renderStaffAdminList();
+      populateTurnSettingsForm();
       resetStaffForm();
       switchTab(activeTab);
     }

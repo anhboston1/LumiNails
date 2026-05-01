@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi Nails • Luxury Grid</title>
+   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
+
+  const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+</script>
+  <style>
+    :root{
+      --bg:#f7f4ef;
+      --bg2:#fbf9f5;
+      --panel:rgba(255,255,255,.94);
+      --line:#ded5c8;
+      --line2:#e8dfd2;
+      --text:#3c342d;
+      --muted:#7c746a;
+      --gold:#c8a66b;
+      --gold-deep:#a78342;
+      --cyan:#d7eef3;
+      --pink:#fff3f4;
+      --pink-text:#c75c75;
+      --dark1:#111a20;
+      --dark2:#04080b;
+      --green:#557260;
+      --green-soft:#edf6ef;
+      --red:#a95858;
+      --red-soft:#fff3f2;
+      --blue:#6f7f9a;
+      --blue-soft:#f3f5fa;
+      --shadow:0 22px 70px rgba(88,67,45,.11);
+      --soft-shadow:0 10px 28px rgba(88,67,45,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.16),transparent 25%),
+        radial-gradient(circle at bottom right,rgba(220,210,198,.28),transparent 30%),
+        linear-gradient(180deg,var(--bg2),var(--bg));
+      color:var(--text);
+      min-height:100vh;
+    }
+    .wrap{padding:18px;max-width:1920px;margin:0 auto}
+    .topbar{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;
+      flex-wrap:wrap;margin-bottom:14px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:18px 20px;
+      backdrop-filter:blur(10px);
+    }
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;
+      color:var(--gold-deep);
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:12px;
+      font-weight:900;
+      margin-bottom:5px;
+    }
+    .eyebrow:before{
+      content:"";
+      width:34px;height:1px;
+      background:linear-gradient(90deg,var(--gold),transparent);
+      display:block;
+    }
+    .title{
+      font-size:38px;
+      line-height:1.02;
+      font-weight:900;
+      font-family:Georgia,serif;
+      letter-spacing:-.025em;
+      color:var(--text);
+    }
+    .controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    button{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:16px;
+      padding:12px 14px;
+      font:inherit;
+      color:var(--text);
+      cursor:pointer;
+      font-weight:800;
+      transition:.15s ease;
+    }
+    button:hover{transform:translateY(-1px)}
+    .pill{
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      font-size:12px;
+      font-weight:900;
+      color:var(--text);
+      box-shadow:0 4px 14px rgba(88,67,45,.04);
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+    }
+    .pill.success{background:rgba(85,114,96,.12); color:var(--green); border-color:rgba(85,114,96,.18)}
+    .muted-note{color:var(--muted);font-size:14px;line-height:1.6;margin-top:4px}
+
+    .hero-next{
+      margin-bottom:14px;
+      border:1px solid rgba(200,166,107,.36);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.18),transparent 28%),
+        linear-gradient(135deg,#fffaf0,#fff);
+      padding:22px 24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+    .hero-kicker{
+      font-size:13px;
+      letter-spacing:.17em;
+      text-transform:uppercase;
+      color:var(--gold-deep);
+      font-weight:900;
+      margin-bottom:6px;
+    }
+    .hero-title{
+      font-size:42px;
+      font-family:Georgia,serif;
+      line-height:1.02;
+      font-weight:900;
+      letter-spacing:-.03em;
+    }
+    .hero-sub{font-size:16px;color:var(--muted);font-weight:800;margin-top:6px}
+    .hero-stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .hero-stats .pill{font-size:13px}
+
+    .legend-wrap{
+      margin-bottom:14px;
+      display:none;
+    }
+    .legend-wrap.show{display:block}
+    .legend{
+      display:flex;gap:10px;flex-wrap:wrap;
+      font-size:13px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:22px;
+      box-shadow:0 12px 36px rgba(88,67,45,.08);
+      padding:12px 14px;
+      backdrop-filter:blur(10px);
+    }
+    .legend .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:13px;
+    }
+    .legend .pill::before{
+      content:"";
+      width:16px;height:16px;border-radius:5px;
+      display:inline-block;
+      border:1px solid rgba(0,0,0,.08);
+      flex:0 0 auto;
+    }
+    .legend .pill.req::before{
+      background:linear-gradient(135deg,#fff 0 48%,#111a20 49% 100%);
+      box-shadow:inset -4px -4px 0 rgba(200,166,107,.9);
+    }
+    .legend .pill.walk::before{background:#111a20}
+    .legend .pill.serv::before{background:#fff;box-shadow:inset 0 0 0 3px rgba(169,88,88,.75)}
+    .legend .pill.combo::before{background:repeating-linear-gradient(45deg,rgba(85,114,96,.78),rgba(85,114,96,.78) 4px,#111a20 4px,#111a20 8px)}
+    .legend .pill.next::before{background:rgba(255,247,231,.95);box-shadow:inset 0 0 0 3px rgba(200,166,107,.75)}
+
+    .board{
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:24px;
+      overflow:auto;
+      padding:12px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .empty-state{
+      background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px;
+      color:var(--muted);line-height:1.7
+    }
+    table{border-collapse:separate;border-spacing:6px;width:max-content;min-width:100%}
+    th,td{border:1px solid var(--line);background:#fff;vertical-align:top;border-radius:14px}
+    th{
+      background:#eee7dc;padding:12px 9px;font-size:12px;text-transform:uppercase;
+      letter-spacing:.12em;color:#6b6258;text-align:center;position:sticky;top:0;z-index:2;
+      font-weight:900;
+    }
+    .col-index{width:44px;min-width:44px;text-align:center;font-weight:900}
+    .col-name{width:190px;min-width:190px}
+    .col-turn{width:78px;min-width:78px;text-align:center}
+    .col-time{width:96px;min-width:96px;text-align:center}
+    .slot-col{width:94px;min-width:94px}
+    .staff-cell{
+      padding:12px 10px;
+      height:96px;
+      background:#fff;
+      box-shadow:var(--soft-shadow);
+    }
+    .staff-name{font-size:20px;font-weight:900;margin-bottom:8px;line-height:1.1}
+    .staff-sub{
+      display:flex;align-items:center;gap:8px;color:var(--muted);
+      font-size:13px;flex-wrap:wrap
+    }
+    .turn-box{
+      background:rgba(200,166,107,.14);
+      color:var(--gold-deep);
+      display:inline-block;
+      padding:5px 8px;
+      border-radius:999px;
+      font-weight:900;
+    }
+    .time-chip{
+      background:#e7f3f6;
+      padding:5px 8px;
+      border-radius:999px;
+      display:inline-block;
+      font-weight:900;
+      color:#647985;
+    }
+    .time-chip.ready{background:rgba(85,114,96,.12); color:var(--green)}
+    .time-chip.busy{background:rgba(111,127,154,.12); color:var(--blue)}
+    .slot{height:96px;padding:6px;background:#fff}
+    .ticket{
+      height:100%;
+      padding:7px 7px 6px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      border-radius:12px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .ticket.dark{
+      background:linear-gradient(135deg,var(--dark1),var(--dark2));
+      color:#fff
+    }
+    .ticket.split{
+      background:linear-gradient(135deg,#ffffff 0 46%,#0b1821 47% 100%);
+      color:#fff
+    }
+    .ticket.split .ghost{color:#0b1821}
+    .ticket.red{
+      background:linear-gradient(135deg,#111a20 0 72%, var(--red) 73% 100%);
+      color:#fff
+    }
+    .ticket.green{
+      background:linear-gradient(135deg,#12271f,var(--green));
+      color:#eafff1
+    }
+    .ticket.serving{
+      outline:2px solid rgba(169,88,88,.95);
+      outline-offset:-2px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08),
+        0 0 0 3px rgba(169,88,88,.10),
+        0 8px 16px rgba(169,88,88,.14);
+    }
+    .ticket.serving::before{
+      content:"Live";
+      position:absolute;
+      right:5px;
+      bottom:5px;
+      z-index:3;
+      color:#ffd2d2;
+      font-size:10px;
+      font-weight:900;
+    }
+
+    /* Completed ticket stays visible in grid slots, but uses original history colors.
+       Serving/current work is red and appears as the right-most occupied slot. */
+    .ticket.dark.completed{
+      background:linear-gradient(135deg,#111a20,#04080b) !important;
+      color:#fff !important;
+      opacity:.92;
+      outline:1px solid rgba(255,255,255,.18);
+      outline-offset:-2px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08),
+        0 8px 18px rgba(17,26,32,.18) !important;
+    }
+    .ticket.split.completed{
+      background:linear-gradient(135deg,#ffffff 0 46%,#0b1821 47% 100%) !important;
+      color:#fff !important;
+      opacity:.94;
+      outline:1px solid rgba(17,26,32,.18);
+      outline-offset:-2px;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.12),
+        0 8px 18px rgba(17,26,32,.14) !important;
+    }
+    .ticket.dark.completed .ghost,
+    .ticket.dark.completed .main,
+    .ticket.dark.completed .bottom,
+    .ticket.dark.completed .tiny{color:#fff !important;}
+    .ticket.split.completed .ghost{color:#0b1821 !important;}
+    .ticket.split.completed .main{color:#fff !important;}
+    .ticket.split.completed .bottom{color:#fff !important;}
+    .ticket.split.completed .tiny{color:#fff !important;}
+    .ticket.completed::before{
+      content:"Done";
+      position:absolute;
+      right:6px;
+      bottom:6px;
+      z-index:3;
+      color:#fff;
+      font-size:10px;
+      font-weight:900;
+      background:rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:999px;
+      padding:2px 5px;
+    }
+    .ticket.split.completed::before{
+      background:rgba(11,24,33,.72);
+      border-color:rgba(255,255,255,.20);
+    }
+    .ticket.completed .tiny{padding-right:34px;}
+
+    .main{
+      font-family:Georgia,serif;
+      font-size:17px;
+      line-height:1.05;
+      font-weight:900;
+      text-align:center;
+      white-space:pre-line
+    }
+    .ghost{
+      color:#e7d6ff;font-size:12px;font-weight:900;text-align:left
+    }
+    .bottom{
+      display:flex;justify-content:space-between;align-items:flex-end;font-size:11px;font-weight:900
+    }
+    .tiny{color:#f1d9a8;font-size:11px;font-weight:900}
+    .accent-green{color:#45de4a}
+    .accent-red{color:#ff4c4c}
+    .accent-purple{color:#f0a4ff}
+    .empty{
+      height:100%;
+      border:1px dashed #ded2c4;
+      background:
+        repeating-linear-gradient(45deg,rgba(0,0,0,.018),rgba(0,0,0,.018) 6px,transparent 6px,transparent 12px),
+        rgba(255,255,255,.62);
+      border-radius:12px;
+      position:relative;
+    }
+    .empty::after{
+      content:"+";
+      position:absolute;
+      right:8px;
+      bottom:5px;
+      color:#d6ccc0;
+      font-weight:900;
+      font-size:16px;
+    }
+    .ghost-name{color:#a4998c;font-size:12px;padding:7px;font-weight:700}
+
+    .section-card{
+      margin-top:18px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:24px;
+      padding:18px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .section-title{
+      font-size:30px;
+      font-weight:900;
+      font-family:Georgia,serif;
+      letter-spacing:-.02em;
+      margin-bottom:6px;
+    }
+    .section-sub{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+      margin-bottom:12px
+    }
+    .wait-table-wrap{overflow:auto}
+    .wait-table{
+      width:100%;
+      min-width:860px;
+      border-collapse:collapse;
+      border-spacing:0
+    }
+    .wait-table th,.wait-table td{
+      border:1px solid #e1dbd0;
+      padding:13px 14px;
+      background:#fff;
+      vertical-align:top;
+      text-align:left;
+      border-radius:0;
+    }
+    .wait-table th{
+      background:#f1ece3;
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:#6b6258;
+      font-weight:900;
+    }
+    .wait-table tbody tr:nth-child(even) td{
+      background:rgba(0,0,0,.012);
+    }
+    .wait-table tbody tr:hover td{
+      background:rgba(200,166,107,.08);
+    }
+    .queue-index{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:30px;height:30px;border-radius:999px;background:rgba(200,166,107,.14);
+      color:var(--gold-deep);font-weight:900
+    }
+    .req-pill,.walk-pill{
+      display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900
+    }
+    .req-pill{background:var(--blue-soft);color:#586887}
+    .walk-pill{background:var(--green-soft);color:var(--green)}
+    .turn-pill{
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:46px;border-radius:999px;padding:6px 10px;background:rgba(155,126,75,.12);color:#8d6f3f;font-weight:900
+    }
+    .status-box{
+      margin-bottom:14px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:#f8fff8;
+      border:1px solid #cae5ca;
+      color:#476a47;
+      font-weight:900;
+      box-shadow:0 8px 22px rgba(85,114,96,.06);
+    }
+    .error-box{
+      margin-top:16px;padding:16px;border-radius:16px;background:#fff6f6;border:1px solid #e7c3c3;color:#8a4545;white-space:pre-wrap
+    }
+    .next-customer-row td{
+      background:linear-gradient(180deg, rgba(200,166,107,.14), #fff) !important;
+      box-shadow:inset 4px 0 0 var(--gold);
+    }
+    .requested-row td{
+      background:rgba(111,127,154,.045) !important;
+    }
+    .highlight-tech .staff-cell{
+      animation:nextPulse 1.7s ease-in-out infinite;
+      background:linear-gradient(135deg, rgba(255,247,231,.92), #fff);
+    }
+    @keyframes nextPulse{
+      0%,100%{box-shadow:0 0 0 2px rgba(200,166,107,.20),0 14px 32px rgba(200,166,107,.12)}
+      50%{box-shadow:0 0 0 4px rgba(200,166,107,.34),0 14px 32px rgba(200,166,107,.18)}
+    }
+    .next-badge{
+      display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;
+      background:rgba(200,166,107,.16);color:var(--gold-deep);font-weight:900;font-size:12px
+    }
+    .mini-note{
+      color:var(--muted);font-size:12px;line-height:1.5
+    }
+    .busy-text{color:var(--red);font-weight:900}
+    .ready-text{color:var(--green);font-weight:900}
+
+
+    /* Ultimate Mode polish */
+    .hero-title{
+      animation:heroBreath 2.6s ease-in-out infinite;
+    }
+    @keyframes heroBreath{
+      0%,100%{opacity:1; transform:translateY(0)}
+      50%{opacity:.88; transform:translateY(-1px)}
+    }
+    .hero-empty .hero-title{
+      animation:none;
+      font-size:34px;
+    }
+    .hero-empty{
+      background:
+        radial-gradient(circle at top left,rgba(85,114,96,.10),transparent 30%),
+        linear-gradient(135deg,#fff,#fbf9f5);
+      border-color:rgba(85,114,96,.18);
+    }
+    .ticket.serving{
+      animation:liveGlow 2s ease-in-out infinite;
+    }
+    @keyframes liveGlow{
+      0%,100%{filter:brightness(1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 3px rgba(169,88,88,.10),0 8px 16px rgba(169,88,88,.14)}
+      50%{filter:brightness(1.08); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 4px rgba(169,88,88,.18),0 10px 22px rgba(169,88,88,.22)}
+    }
+    .next-customer-row td{
+      position:relative;
+    }
+    .next-customer-row td:first-child::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:0;
+      bottom:0;
+      width:4px;
+      background:var(--gold);
+    }
+    .highlight-tech .staff-cell{
+      border-color:rgba(200,166,107,.55);
+    }
+    .status-box{
+      transition:all .25s ease;
+    }
+    .toast{
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      z-index:9999;
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(200,166,107,.32);
+      background:rgba(255,255,255,.96);
+      box-shadow:0 18px 48px rgba(88,67,45,.16);
+      color:var(--text);
+      font-weight:900;
+      opacity:0;
+      transform:translateY(12px);
+      pointer-events:none;
+      transition:.28s ease;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+    .topbar{
+      position:sticky;
+      top:10px;
+      z-index:10;
+    }
+    body.night{
+      --bg:#1f1b17;
+      --bg2:#28231d;
+      --panel:rgba(41,35,29,.92);
+      --text:#f7f1e8;
+      --muted:#c9bba8;
+      --line:#4a4035;
+      --line2:#584c3f;
+    }
+    body.night th{background:#3a3128;color:#d8c8b5}
+    body.night td, body.night .staff-cell, body.night .slot, body.night .section-card, body.night .board, body.night .topbar{background:rgba(42,36,30,.92)}
+    body.night .empty{background:rgba(255,255,255,.04)}
+    body.night .hero-next{background:linear-gradient(135deg,#3a3128,#2a241e)}
+    body.night .status-box{background:rgba(85,114,96,.16)}
+    @media (min-width:1400px){
+      .hero-title{font-size:46px}
+      .wrap{padding:22px}
+    }
+
+    @media (max-width:900px){
+      .title{font-size:28px}
+      .hero-title{font-size:30px}
+      .staff-name{font-size:16px}
+      .slot,.staff-cell{height:82px}
+      .main{font-size:14px}
+      .wrap{padding:12px}
+    }
+
+
+    #modeToggleBtn{
+      min-width:110px;
+    }
+    body.night #modeToggleBtn{
+      background:rgba(255,255,255,.92) !important;
+      color:#3c342d !important;
+      border-color:rgba(255,255,255,.65) !important;
+    }
+
+    /* Night mode contrast fix */
+    body.night button,
+    body.night .pill,
+    body.night .legend .pill,
+    body.night .hero-stats .pill {
+      background: rgba(255,255,255,.92) !important;
+      color: #3c342d !important;
+      border-color: rgba(255,255,255,.65) !important;
+      box-shadow: 0 8px 20px rgba(0,0,0,.18);
+    }
+
+    body.night .pill.success,
+    body.night .hero-stats .pill.success {
+      background: rgba(85,114,96,.28) !important;
+      color: #dff1e3 !important;
+      border-color: rgba(125,165,137,.38) !important;
+    }
+
+    body.night .legend {
+      background: rgba(41,35,29,.92) !important;
+      border-color: rgba(255,255,255,.28) !important;
+    }
+
+    body.night .hero-next {
+      border-color: rgba(200,166,107,.42) !important;
+    }
+
+    body.night .topbar,
+    body.night .hero-next,
+    body.night .board,
+    body.night .section-card {
+      border-color: rgba(255,255,255,.18) !important;
+    }
+
+    body.night .status-box {
+      color: #dff1e3 !important;
+      border-color: rgba(125,165,137,.35) !important;
+    }
+
+    body.night .time-chip {
+      background: rgba(255,255,255,.12) !important;
+      color: #f7f1e8 !important;
+    }
+
+    body.night .time-chip.ready {
+      background: rgba(85,114,96,.28) !important;
+      color: #dff1e3 !important;
+    }
+
+    body.night .time-chip.busy {
+      background: rgba(111,127,154,.30) !important;
+      color: #e4ebff !important;
+    }
+
+
+    /* Lumi Color System v2 — clear, luxury, fast to scan */
+    :root{
+      --state-ready-bg:rgba(85,114,96,.16);
+      --state-ready-text:#46634f;
+      --state-ready-border:rgba(85,114,96,.28);
+
+      --state-busy-bg:rgba(111,127,154,.16);
+      --state-busy-text:#526179;
+      --state-busy-border:rgba(111,127,154,.26);
+
+      --state-serving-1:#6f1f1f;
+      --state-serving-2:#b23a3a;
+      --state-serving-glow:rgba(178,58,58,.32);
+
+      --state-next-bg:rgba(200,166,107,.18);
+      --state-next-text:#8a6c36;
+      --state-next-border:rgba(200,166,107,.38);
+
+      --state-requested-bg:rgba(111,127,154,.13);
+      --state-requested-text:#596a88;
+
+      --state-walkin-bg:rgba(85,114,96,.13);
+      --state-walkin-text:#4f725d;
+    }
+
+    .time-chip.ready,
+    .pill.success{
+      background:var(--state-ready-bg) !important;
+      color:var(--state-ready-text) !important;
+      border-color:var(--state-ready-border) !important;
+    }
+
+    .time-chip.busy{
+      background:var(--state-busy-bg) !important;
+      color:var(--state-busy-text) !important;
+      border-color:var(--state-busy-border) !important;
+    }
+
+    .next-badge,
+    .turn-pill,
+    .queue-index,
+    .turn-box{
+      background:var(--state-next-bg) !important;
+      color:var(--state-next-text) !important;
+      border-color:var(--state-next-border) !important;
+    }
+
+    .req-pill{
+      background:var(--state-requested-bg) !important;
+      color:var(--state-requested-text) !important;
+    }
+
+    .walk-pill{
+      background:var(--state-walkin-bg) !important;
+      color:var(--state-walkin-text) !important;
+    }
+
+    /* Stronger LIVE / serving ticket */
+    .ticket.serving{
+      outline:2px solid rgba(255,255,255,.45) !important;
+      outline-offset:-3px;
+      background:linear-gradient(135deg,var(--state-serving-1),var(--state-serving-2)) !important;
+      color:#fff !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.18),
+        0 0 0 3px rgba(178,58,58,.18),
+        0 10px 24px var(--state-serving-glow) !important;
+      animation:servingPulse 1.9s ease-in-out infinite !important;
+    }
+
+    .ticket.serving .ghost,
+    .ticket.serving .main,
+    .ticket.serving .bottom,
+    .ticket.serving .tiny{
+      color:#fff !important;
+    }
+
+    .ticket.serving::before{
+      background:rgba(255,255,255,.16);
+      color:#fff !important;
+      border:1px solid rgba(255,255,255,.22);
+      border-radius:999px;
+      padding:2px 5px;
+      right:6px !important;
+      bottom:6px !important;
+    }
+
+    @keyframes servingPulse{
+      0%,100%{
+        transform:scale(1);
+        filter:brightness(1);
+      }
+      50%{
+        transform:scale(1.025);
+        filter:brightness(1.06);
+      }
+    }
+
+    /* Next tech and next customer should be obvious but not loud */
+    .highlight-tech .staff-cell{
+      border-color:var(--gold) !important;
+      box-shadow:
+        0 0 0 2px rgba(200,166,107,.22),
+        0 14px 32px rgba(200,166,107,.16) !important;
+    }
+
+    .next-customer-row td{
+      background:linear-gradient(180deg, rgba(200,166,107,.16), rgba(255,255,255,.92)) !important;
+      box-shadow:inset 4px 0 0 var(--gold) !important;
+    }
+
+    /* Night mode color system */
+    body.night{
+      --state-ready-bg:rgba(85,114,96,.30);
+      --state-ready-text:#dff1e3;
+      --state-ready-border:rgba(132,177,145,.40);
+
+      --state-busy-bg:rgba(111,127,154,.34);
+      --state-busy-text:#e6ecff;
+      --state-busy-border:rgba(160,175,210,.38);
+
+      --state-next-bg:rgba(200,166,107,.24);
+      --state-next-text:#f0d79c;
+      --state-next-border:rgba(200,166,107,.46);
+
+      --state-requested-bg:rgba(111,127,154,.28);
+      --state-requested-text:#e6ecff;
+
+      --state-walkin-bg:rgba(85,114,96,.28);
+      --state-walkin-text:#dff1e3;
+
+      --state-serving-1:#8a2424;
+      --state-serving-2:#d34b4b;
+      --state-serving-glow:rgba(211,75,75,.38);
+    }
+
+    body.night .next-customer-row td{
+      background:linear-gradient(180deg, rgba(200,166,107,.22), rgba(42,36,30,.92)) !important;
+    }
+
+    body.night .ticket.serving{
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.22),
+        0 0 0 3px rgba(211,75,75,.24),
+        0 12px 28px rgba(211,75,75,.40) !important;
+    }
+
+
+    /* Lumi Grid Status System */
+    .tech-status{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:5px 8px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      border:1px solid transparent;
+    }
+    .tech-status.ready{
+      background:rgba(85,114,96,.14);
+      color:#46634f;
+      border-color:rgba(85,114,96,.24);
+    }
+    .tech-status.busy{
+      background:linear-gradient(135deg,#7a1f1f,#b23a3a);
+      color:#fff;
+      border-color:rgba(178,58,58,.35);
+    }
+    .tech-status.break{
+      background:rgba(124,116,106,.14);
+      color:#6f665d;
+      border-color:rgba(124,116,106,.24);
+    }
+    .tech-status.cooldown{
+      background:rgba(200,166,107,.14);
+      color:var(--gold-deep);
+      border-color:rgba(200,166,107,.24);
+    }
+    tr.tech-break .staff-cell,
+    tr.tech-break td{
+      opacity:.72;
+    }
+    tr.tech-break .staff-cell{
+      background:linear-gradient(135deg,rgba(124,116,106,.05),#fff);
+    }
+    tr.tech-busy .staff-cell{
+      box-shadow:0 0 0 2px rgba(178,58,58,.12),0 12px 28px rgba(178,58,58,.10);
+    }
+    body.night .tech-status.ready{
+      background:rgba(85,114,96,.30);
+      color:#dff1e3;
+      border-color:rgba(132,177,145,.40);
+    }
+    body.night .tech-status.break{
+      background:rgba(255,255,255,.12);
+      color:#ddd1c2;
+      border-color:rgba(255,255,255,.18);
+    }
+    body.night .tech-status.cooldown{
+      background:rgba(200,166,107,.22);
+      color:#f0d79c;
+      border-color:rgba(200,166,107,.40);
+    }
+
+
+    /* Clean empty state */
+    .hero-next.hero-empty{
+      padding:10px 16px;
+      border-radius:18px;
+      box-shadow:0 8px 24px rgba(88,67,45,.06);
+      background:linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,250,240,.70));
+      border:1px solid rgba(200,166,107,.18);
+    }
+    .hero-next.hero-empty .hero-title{
+      font-size:16px !important;
+      font-family:Inter,Arial,sans-serif !important;
+      font-weight:900;
+      letter-spacing:0;
+      animation:none !important;
+      color:var(--gold-deep);
+    }
+    .hero-next.hero-empty .hero-sub{
+      font-size:13px;
+      margin-top:2px;
+      font-weight:700;
+      color:var(--muted);
+    }
+    .hero-next.hero-empty .hero-stats .pill{
+      font-size:12px;
+      padding:6px 10px;
+    }
+    .empty-queue-compact{
+      padding:16px 18px;
+      border-radius:18px;
+      background:rgba(255,255,255,.68);
+      border:1px dashed rgba(200,166,107,.22);
+      color:var(--muted);
+      font-weight:800;
+      text-align:center;
+    }
+    body.night .hero-next.hero-empty{
+      background:linear-gradient(135deg,rgba(42,36,30,.88),rgba(58,49,40,.80));
+      border-color:rgba(200,166,107,.25);
+    }
+    body.night .empty-queue-compact{
+      background:rgba(255,255,255,.05);
+      border-color:rgba(200,166,107,.25);
+    }
+
+    @media print{
+      body{background:#fff}
+      .topbar,.board,.section-card,.legend,.hero-next{box-shadow:none}
+      .controls,button{display:none!important}
+    }
+  
+    /* Optional Next Hero Toggle */
+    .next-hero-toggle.on{
+      background:rgba(200,166,107,.16);
+      color:var(--gold-deep);
+      border-color:rgba(200,166,107,.28);
+    }
+    .next-hero-toggle.off{
+      background:rgba(124,116,106,.10);
+      color:var(--muted);
+      border-color:rgba(124,116,106,.18);
+    }
+    .hero-next.hidden-next-hero{
+      display:none !important;
+    }
+    .next-hero-mini{
+      margin-bottom:14px;
+      padding:10px 14px;
+      border-radius:18px;
+      border:1px solid rgba(200,166,107,.20);
+      background:rgba(255,255,255,.68);
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+      display:none;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      box-shadow:0 8px 22px rgba(88,67,45,.05);
+    }
+    .next-hero-mini.show{
+      display:flex;
+    }
+    .next-hero-mini strong{
+      color:var(--gold-deep);
+    }
+
+  
+    /* Strong hide for Next Hero OFF */
+    body.hide-next-hero .hero-next,
+    body.hide-next-hero #heroNext,
+    body.hide-next-hero #nextHero,
+    body.hide-next-hero .next-hero-card{
+      display:none !important;
+      visibility:hidden !important;
+      height:0 !important;
+      min-height:0 !important;
+      padding:0 !important;
+      margin:0 !important;
+      border:0 !important;
+      overflow:hidden !important;
+    }
+
+  
+    /* Lumi status wording: internal ready/cooldown, display Available/Refreshing */
+    .tag.available,
+    .status-available,
+    .mode-chip.available{
+      background:rgba(85,114,96,.12)!important;
+      color:var(--ready,#557260)!important;
+      border:1px solid rgba(85,114,96,.20)!important;
+    }
+    .tag.refreshing,
+    .status-refreshing,
+    .mode-chip.refreshing{
+      background:rgba(200,166,107,.16)!important;
+      color:var(--gold-deep,#a78342)!important;
+      border:1px solid rgba(200,166,107,.26)!important;
+    }
+    .refreshing-reminder{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:linear-gradient(135deg,rgba(200,166,107,.14),rgba(255,255,255,.92));
+      border:1px solid rgba(200,166,107,.26);
+      color:var(--gold-deep,#a78342);
+      font-size:12px;
+      font-weight:850;
+      line-height:1.5;
+    }
+
+  
+    /* Lumi Grid Available Status — stronger green, consistent with Front Desk / Staff View */
+    .tech-status.available,
+    .tech-status.ready {
+      background: var(--state-ready-bg) !important;
+      color: var(--state-ready-text) !important;
+      border-color: var(--state-ready-border) !important;
+      box-shadow: 0 0 0 3px rgba(85,114,96,.10), 0 8px 18px rgba(85,114,96,.08) !important;
+      font-weight: 950 !important;
+      letter-spacing: .01em;
+    }
+
+    .tech-status.refreshing,
+    .tech-status.cooldown {
+      background: rgba(200,166,107,.16) !important;
+      color: var(--gold-deep) !important;
+      border-color: rgba(200,166,107,.28) !important;
+      box-shadow: 0 0 0 3px rgba(200,166,107,.08) !important;
+      font-weight: 950 !important;
+    }
+
+    .tech-status.busy {
+      background: linear-gradient(135deg,#7a1f1f,#b23a3a) !important;
+      color:#fff !important;
+      border-color: rgba(178,58,58,.35) !important;
+    }
+
+    .tech-status.break {
+      background: rgba(124,116,106,.14) !important;
+      color:#6f665d !important;
+      border-color: rgba(124,116,106,.24) !important;
+    }
+
+    .tech-status::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      display:inline-block;
+      flex:0 0 auto;
+      box-shadow:0 0 0 3px rgba(255,255,255,.75);
+    }
+
+    .tech-status.available::before,
+    .tech-status.ready::before{ background: var(--green); }
+
+    .tech-status.refreshing::before,
+    .tech-status.cooldown::before{ background: var(--gold); }
+
+    .tech-status.busy::before{
+      background:#fff;
+      box-shadow:0 0 0 3px rgba(255,255,255,.22);
+    }
+
+    .tech-status.break::before{ background:#9b9389; }
+
+    tr.tech-available .staff-cell{
+      border-color: rgba(85,114,96,.22) !important;
+      box-shadow: 0 0 0 2px rgba(85,114,96,.08), var(--soft-shadow) !important;
+    }
+
+    tr.tech-refreshing .staff-cell{
+      border-color: rgba(200,166,107,.28) !important;
+      background: linear-gradient(135deg,rgba(200,166,107,.06),#fff) !important;
+    }
+
+    body.night .tech-status.available,
+    body.night .tech-status.ready{
+      background: rgba(85,114,96,.34) !important;
+      color:#dff1e3 !important;
+      border-color: rgba(132,177,145,.44) !important;
+      box-shadow: 0 0 0 3px rgba(132,177,145,.14), 0 8px 18px rgba(0,0,0,.18) !important;
+    }
+
+    body.night .tech-status.refreshing,
+    body.night .tech-status.cooldown{
+      background: rgba(200,166,107,.24) !important;
+      color:#f0d79c !important;
+      border-color: rgba(200,166,107,.44) !important;
+    }
+
+    body.night tr.tech-available .staff-cell{
+      border-color: rgba(132,177,145,.28) !important;
+      box-shadow: 0 0 0 2px rgba(132,177,145,.10), 0 12px 28px rgba(0,0,0,.18) !important;
+    }
+
+  
+    /* Lumi Grid Final Status Polish */
+    .tech-status.available,
+    .tech-status.ready {
+      background: rgba(85,114,96,.16) !important;
+      color: #46634f !important;
+      border: 1px solid rgba(85,114,96,.28) !important;
+      font-weight: 950 !important;
+      letter-spacing: .02em;
+      box-shadow:
+        0 0 0 3px rgba(85,114,96,.12),
+        0 6px 16px rgba(85,114,96,.08) !important;
+    }
+
+    .tech-status.busy {
+      background: rgba(180,91,91,.12) !important;
+      color: #9f3f3f !important;
+      border: 1px solid rgba(180,91,91,.22) !important;
+      font-weight: 850 !important;
+      box-shadow: 0 0 0 2px rgba(180,91,91,.06) !important;
+    }
+
+    .tech-status.refreshing,
+    .tech-status.cooldown {
+      background: rgba(200,166,107,.14) !important;
+      color: #a78342 !important;
+      border: 1px solid rgba(200,166,107,.24) !important;
+      font-weight: 850 !important;
+      opacity: .94;
+      box-shadow: 0 0 0 2px rgba(200,166,107,.07) !important;
+    }
+
+    .tech-status.break {
+      background: rgba(124,116,106,.10) !important;
+      color: #6f665d !important;
+      border: 1px solid rgba(124,116,106,.20) !important;
+      font-weight: 800 !important;
+    }
+
+    .tech-status{
+      display:inline-flex !important;
+      align-items:center !important;
+      gap:7px !important;
+    }
+
+    .tech-status::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      display:inline-block;
+      flex:0 0 auto;
+      box-shadow:0 0 0 3px rgba(255,255,255,.72);
+    }
+
+    .tech-status.available::before,
+    .tech-status.ready::before { background:#557260; }
+    .tech-status.busy::before { background:#9f3f3f; }
+    .tech-status.refreshing::before,
+    .tech-status.cooldown::before { background:#c8a66b; }
+    .tech-status.break::before { background:#9b9389; }
+
+    tr.tech-available .staff-cell{
+      border-color: rgba(85,114,96,.24) !important;
+      box-shadow:
+        0 0 0 2px rgba(85,114,96,.08),
+        var(--soft-shadow) !important;
+    }
+
+    tr.tech-busy .staff-cell{
+      box-shadow:
+        0 0 0 1px rgba(180,91,91,.08),
+        0 10px 22px rgba(180,91,91,.05) !important;
+    }
+
+    tr.tech-refreshing .staff-cell{
+      border-color: rgba(200,166,107,.24) !important;
+      background: linear-gradient(135deg,rgba(200,166,107,.045),#fff) !important;
+    }
+
+    body.night .tech-status.available,
+    body.night .tech-status.ready {
+      background: rgba(85,114,96,.34) !important;
+      color: #dff1e3 !important;
+      border-color: rgba(132,177,145,.44) !important;
+      box-shadow:
+        0 0 0 3px rgba(132,177,145,.14),
+        0 8px 18px rgba(0,0,0,.18) !important;
+    }
+
+    body.night .tech-status.busy {
+      background: rgba(180,91,91,.18) !important;
+      color: #ffd7d7 !important;
+      border-color: rgba(211,75,75,.28) !important;
+    }
+
+    body.night .tech-status.refreshing,
+    body.night .tech-status.cooldown {
+      background: rgba(200,166,107,.24) !important;
+      color: #f0d79c !important;
+      border-color: rgba(200,166,107,.44) !important;
+    }
+
+  
+    /* ==========================================================
+       LUMI COLOR SYSTEM v3 — Unified Design Tokens
+       Internal statuses remain: ready / cooldown / busy / break
+       Display labels remain: Available / Refreshing / Busy / Break
+       ========================================================== */
+    :root{
+      /* Brand */
+      --lumi-green: rgb(41,153,73);
+      --lumi-green-soft: rgba(41,153,73,.14);
+      --lumi-green-border: rgba(41,153,73,.28);
+
+      --lumi-gold: #c8a66b;
+      --lumi-gold-deep: #a78342;
+      --lumi-gold-soft: rgba(200,166,107,.14);
+      --lumi-gold-border: rgba(200,166,107,.26);
+
+      --lumi-red: #b45b5b;
+      --lumi-red-soft: rgba(180,91,91,.11);
+      --lumi-red-border: rgba(180,91,91,.22);
+
+      --lumi-gray: #9b9389;
+      --lumi-gray-soft: rgba(124,116,106,.10);
+      --lumi-gray-border: rgba(124,116,106,.20);
+
+      /* Status: Available */
+      --status-available-bg: var(--lumi-green-soft);
+      --status-available-text: var(--lumi-green);
+      --status-available-border: var(--lumi-green-border);
+      --status-available-dot: var(--lumi-green);
+      --status-available-glow: rgba(41,153,73,.12);
+
+      /* Status: Refreshing */
+      --status-refreshing-bg: var(--lumi-gold-soft);
+      --status-refreshing-text: var(--lumi-gold-deep);
+      --status-refreshing-border: var(--lumi-gold-border);
+      --status-refreshing-dot: var(--lumi-gold);
+      --status-refreshing-glow: rgba(200,166,107,.08);
+
+      /* Status: Busy */
+      --status-busy-bg: var(--lumi-red-soft);
+      --status-busy-text: #9f3f3f;
+      --status-busy-border: var(--lumi-red-border);
+      --status-busy-dot: #9f3f3f;
+      --status-busy-glow: rgba(180,91,91,.06);
+
+      /* Status: Break */
+      --status-break-bg: var(--lumi-gray-soft);
+      --status-break-text: #6f665d;
+      --status-break-border: var(--lumi-gray-border);
+      --status-break-dot: var(--lumi-gray);
+
+      /* Surfaces */
+      --lumi-surface-soft: rgba(255,255,255,.82);
+      --lumi-shadow-soft: 0 6px 16px rgba(0,0,0,.06);
+    }
+
+    body.night{
+      --status-available-bg: rgba(41,153,73,.32);
+      --status-available-text: #dff8e5;
+      --status-available-border: rgba(74,188,106,.45);
+      --status-available-glow: rgba(41,153,73,.16);
+
+      --status-refreshing-bg: rgba(200,166,107,.24);
+      --status-refreshing-text: #f0d79c;
+      --status-refreshing-border: rgba(200,166,107,.44);
+
+      --status-busy-bg: rgba(180,91,91,.20);
+      --status-busy-text: #ffd7d7;
+      --status-busy-border: rgba(211,75,75,.30);
+
+      --status-break-bg: rgba(255,255,255,.10);
+      --status-break-text: #ddd1c2;
+      --status-break-border: rgba(255,255,255,.18);
+    }
+
+    /* Universal status chip */
+    .tech-status{
+      display:inline-flex !important;
+      align-items:center !important;
+      gap:7px !important;
+      padding:6px 10px !important;
+      border-radius:999px !important;
+      border:1px solid transparent !important;
+      font-size:12px !important;
+      line-height:1 !important;
+      font-weight:900 !important;
+      letter-spacing:.01em;
+      white-space:nowrap;
+    }
+
+    .tech-status::before{
+      content:"";
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      display:inline-block;
+      flex:0 0 auto;
+      box-shadow:0 0 0 3px rgba(255,255,255,.72);
+    }
+
+    .tech-status.available,
+    .tech-status.ready{
+      background:var(--status-available-bg) !important;
+      color:var(--status-available-text) !important;
+      border-color:var(--status-available-border) !important;
+      box-shadow:
+        0 0 0 3px var(--status-available-glow),
+        var(--lumi-shadow-soft) !important;
+      font-weight:950 !important;
+    }
+
+    .tech-status.available::before,
+    .tech-status.ready::before{
+      background:var(--status-available-dot);
+    }
+
+    .tech-status.refreshing,
+    .tech-status.cooldown{
+      background:var(--status-refreshing-bg) !important;
+      color:var(--status-refreshing-text) !important;
+      border-color:var(--status-refreshing-border) !important;
+      box-shadow:0 0 0 2px var(--status-refreshing-glow) !important;
+      opacity:.95;
+      font-weight:850 !important;
+    }
+
+    .tech-status.refreshing::before,
+    .tech-status.cooldown::before{
+      background:var(--status-refreshing-dot);
+    }
+
+    .tech-status.busy{
+      background:var(--status-busy-bg) !important;
+      color:var(--status-busy-text) !important;
+      border-color:var(--status-busy-border) !important;
+      box-shadow:0 0 0 2px var(--status-busy-glow) !important;
+      font-weight:850 !important;
+    }
+
+    .tech-status.busy::before{
+      background:var(--status-busy-dot);
+    }
+
+    .tech-status.break{
+      background:var(--status-break-bg) !important;
+      color:var(--status-break-text) !important;
+      border-color:var(--status-break-border) !important;
+      font-weight:800 !important;
+    }
+
+    .tech-status.break::before{
+      background:var(--status-break-dot);
+    }
+
+    /* Row-level scan cues */
+    tr.tech-available .staff-cell{
+      border-color:rgba(41,153,73,.24) !important;
+      box-shadow:
+        0 0 0 2px rgba(41,153,73,.08),
+        var(--soft-shadow) !important;
+    }
+
+    tr.tech-busy .staff-cell{
+      box-shadow:
+        0 0 0 1px rgba(180,91,91,.08),
+        0 10px 22px rgba(180,91,91,.05) !important;
+    }
+
+    tr.tech-refreshing .staff-cell{
+      border-color:rgba(200,166,107,.24) !important;
+      background:linear-gradient(135deg,rgba(200,166,107,.045),#fff) !important;
+    }
+
+    tr.tech-break .staff-cell,
+    tr.tech-break td{
+      opacity:.72;
+    }
+
+    body.night tr.tech-available .staff-cell{
+      border-color:rgba(74,188,106,.30) !important;
+      box-shadow:
+        0 0 0 2px rgba(74,188,106,.10),
+        0 12px 28px rgba(0,0,0,.18) !important;
+    }
+
+    body.night tr.tech-refreshing .staff-cell{
+      background:linear-gradient(135deg,rgba(200,166,107,.08),rgba(42,36,30,.92)) !important;
+    }
+
+    /* Time column should show duration only; status chip shows Available/Refreshing/Busy */
+    .time-chip.ready,
+    .time-chip.available{
+      background:rgba(41,153,73,.10) !important;
+      color:#4f725d !important;
+    }
+
+    .time-chip.cooldown,
+    .time-chip.refreshing{
+      background:rgba(200,166,107,.12) !important;
+      color:var(--lumi-gold-deep) !important;
+    }
+
+    .time-chip.busy{
+      background:rgba(111,127,154,.12) !important;
+      color:#5e6e88 !important;
+    }
+
+  
+    /* Next Technician Highlight — priority cue */
+    tr.tech-next-priority .staff-cell{
+      border:2px solid rgba(41,153,73,.34) !important;
+      background:
+        radial-gradient(circle at top left, rgba(41,153,73,.12), transparent 36%),
+        linear-gradient(135deg, rgba(255,255,255,.98), rgba(246,255,249,.92)) !important;
+      box-shadow:
+        0 0 0 3px rgba(41,153,73,.10),
+        0 14px 32px rgba(41,153,73,.12) !important;
+    }
+
+    tr.tech-next-priority .staff-name::after{
+      content:"Next";
+      display:inline-flex;
+      align-items:center;
+      margin-left:8px;
+      padding:4px 8px;
+      border-radius:999px;
+      background:rgba(41,153,73,.14);
+      color:rgb(41,153,73);
+      border:1px solid rgba(41,153,73,.28);
+      font-family:Inter,Arial,sans-serif;
+      font-size:11px;
+      font-weight:950;
+      letter-spacing:.04em;
+      vertical-align:middle;
+    }
+
+    tr.tech-next-priority .tech-status.available{
+      animation:lumiNextAvailablePulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes lumiNextAvailablePulse{
+      0%,100%{
+        box-shadow:
+          0 0 0 3px rgba(41,153,73,.12),
+          0 6px 16px rgba(41,153,73,.08);
+      }
+      50%{
+        box-shadow:
+          0 0 0 6px rgba(41,153,73,.16),
+          0 10px 24px rgba(41,153,73,.12);
+      }
+    }
+
+    body.night tr.tech-next-priority .staff-cell{
+      border-color:rgba(74,188,106,.46) !important;
+      background:
+        radial-gradient(circle at top left, rgba(41,153,73,.18), transparent 36%),
+        linear-gradient(135deg, rgba(42,36,30,.96), rgba(31,45,34,.90)) !important;
+      box-shadow:
+        0 0 0 3px rgba(74,188,106,.13),
+        0 16px 36px rgba(0,0,0,.22) !important;
+    }
+
+    body.night tr.tech-next-priority .staff-name::after{
+      background:rgba(41,153,73,.30);
+      color:#dff8e5;
+      border-color:rgba(74,188,106,.42);
+    }
+
+
+    /* Lumi Label System v3 — matches Front Desk clean labels */
+    :root{
+      --label-walk-bg:rgba(41,153,73,.14);
+      --label-walk-text:rgb(41,153,73);
+      --label-walk-border:rgba(41,153,73,.28);
+
+      --label-appt-bg:rgba(200,166,107,.18);
+      --label-appt-text:#8a6c36;
+      --label-appt-border:rgba(200,166,107,.34);
+
+      --label-any-bg:rgba(41,153,73,.10);
+      --label-any-text:#2f7d43;
+      --label-any-border:rgba(41,153,73,.22);
+
+      --label-req-bg:rgba(111,127,154,.18);
+      --label-req-text:#526179;
+      --label-req-border:rgba(111,127,154,.30);
+
+      --label-vip-bg:rgba(200,166,107,.22);
+      --label-vip-text:#7b5e27;
+      --label-vip-border:rgba(200,166,107,.42);
+
+      --label-owner-bg:rgba(138,105,165,.15);
+      --label-owner-text:#76578f;
+      --label-owner-border:rgba(138,105,165,.28);
+
+      --label-fix-bg:rgba(178,58,58,.13);
+      --label-fix-text:#9c3333;
+      --label-fix-border:rgba(178,58,58,.26);
+
+      --label-redo-bg:rgba(178,58,58,.10);
+      --label-redo-text:#8f3b3b;
+      --label-redo-border:rgba(178,58,58,.22);
+    }
+
+    .label-stack{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+
+    .lumi-label{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      border-radius:999px;
+      padding:5px 8px;
+      border:1px solid transparent;
+      font-size:11px;
+      line-height:1;
+      font-weight:900;
+      white-space:nowrap;
+      letter-spacing:.01em;
+    }
+
+    .lumi-label.walk{background:var(--label-walk-bg);color:var(--label-walk-text);border-color:var(--label-walk-border)}
+    .lumi-label.appt{background:var(--label-appt-bg);color:var(--label-appt-text);border-color:var(--label-appt-border)}
+    .lumi-label.anytech{background:var(--label-any-bg);color:var(--label-any-text);border-color:var(--label-any-border)}
+    .lumi-label.req{background:var(--label-req-bg);color:var(--label-req-text);border-color:var(--label-req-border)}
+    .lumi-label.vip{background:var(--label-vip-bg);color:var(--label-vip-text);border-color:var(--label-vip-border)}
+    .lumi-label.owner{background:var(--label-owner-bg);color:var(--label-owner-text);border-color:var(--label-owner-border)}
+    .lumi-label.fix{background:var(--label-fix-bg);color:var(--label-fix-text);border-color:var(--label-fix-border)}
+    .lumi-label.redo{background:var(--label-redo-bg);color:var(--label-redo-text);border-color:var(--label-redo-border)}
+
+    .ticket-labels{
+      display:flex;
+      gap:4px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:3px;
+    }
+
+    .ticket-labels .lumi-label{
+      font-size:9px;
+      padding:3px 5px;
+      background:rgba(255,255,255,.14);
+      color:#fff;
+      border-color:rgba(255,255,255,.20);
+      backdrop-filter:blur(4px);
+    }
+
+    .ticket.ticket-appt{box-shadow:inset 0 0 0 2px rgba(200,166,107,.55),0 10px 20px rgba(200,166,107,.12)}
+    .ticket.ticket-requested{box-shadow:inset 0 0 0 2px rgba(111,127,154,.45),0 10px 20px rgba(111,127,154,.12)}
+    .ticket.ticket-vip{box-shadow:inset 0 0 0 2px rgba(200,166,107,.75),0 12px 24px rgba(200,166,107,.18)}
+    .ticket.ticket-owner{box-shadow:inset 0 0 0 2px rgba(138,105,165,.55),0 12px 24px rgba(138,105,165,.14)}
+    .ticket.ticket-fix,.ticket.ticket-redo{box-shadow:inset 0 0 0 2px rgba(178,58,58,.50),0 12px 24px rgba(178,58,58,.14)}
+
+    .guest-mini-line{
+      margin-top:5px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    body.night{
+      --label-walk-bg:rgba(41,153,73,.26);
+      --label-walk-text:#dbf7e1;
+      --label-walk-border:rgba(74,188,106,.42);
+      --label-appt-bg:rgba(200,166,107,.28);
+      --label-appt-text:#f0d79c;
+      --label-appt-border:rgba(200,166,107,.48);
+      --label-any-bg:rgba(41,153,73,.22);
+      --label-any-text:#dbf7e1;
+      --label-any-border:rgba(74,188,106,.36);
+      --label-req-bg:rgba(111,127,154,.34);
+      --label-req-text:#e6ecff;
+      --label-req-border:rgba(160,175,210,.40);
+      --label-vip-bg:rgba(200,166,107,.30);
+      --label-vip-text:#f0d79c;
+      --label-vip-border:rgba(200,166,107,.50);
+      --label-owner-bg:rgba(138,105,165,.30);
+      --label-owner-text:#f1ddff;
+      --label-owner-border:rgba(181,145,207,.42);
+      --label-fix-bg:rgba(211,75,75,.25);
+      --label-fix-text:#ffdada;
+      --label-fix-border:rgba(211,75,75,.42);
+      --label-redo-bg:rgba(211,75,75,.20);
+      --label-redo-text:#ffdada;
+      --label-redo-border:rgba(211,75,75,.36);
+    }
+
+
+    /* Realtime turn update animation */
+    .turn-box.turn-updated{
+      animation:lumiTurnPulse 1.25s ease-in-out 2;
+      background:linear-gradient(135deg,rgba(41,153,73,.20),rgba(200,166,107,.18)) !important;
+      color:#2f7d43 !important;
+      border:1px solid rgba(41,153,73,.30) !important;
+      box-shadow:0 0 0 4px rgba(41,153,73,.10),0 10px 22px rgba(41,153,73,.12) !important;
+    }
+    @keyframes lumiTurnPulse{
+      0%{transform:scale(1);}
+      35%{transform:scale(1.28);}
+      70%{transform:scale(1);}
+      100%{transform:scale(1);}
+    }
+    .turn-total-live{
+      background:rgba(41,153,73,.10) !important;
+      color:rgb(41,153,73) !important;
+      border-color:rgba(41,153,73,.24) !important;
+    }
+
+  
+
+    /* ==========================================================
+       LUMI MERGE: OLD LOCALSTORAGE VISUAL UI + NEW SUPABASE LOGIC
+       Keeps Supabase realtime/turn logic, restores original luxury ticket style.
+       ========================================================== */
+    .slot{height:96px;padding:5px;background:#fff;}
+    .ticket{
+      height:100%;
+      padding:7px 7px 6px;
+      border-radius:12px;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08),
+        0 8px 18px rgba(4,8,11,.16) !important;
+    }
+
+    .ticket.dark,
+    .ticket.dark.completed{
+      background:linear-gradient(135deg,#111a20,#04080b) !important;
+      color:#fff !important;
+      opacity:1 !important;
+      outline:none !important;
+    }
+
+    .ticket.split,
+    .ticket.split.completed{
+      background:linear-gradient(135deg,#111a20 0 68%,#a95858 69% 100%) !important;
+      color:#fff !important;
+      opacity:1 !important;
+      outline:none !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.10),
+        0 8px 18px rgba(169,88,88,.18) !important;
+    }
+
+    .ticket.red,
+    .ticket.serving,
+    .ticket.serving.red{
+      background:linear-gradient(135deg,#7a1f1f,#b23a3a) !important;
+      color:#fff !important;
+      outline:2px solid rgba(255,255,255,.24) !important;
+      outline-offset:-3px !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.16),
+        0 0 0 3px rgba(178,58,58,.16),
+        0 10px 24px rgba(178,58,58,.30) !important;
+      animation:servingPulse 1.9s ease-in-out infinite !important;
+    }
+
+    .ticket .ghost{
+      color:#f3f1ed !important;
+      font-size:12px !important;
+      font-weight:950 !important;
+      text-align:left !important;
+      line-height:1.05 !important;
+      text-shadow:0 1px 1px rgba(0,0,0,.35);
+    }
+    .ticket .main{
+      font-family:Georgia,"Times New Roman",serif !important;
+      font-size:18px !important;
+      line-height:1.05 !important;
+      font-weight:950 !important;
+      text-align:center !important;
+      color:#fff !important;
+      white-space:pre-line;
+      text-shadow:0 1px 2px rgba(0,0,0,.35);
+      margin-top:1px;
+    }
+    .ticket.split .main,
+    .ticket.split.completed .main{
+      color:#ff4c4c !important;
+      text-shadow:0 1px 2px rgba(0,0,0,.40);
+    }
+    .ticket.serving .main,
+    .ticket.serving.red .main,
+    .ticket.red .main{
+      color:#fff !important;
+    }
+    .ticket .bottom{
+      display:flex !important;
+      justify-content:space-between !important;
+      align-items:flex-end !important;
+      color:#fff !important;
+      font-size:11px !important;
+      line-height:1 !important;
+      font-weight:950 !important;
+      text-shadow:0 1px 1px rgba(0,0,0,.35);
+    }
+    .ticket .tiny{
+      color:#f1d9a8 !important;
+      font-size:11px !important;
+      font-weight:950 !important;
+      padding-right:0 !important;
+    }
+
+    .ticket .ticket-labels{display:none !important;}
+    .ticket.completed::before{display:none !important;content:"" !important;}
+
+    .ticket.serving::before,
+    .ticket.serving.red::before{
+      content:"Live" !important;
+      display:block !important;
+      position:absolute;
+      right:6px !important;
+      bottom:6px !important;
+      z-index:3;
+      color:#fff !important;
+      background:rgba(255,255,255,.16) !important;
+      border:1px solid rgba(255,255,255,.22) !important;
+      border-radius:999px !important;
+      padding:2px 6px !important;
+      font-size:10px !important;
+      font-weight:950 !important;
+    }
+    .ticket.serving .tiny,
+    .ticket.serving.red .tiny{padding-right:34px !important;color:#ffe1e1 !important;}
+
+    .slot-col{width:94px;min-width:94px;}
+    .staff-cell{height:96px;}
+    .col-name{width:230px;min-width:230px;}
+    .board table{border-spacing:6px;}
+
+    body.night .ticket.dark,
+    body.night .ticket.dark.completed{
+      background:linear-gradient(135deg,#111a20,#04080b) !important;
+    }
+    body.night .ticket.split,
+    body.night .ticket.split.completed{
+      background:linear-gradient(135deg,#111a20 0 68%,#b45b5b 69% 100%) !important;
+    }
+
+
+
+    /* ==========================================================
+       LUMI GRID UI SYSTEM v2
+       - Old luxury dark ticket style kept
+       - Service group gets a unique color accent
+       - Visit type stays visible: Walk-in / Appt
+       - Request type stays visible: Any Tech / Requested
+       ========================================================== */
+    :root{
+      --svc-mani:#6f8fd6;
+      --svc-pedi:#2e8b57;
+      --svc-gelx:#d96c8a;
+      --svc-hybrid:#c8a66b;
+      --svc-dip:#8b6fd6;
+      --svc-gel-pedi:#36a6a6;
+      --svc-combo:#e09245;
+      --svc-default:#9b9389;
+    }
+
+    .ticket{isolation:isolate;}
+    .ticket::after{
+      content:"";
+      position:absolute;
+      left:0;top:0;bottom:0;
+      width:5px;
+      background:var(--svc-default);
+      border-radius:12px 0 0 12px;
+      z-index:2;
+      box-shadow:0 0 14px rgba(255,255,255,.10);
+    }
+    .ticket.service-mani::after{background:var(--svc-mani);}
+    .ticket.service-pedi::after{background:var(--svc-pedi);}
+    .ticket.service-gelx::after{background:var(--svc-gelx);}
+    .ticket.service-hybrid::after{background:var(--svc-hybrid);}
+    .ticket.service-dip::after{background:var(--svc-dip);}
+    .ticket.service-gel-pedi::after{background:var(--svc-gel-pedi);}
+    .ticket.service-combo::after{background:var(--svc-combo);}
+
+    .ticket.service-mani{box-shadow:inset 0 0 0 1px rgba(111,143,214,.22),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-pedi{box-shadow:inset 0 0 0 1px rgba(46,139,87,.24),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-gelx{box-shadow:inset 0 0 0 1px rgba(217,108,138,.26),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-hybrid{box-shadow:inset 0 0 0 1px rgba(200,166,107,.30),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-dip{box-shadow:inset 0 0 0 1px rgba(139,111,214,.26),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-gel-pedi{box-shadow:inset 0 0 0 1px rgba(54,166,166,.26),0 8px 18px rgba(4,8,11,.16)!important;}
+    .ticket.service-combo{box-shadow:inset 0 0 0 1px rgba(224,146,69,.26),0 8px 18px rgba(4,8,11,.16)!important;}
+
+    .ticket .ghost{padding-left:4px;}
+    .ticket .ticket-labels{
+      display:flex !important;
+      justify-content:center;
+      align-items:center;
+      gap:4px;
+      flex-wrap:wrap;
+      margin:1px 0 0;
+      max-height:20px;
+      overflow:hidden;
+    }
+    .ticket .ticket-labels .lumi-label{
+      font-family:Inter,Arial,sans-serif !important;
+      font-size:8.5px !important;
+      line-height:1 !important;
+      padding:3px 5px !important;
+      border-radius:999px !important;
+      border:1px solid rgba(255,255,255,.20) !important;
+      background:rgba(255,255,255,.13) !important;
+      color:#fff !important;
+      backdrop-filter:blur(4px);
+      text-shadow:none !important;
+      font-weight:950 !important;
+      max-width:48px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .ticket .ticket-labels .lumi-label.appt{background:rgba(200,166,107,.28) !important;color:#fff2c7 !important;border-color:rgba(200,166,107,.36) !important;}
+    .ticket .ticket-labels .lumi-label.walk{background:rgba(41,153,73,.24) !important;color:#dcffe5 !important;border-color:rgba(41,153,73,.34) !important;}
+    .ticket .ticket-labels .lumi-label.req{background:rgba(111,127,154,.32) !important;color:#eef3ff !important;border-color:rgba(111,127,154,.38) !important;}
+    .ticket .ticket-labels .lumi-label.anytech{background:rgba(255,255,255,.13) !important;color:#fff !important;}
+
+    .service-dot{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900;background:#fff;border:1px solid var(--line);}
+    .service-dot::before{content:"";width:10px;height:10px;border-radius:999px;background:var(--svc-default);display:inline-block;}
+    .service-dot.mani::before{background:var(--svc-mani);}
+    .service-dot.pedi::before{background:var(--svc-pedi);}
+    .service-dot.gelx::before{background:var(--svc-gelx);}
+    .service-dot.hybrid::before{background:var(--svc-hybrid);}
+    .service-dot.dip::before{background:var(--svc-dip);}
+    body.night .service-dot{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.18);color:#f7f1e8;}
+
+  
+
+    /* ==========================================================
+       NEXT POLISH v4 — based on old roomy grid
+       Keeps the bigger readable ticket size, restores 10 slots,
+       soft service-name colors, and prevents customer-name clipping.
+       ========================================================== */
+
+    /* Roomier ticket cells like the older version the salon prefers */
+    .slot-col{width:112px !important; min-width:112px !important;}
+    .slot{height:104px !important; padding:6px !important; background:#fff !important;}
+    .staff-cell{height:104px !important;}
+    .col-name{width:240px !important; min-width:240px !important;}
+    .col-turn{width:86px !important; min-width:86px !important;}
+    .col-time{width:104px !important; min-width:104px !important;}
+
+    /* Dark luxury card, readable spacing */
+    .ticket{
+      min-height:92px !important;
+      padding:8px 8px 7px 13px !important;
+      border-radius:13px !important;
+      background:linear-gradient(135deg,#0b1821,#071017) !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08),
+        0 10px 22px rgba(4,8,11,.18) !important;
+      transform:translateZ(0);
+    }
+
+    /* Vertical service color bar: strong enough to scan, not noisy */
+    .ticket::after{
+      width:5px !important;
+      opacity:.95;
+      box-shadow:0 0 12px rgba(255,255,255,.08) !important;
+    }
+    .ticket.completed::after{opacity:.72;}
+    .ticket.serving::after{opacity:1; box-shadow:0 0 14px rgba(255,255,255,.22) !important;}
+
+    /* Service name = soft color matching the bar, not pure white */
+    .ticket .ghost{
+      font-size:11.5px !important;
+      line-height:1.05 !important;
+      font-weight:950 !important;
+      padding-left:2px !important;
+      letter-spacing:-.01em;
+      text-shadow:0 1px 1px rgba(0,0,0,.35);
+      max-width:72px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .ticket.service-mani .ghost{color:#aebfff !important;}
+    .ticket.service-pedi .ghost{color:#76d9a8 !important;}
+    .ticket.service-gelx .ghost{color:#ff9bb5 !important;}
+    .ticket.service-hybrid .ghost{color:#f4d084 !important;}
+    .ticket.service-dip .ghost{color:#c7b8ff !important;}
+    .ticket.service-gel-pedi .ghost{color:#82e2de !important;}
+    .ticket.service-combo .ghost{color:#ffc58a !important;}
+    .ticket.service-default .ghost{color:#d9d1c6 !important;}
+
+    /* Customer name: no clipping, max 2 lines, still premium */
+    .ticket .main{
+      font-size:16px !important;
+      line-height:1.03 !important;
+      max-height:36px !important;
+      min-height:18px;
+      overflow:hidden !important;
+      display:-webkit-box !important;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+      white-space:normal !important;
+      padding:0 2px;
+      margin:0 !important;
+      color:#fff !important;
+    }
+    .ticket .main.long-name{
+      font-size:14.5px !important;
+      line-height:1.02 !important;
+      max-height:32px !important;
+    }
+
+    /* Keep requested/split cards readable: red name was clipping/too loud */
+    .ticket.split .main,
+    .ticket.split.completed .main{
+      color:#fff !important;
+      text-shadow:0 1px 2px rgba(0,0,0,.55) !important;
+    }
+
+    /* Compact pills so the card has room for the name */
+    .ticket .ticket-labels{
+      gap:3px !important;
+      max-height:18px !important;
+      margin-top:0 !important;
+      flex-wrap:nowrap !important;
+      overflow:hidden !important;
+    }
+    .ticket .ticket-labels .lumi-label{
+      font-size:7.8px !important;
+      padding:2px 5px !important;
+      max-width:46px !important;
+      min-width:0 !important;
+    }
+
+    .ticket .bottom{
+      font-size:10.5px !important;
+      line-height:1 !important;
+      align-items:center !important;
+      min-height:12px;
+    }
+    .ticket .tiny{
+      font-size:10.5px !important;
+      max-width:54px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    /* Live card: still clear, but not oversized */
+    .ticket.serving,
+    .ticket.serving.red,
+    .ticket.red{
+      background:linear-gradient(135deg,#7a1f1f,#b23a3a) !important;
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.16),
+        0 0 0 3px rgba(178,58,58,.14),
+        0 10px 22px rgba(178,58,58,.26) !important;
+    }
+    .ticket.serving::before,
+    .ticket.serving.red::before{
+      font-size:9px !important;
+      padding:2px 5px !important;
+      right:5px !important;
+      bottom:5px !important;
+    }
+
+    /* Softer empty slots */
+    .empty{
+      border-color:rgba(222,210,196,.72) !important;
+      background:
+        repeating-linear-gradient(45deg,rgba(200,166,107,.025),rgba(200,166,107,.025) 6px,transparent 6px,transparent 12px),
+        rgba(255,255,255,.64) !important;
+    }
+    .ghost-name{font-size:12px !important; color:#a99d90 !important;}
+
+    /* Smooth slot appearance after live updates */
+    .slot .ticket{animation:lumiTicketSettle .22s ease-out;}
+    @keyframes lumiTicketSettle{
+      from{opacity:.82; transform:translateY(3px) scale(.985);}
+      to{opacity:1; transform:translateY(0) scale(1);}
+    }
+
+    /* Next tech stays elegant */
+    tr.tech-next-priority .staff-cell{
+      background:linear-gradient(135deg,rgba(246,255,249,.94),#fff) !important;
+      border-color:rgba(41,153,73,.34) !important;
+      box-shadow:0 0 0 2px rgba(41,153,73,.10),0 14px 32px rgba(41,153,73,.10) !important;
+    }
+
+    /* Slightly better turn badge readability */
+    .turn-box{
+      min-width:26px;
+      text-align:center;
+      padding:5px 9px !important;
+      font-size:16px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="eyebrow">Lumi Nails • Luxury Grid</div>
+        <div class="title">Lumi Nails • Luxury Grid</div>
+        <div class="muted-note">Luxury display mode for Lumi Nails.</div>
+      </div>
+      <div class="controls">
+        <span class="pill success">Live Sync</span>
+        <button id="modeToggleBtn" type="button">Light Mode</button>
+        <span class="pill" id="lastUpdated">--:--:--</span>
+        <button id="nextHeroToggleBtn" class="next-hero-toggle on" type="button">Tiếp Theo: ON</button>
+        <button id="legendBtn" type="button">Legend</button>
+        <button id="refreshBtn" type="button">Refresh</button>
+        <button onclick="window.print()" type="button">Print</button>
+      </div>
+    </div>
+
+    <div id="heroNext"></div>
+
+    <div id="legendWrap" class="legend-wrap">
+      <div class="legend">
+        <div class="pill walk">Walk-in = khách mới không hẹn</div>
+        <div class="pill req">Requested = yêu cầu thợ cụ thể</div>
+        <div class="pill next">Appt = khách có lịch hẹn</div>
+        <div class="pill combo">VIP / Owner Guest / Fix / Redo = priority tag</div>
+        <span class="service-dot pedi">Pedi</span>
+        <span class="service-dot gelx">Gel-X</span>
+        <span class="service-dot dip">Dip</span>
+        <span class="service-dot hybrid">Hybrid</span>
+        <span class="service-dot mani">Mani</span>
+        <div class="pill serv">Serving = đang phục vụ</div>
+      </div>
+    </div>
+
+    <div id="statusArea"></div>
+    <div id="content"></div>
+    <div id="toast" class="toast"></div>
+  </div>
+
+  <script>
+    const NEXT_HERO_VISIBLE_KEY = "lumi-grid-show-next-hero";
+    const ENABLE_VOICE_CALL = false;
+    let showNextHero = localStorage.getItem(NEXT_HERO_VISIBLE_KEY) !== "off";
+    let technicians = [];
+    let queueEntries = [];
+    let TURN_TOTALS = {};
+    let TURN_ANIMATION_IDS = new Set();
+    let PREVIOUS_TURN_TOTALS = (() => {
+      try { return JSON.parse(sessionStorage.getItem("lumi-grid-turn-totals") || "{}"); }
+      catch { return {}; }
+    })();
+    let HAS_TURN_SNAPSHOT = Object.keys(PREVIOUS_TURN_TOTALS).length > 0;
+    let lastHeroSignature = "";
+    let lastSpokenSignature = "";
+
+    const SERVICE_LABEL_SHORT = {
+      mani: "Mani",
+      dip_powder: "Dip",
+      g_hybrid_gel: "Hybrid",
+      gel_x: "Gel-X",
+      pedi: "Pedi",
+      gel_pedi: "Gel Pedi",
+      combo: "Combo"
+    };
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
+    }
+
+    function fmtTime(value){
+      if(!value) return "--";
+      const d = new Date(value);
+      if(Number.isNaN(d.getTime())) return "--";
+      return d.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    }
+
+    function minutesSince(value){
+      if(!value) return 0;
+      const d = new Date(value);
+      if(Number.isNaN(d.getTime())) return 0;
+      return Math.max(0, Math.floor((Date.now() - d.getTime()) / 60000));
+    }
+
+    function waitLabel(value){
+      const m = minutesSince(value);
+      if(m < 1) return "Just now";
+      if(m < 60) return `${m}m`;
+      return `${Math.floor(m/60)}h ${m%60}m`;
+    }
+
+    function shortServiceName(q){
+      if(q.service_line && SERVICE_LABEL_SHORT[q.service_line]) return SERVICE_LABEL_SHORT[q.service_line];
+      const s = q.service_name || q.service || "Service";
+      if(/gel x|gel-x/i.test(s)) return "Gel-X";
+      if(/dip/i.test(s)) return "Dip";
+      if(/hybrid/i.test(s)) return "Hybrid";
+      if(/gel pedi/i.test(s)) return "Gel Pedi";
+      if(/pedi/i.test(s)) return "Pedi";
+      if(/mani|hand|dazzle/i.test(s)) return "Mani";
+      return s.length > 12 ? s.slice(0, 12) + "…" : s;
+    }
+
+    function normalizeTech(t, idx){
+      const status = String(t.status || "ready").toLowerCase();
+      return {
+        id: t.id,
+        name: t.name || `Staff ${idx + 1}`,
+        role: t.role || "staff",
+        active: t.active !== false,
+        status,
+        turnsTotal: Number(t.turn_balance ?? t.turns_total ?? t.turnsTotal ?? 0),
+        checkInOrder: (t.check_in_order === null || t.check_in_order === undefined || t.check_in_order === "") ? null : Number(t.check_in_order),
+        checkedInAt: t.checked_in_at || t.checkedInAt || null,
+        currentClientId: t.current_client_id || t.currentClientId || null,
+        statusChangedAt: t.status_changed_at || t.statusChangedAt || t.checked_in_at || t.created_at || null
+      };
+    }
+
+    function normalizeQueue(q, idx){
+      return {
+        id: q.id || `queue_${idx}`,
+        name: q.customer_name || q.name || q.clientName || "Guest",
+        service: q.service_name || q.service || "Service",
+        serviceLine: q.service_line || "",
+        price: Number(q.service_price ?? q.price ?? 0),
+        guestType: q.guest_type || "walkin",
+        requestType: q.request_type || "walkin",
+        priorityTag: q.priority_tag || "none",
+        requestedTechId: q.requested_tech_id || q.requestedStaffId || null,
+        assignedTechId: q.assigned_tech_id || q.assigned_staff_id || null,
+        status: q.status || "waiting",
+        turnWeight: Number(q.turn_weight ?? q.turnWeight ?? 1),
+        checkedInAt: q.checked_in_at || q.created_at || null,
+        assignedAt: q.assigned_at || null,
+        startedAt: q.started_at || null,
+        completedAt: q.completed_at || null
+      };
+    }
+
+    function statusDisplay(status){
+      const s = String(status || "ready").toLowerCase();
+      if(s === "ready") return {cls:"available", text:"Available"};
+      if(s === "cooldown") return {cls:"refreshing", text:"Refreshing"};
+      if(s === "busy") return {cls:"busy", text:"Busy"};
+      if(s === "break") return {cls:"break", text:"Break"};
+      return {cls:s, text:s.charAt(0).toUpperCase() + s.slice(1)};
+    }
+
+    function techName(id){
+      return technicians.find(t => String(t.id) === String(id))?.name || "--";
+    }
+
+    function labelsFor(q, compact=false){
+      const labels = [];
+      labels.push(`<span class="lumi-label ${q.guestType === "appt" ? "appt" : "walk"}">${q.guestType === "appt" ? "Appt" : "Walk-in"}</span>`);
+      labels.push(`<span class="lumi-label ${q.requestType === "requested" ? "req" : "anytech"}">${q.requestType === "requested" ? "Requested" : "Any Tech"}</span>`);
+      if(q.priorityTag && q.priorityTag !== "none") labels.push(`<span class="lumi-label ${q.priorityTag}">${q.priorityTag}</span>`);
+      return `<div class="${compact ? "ticket-labels" : "label-stack"}">${labels.join("")}</div>`;
+    }
+
+    function serviceClass(q){
+      const raw = `${q.serviceLine || ""} ${q.service || ""}`.toLowerCase();
+      if(raw.includes("combo")) return "service-combo";
+      if(raw.includes("gel_pedi") || raw.includes("gel pedi")) return "service-gel-pedi";
+      if(raw.includes("gel_x") || raw.includes("gel-x") || raw.includes("gel x")) return "service-gelx";
+      if(raw.includes("hybrid")) return "service-hybrid";
+      if(raw.includes("dip")) return "service-dip";
+      if(raw.includes("pedi")) return "service-pedi";
+      if(raw.includes("mani") || raw.includes("dazzle") || raw.includes("hand")) return "service-mani";
+      return "service-default";
+    }
+
+    function ticketHtml(q, cls="dark"){
+      const extra = [
+        serviceClass(q),
+        q.guestType === "appt" ? "ticket-appt" : "",
+        q.requestType === "requested" ? "ticket-requested" : "",
+        q.priorityTag && q.priorityTag !== "none" ? `ticket-${q.priorityTag}` : ""
+      ].filter(Boolean).join(" ");
+      return `<div class="ticket ${cls} ${extra}">
+        <div class="ghost">${escapeHtml(shortServiceName(q))}</div>
+        <div class="main ${String(q.name || "").length > 12 ? "long-name" : ""}">${escapeHtml(q.name)}</div>
+        ${labelsFor(q, true)}
+        <div class="bottom"><span>${Number(q.turnWeight || 1)}T</span><span class="tiny">${["completed","done"].includes(String(q.status || "").toLowerCase()) ? fmtTime(q.completedAt) : waitLabel(q.checkedInAt)}</span></div>
+      </div>`;
+    }
+
+    function getWaiting(){
+      return queueEntries.filter(q => ["waiting","assigned"].includes(String(q.status).toLowerCase()))
+        .sort((a,b) => new Date(a.checkedInAt || 0) - new Date(b.checkedInAt || 0));
+    }
+
+    function getServing(){
+      return queueEntries.filter(q => ["serving","in_service"].includes(String(q.status).toLowerCase()))
+        .sort((a,b) => new Date(a.startedAt || a.assignedAt || 0) - new Date(b.startedAt || b.assignedAt || 0));
+    }
+
+    function getCompleted(){
+      return queueEntries.filter(q => ["completed","done"].includes(String(q.status).toLowerCase()))
+        .sort((a,b) => new Date(b.completedAt || 0) - new Date(a.completedAt || 0));
+    }
+
+    function getTechTurn(techId){
+      return Number(TURN_TOTALS[String(techId)] ?? 0);
+    }
+
+    function isAvailableTech(t){
+      return t && t.active !== false && String(t.status || "").toLowerCase() === "ready" && t.checkInOrder !== null;
+    }
+
+    // Original Lumi fairness order:
+    // 1) Available techs first
+    // 2) Lowest completed turn total first
+    // 3) Tie-break by check-in order
+    // 4) Then name for stable display
+    // Non-available techs stay below Available, grouped by status.
+    function techSortRank(t){
+      const status = String(t?.status || "").toLowerCase();
+      if(t?.active === false || status === "off") return 5;
+      if(isAvailableTech(t)) return 0;
+      if(status === "cooldown" || status === "refreshing") return 1;
+      if(status === "busy") return 2;
+      if(status === "break") return 3;
+      if(status === "ready") return 4; // ready but not checked in
+      return 6;
+    }
+
+    function techFairSort(a,b){
+      const rankA = techSortRank(a);
+      const rankB = techSortRank(b);
+      if(rankA !== rankB) return rankA - rankB;
+
+      const turnA = getTechTurn(a.id);
+      const turnB = getTechTurn(b.id);
+      if(turnA !== turnB) return turnA - turnB;
+
+      const checkA = a.checkInOrder == null ? Number.MAX_SAFE_INTEGER : Number(a.checkInOrder);
+      const checkB = b.checkInOrder == null ? Number.MAX_SAFE_INTEGER : Number(b.checkInOrder);
+      if(checkA !== checkB) return checkA - checkB;
+
+      const timeA = new Date(a.statusChangedAt || a.checkedInAt || a.createdAt || 0).getTime() || 0;
+      const timeB = new Date(b.statusChangedAt || b.checkedInAt || b.createdAt || 0).getTime() || 0;
+      if(timeA !== timeB) return timeA - timeB;
+
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    }
+
+    function sortedTechniciansForGrid(){
+      return technicians.slice().sort(techFairSort);
+    }
+
+    function availableTechs(){
+      return technicians.filter(isAvailableTech).sort(techFairSort);
+    }
+
+    function nextCustomer(){
+      const waiting = getWaiting();
+      if(!waiting.length) return null;
+      const priority = waiting.find(q => ["vip","owner","fix","redo"].includes(q.priorityTag));
+      return priority || waiting[0];
+    }
+
+    function nextTech(){
+      return availableTechs()[0] || null;
+    }
+
+    function applyDisplayMode(mode){
+      const isDark = mode === "dark";
+      document.body.classList.toggle("night", isDark);
+      const btn = document.getElementById("modeToggleBtn");
+      if(btn) btn.textContent = isDark ? "Light Mode" : "Dark Mode";
+      localStorage.setItem("lumi-grid-display-mode", isDark ? "dark" : "light");
+    }
+
+    function initDisplayMode(){
+      applyDisplayMode(localStorage.getItem("lumi-grid-display-mode") || "light");
+      document.getElementById("modeToggleBtn")?.addEventListener("click", () => {
+        applyDisplayMode(document.body.classList.contains("night") ? "light" : "dark");
+      });
+    }
+
+    function setStatus(html){ document.getElementById("statusArea").innerHTML = html || ""; }
+
+    function showToast(message){
+      const toast = document.getElementById("toast");
+      if(!toast) return;
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function speakCall(signature, text){
+      if(!ENABLE_VOICE_CALL || !("speechSynthesis" in window)) return;
+      if(signature === lastSpokenSignature) return;
+      lastSpokenSignature = signature;
+      try{
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = "en-US";
+        utter.rate = 0.92;
+        window.speechSynthesis.speak(utter);
+      }catch{}
+    }
+
+    function updateNextHeroToggleUI(){
+      const btn = document.getElementById("nextHeroToggleBtn");
+      if(!btn) return;
+      btn.textContent = showNextHero ? "Tiếp Theo: ON" : "Tiếp Theo: OFF";
+      btn.classList.toggle("on", showNextHero);
+      btn.classList.toggle("off", !showNextHero);
+    }
+
+    function setNextHeroVisible(visible){
+      showNextHero = !!visible;
+      localStorage.setItem(NEXT_HERO_VISIBLE_KEY, showNextHero ? "on" : "off");
+      updateNextHeroToggleUI();
+      renderHero();
+    }
+
+    function renderHero(){
+      const hero = document.getElementById("heroNext");
+      if(!hero) return;
+      if(!showNextHero){
+        hero.innerHTML = `<div class="next-hero-mini show"><span><strong>Tiếp Theo đang ẩn</strong> — bật lại nếu muốn xem banner lớn.</span></div>`;
+        return;
+      }
+      const next = nextCustomer();
+      const tech = nextTech();
+      if(!next){
+        hero.innerHTML = `<div class="hero-next hero-empty"><div><div class="hero-title">No guests waiting</div><div class="hero-sub">Queue is clean right now.</div></div><div class="hero-stats"><span class="pill success">${availableTechs().length} Available</span></div></div>`;
+        return;
+      }
+      const signature = `${next.id}-${tech?.id || "notech"}-${next.status}`;
+      if(signature !== lastHeroSignature){
+        lastHeroSignature = signature;
+        showToast(`Next: ${next.name}${tech ? ` → ${tech.name}` : ""}`);
+        speakCall(signature, `${next.name}, please come to the front desk.`);
+      }
+      hero.innerHTML = `<div class="hero-next">
+        <div>
+          <div class="hero-kicker">Next Guest</div>
+          <div class="hero-title">${escapeHtml(next.name)}</div>
+          <div class="hero-sub">${escapeHtml(next.service)} • ${tech ? `Best tech: ${escapeHtml(tech.name)}` : "Waiting for available tech"}</div>
+          <div class="guest-mini-line">${labelsFor(next)}</div>
+        </div>
+        <div class="hero-stats">
+          <span class="pill">${Number(next.turnWeight || 1)} Turn</span>
+          <span class="pill">Wait ${waitLabel(next.checkedInAt)}</span>
+          ${tech ? `<span class="pill success">${escapeHtml(tech.name)} Available</span>` : `<span class="pill">No tech ready</span>`}
+        </div>
+      </div>`;
+    }
+
+    function renderBoard(){
+      const content = document.getElementById("content");
+      const waiting = getWaiting();
+      const serving = getServing();
+      const completed = getCompleted();
+      const nextT = nextTech();
+      const slots = 10;
+
+      if(!technicians.length){
+        content.innerHTML = `<div class="empty-state">No staff found. Add staff in Admin first, then refresh this grid.</div>`;
+        return;
+      }
+
+      const rows = sortedTechniciansForGrid()
+        .map((t, idx) => {
+          const sd = statusDisplay(t.status);
+          const techServing = serving.filter(q => String(q.assignedTechId) === String(t.id));
+          const techAssigned = waiting.filter(q => String(q.assignedTechId) === String(t.id));
+          const techCompleted = completed
+            .filter(q => String(q.assignedTechId) === String(t.id))
+            // Older completed tickets stay on the left; current/working ticket is the right-most occupied slot.
+            .sort((a,b) => new Date(a.completedAt || 0) - new Date(b.completedAt || 0));
+
+          const techAssignedSorted = techAssigned
+            .slice()
+            .sort((a,b) => new Date(a.assignedAt || a.checkedInAt || 0) - new Date(b.assignedAt || b.checkedInAt || 0));
+
+          const techServingSorted = techServing
+            .slice()
+            .sort((a,b) => new Date(a.startedAt || a.assignedAt || 0) - new Date(b.startedAt || b.assignedAt || 0));
+
+          // Slot order: completed history first, then assigned/waiting, then current serving at the far right occupied slot.
+          const tickets = [...techCompleted, ...techAssignedSorted, ...techServingSorted].slice(-slots);
+          const cells = Array.from({length:slots}).map((_, i) => {
+            const ticket = tickets[i];
+            if(!ticket) return `<td class="slot-col"><div class="slot"><div class="empty"><div class="ghost-name">Open</div></div></div></td>`;
+            const status = String(ticket.status || "").toLowerCase();
+            const cls = techServing.some(s => String(s.id) === String(ticket.id))
+              ? "serving red"
+              : (["completed","done"].includes(status)
+                  ? (ticket.requestType === "requested" ? "split completed" : "dark completed")
+                  : (ticket.requestType === "requested" ? "split" : "dark"));
+            return `<td class="slot-col"><div class="slot">${ticketHtml(ticket, cls)}</div></td>`;
+          }).join("");
+          const rowClass = [
+            `tech-${sd.cls}`,
+            nextT && String(nextT.id) === String(t.id) ? "tech-next-priority" : ""
+          ].join(" ");
+          const liveTurnTotal = getTechTurn(t.id);
+          const turnPulseClass = TURN_ANIMATION_IDS.has(String(t.id)) ? " turn-updated" : "";
+          return `<tr class="${rowClass}">
+            <td class="col-index">${idx + 1}</td>
+            <td class="staff-cell col-name"><div class="staff-name">${escapeHtml(t.name)}</div><div class="staff-sub"><span class="tech-status ${sd.cls}">${sd.text}</span>${t.checkInOrder !== null ? `<span class="time-chip ready">#${t.checkInOrder}</span>` : `<span class="time-chip">Not checked in</span>`}</div></td>
+            <td class="col-turn"><span class="turn-box${turnPulseClass}">${liveTurnTotal}</span></td>
+            <td class="col-time"><span class="time-chip ${sd.cls}">${t.status === "busy" ? "Busy" : waitLabel(t.statusChangedAt)}</span></td>
+            ${cells}
+          </tr>`;
+        }).join("");
+
+      const waitingRows = waiting.map((q, idx) => {
+        const isNext = nextCustomer() && String(nextCustomer().id) === String(q.id);
+        const cls = [isNext ? "next-customer-row" : "", q.requestType === "requested" ? "requested-row" : ""].join(" ");
+        return `<tr class="${cls}">
+          <td><span class="queue-index">${idx + 1}</span></td>
+          <td><strong>${escapeHtml(q.name)}</strong><div class="guest-mini-line">${labelsFor(q)}</div></td>
+          <td>${escapeHtml(q.service)}<div class="mini-note">${escapeHtml(shortServiceName(q))} • $${q.price || 0}</div></td>
+          <td>${q.requestType === "requested" ? `<span class="req-pill">Requested ${escapeHtml(techName(q.requestedTechId))}</span>` : `<span class="walk-pill">Any Tech</span>`}</td>
+          <td><span class="turn-pill">${Number(q.turnWeight || 1)}T</span></td>
+          <td>${waitLabel(q.checkedInAt)}</td>
+          <td>${q.assignedTechId ? escapeHtml(techName(q.assignedTechId)) : "--"}</td>
+        </tr>`;
+      }).join("");
+
+      const completedRows = completed.slice(0, 12).map(q => `<tr>
+        <td><strong>${escapeHtml(q.name)}</strong></td>
+        <td>${escapeHtml(q.service)}</td>
+        <td>${escapeHtml(techName(q.assignedTechId))}</td>
+        <td><span class="turn-pill">${Number(q.turnWeight || 1)}T</span></td>
+        <td>${fmtTime(q.completedAt)}</td>
+      </tr>`).join("");
+
+      content.innerHTML = `
+        <div class="board">
+          <table>
+            <thead><tr><th class="col-index">#</th><th class="col-name">Tech</th><th class="col-turn">Turn</th><th class="col-time">Time</th>${Array.from({length:slots}).map((_,i)=>`<th class="slot-col">Slot ${i+1}</th>`).join("")}</tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+        <div class="section-card">
+          <div class="section-head"><div><div class="section-title">Waiting Guests</div><div class="section-sub">Live from Supabase queue_entries.</div></div><span class="pill">${waiting.length} waiting</span></div>
+          ${waiting.length ? `<div class="wait-table-wrap"><table class="wait-table"><thead><tr><th>#</th><th>Guest</th><th>Service</th><th>Request</th><th>Turn</th><th>Wait</th><th>Assigned</th></tr></thead><tbody>${waitingRows}</tbody></table></div>` : `<div class="empty-queue-compact">No guests waiting.</div>`}
+        </div>
+        <div class="section-card">
+          <div class="section-head"><div><div class="section-title">Completed Today</div><div class="section-sub">Recent completed services.</div></div><span class="pill success">${completed.length} done</span></div>
+          ${completed.length ? `<div class="wait-table-wrap"><table class="wait-table"><thead><tr><th>Guest</th><th>Service</th><th>Tech</th><th>Turn</th><th>Done</th></tr></thead><tbody>${completedRows}</tbody></table></div>` : `<div class="empty-queue-compact">No completed guests yet.</div>`}
+        </div>`;
+    }
+
+    function renderTopStatus(){
+      document.getElementById("lastUpdated").textContent = new Date().toLocaleTimeString();
+      const waiting = getWaiting().length;
+      const serving = getServing().length;
+      const ready = availableTechs().length;
+      const done = getCompleted().length;
+      const totalTurns = Object.values(TURN_TOTALS).reduce((sum, v) => sum + Number(v || 0), 0);
+      setStatus(`<div class="status-box">Live Supabase Sync • ${technicians.length} staff • ${waiting} waiting • ${serving} serving • ${ready} available • ${done} completed • <span class="pill turn-total-live">${totalTurns} turns today</span></div>`);
+    }
+
+    function todayISODate(){
+      const d = new Date();
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function buildTurnTotals(rows){
+      const today = todayISODate();
+      const totals = {};
+
+      (rows || []).forEach(row => {
+        const staffId = row.staff_id || row.technician_id || row.tech_id;
+        if(!staffId) return;
+
+        // Prefer transaction_date. Fall back to created_at only if transaction_date is missing.
+        const rowDate = row.transaction_date || (row.created_at ? String(row.created_at).slice(0, 10) : today);
+        if(rowDate !== today) return;
+
+        totals[String(staffId)] = (totals[String(staffId)] || 0) + Number(row.amount || 0);
+      });
+
+      return totals;
+    }
+
+    function updateTurnAnimationState(nextTotals){
+      const changed = new Set();
+      const allIds = new Set([...Object.keys(PREVIOUS_TURN_TOTALS || {}), ...Object.keys(nextTotals || {})]);
+
+      if(HAS_TURN_SNAPSHOT){
+        allIds.forEach(id => {
+          const oldValue = Number(PREVIOUS_TURN_TOTALS[id] || 0);
+          const newValue = Number(nextTotals[id] || 0);
+          if(oldValue !== newValue) changed.add(id);
+        });
+      }
+      HAS_TURN_SNAPSHOT = true;
+
+      TURN_ANIMATION_IDS = changed;
+      TURN_TOTALS = nextTotals || {};
+      PREVIOUS_TURN_TOTALS = {...TURN_TOTALS};
+
+      try { sessionStorage.setItem("lumi-grid-turn-totals", JSON.stringify(PREVIOUS_TURN_TOTALS)); } catch {}
+
+      if(changed.size){
+        const names = [...changed].map(id => technicians.find(t => String(t.id) === String(id))?.name).filter(Boolean);
+        if(names.length) showToast(`Turn updated: ${names.join(", ")}`);
+        clearTimeout(updateTurnAnimationState._timer);
+        updateTurnAnimationState._timer = setTimeout(() => {
+          TURN_ANIMATION_IDS = new Set();
+          renderBoard();
+        }, 2800);
+      }
+    }
+
+    async function loadData(showMessage=false){
+      if(isLoadingData) return;
+      isLoadingData = true;
+      try{
+        const [techRes, queueRes, turnRes] = await Promise.all([
+          supabaseClient.from("technicians").select("*").order("name", {ascending:true}),
+          supabaseClient.from("queue_entries").select("*").order("checked_in_at", {ascending:true}),
+          supabaseClient.from("turn_transactions").select("staff_id, amount, transaction_date, created_at")
+        ]);
+        if(techRes.error) throw techRes.error;
+        if(queueRes.error) throw queueRes.error;
+        if(turnRes.error) throw turnRes.error;
+
+        technicians = (techRes.data || []).map(normalizeTech);
+        queueEntries = (queueRes.data || []).map(normalizeQueue);
+
+        const turnTotals = buildTurnTotals(turnRes.data || []);
+        updateTurnAnimationState(turnTotals);
+
+        technicians = technicians.map(t => ({
+          ...t,
+          turnsTotal: getTechTurn(t.id)
+        }));
+
+        renderHero();
+        renderTopStatus();
+        renderBoard();
+        if(showMessage) showToast("Grid refreshed");
+      }catch(err){
+        console.error(err);
+        setStatus(`<div class="error-box">Supabase error: ${escapeHtml(err.message || err)}</div>`);
+      } finally {
+        isLoadingData = false;
+      }
+    }
+
+    let realtimeChannel = null;
+    let pollingTimer = null;
+    let realtimeHeartbeatTimer = null;
+    let lastRealtimeAt = 0;
+    let isLoadingData = false;
+
+    async function handleRealtimeUpdate(payload){
+      lastRealtimeAt = Date.now();
+      console.log("Lumi Grid realtime update:", payload?.table, payload?.eventType, payload?.new || payload?.old || "");
+      await loadData(false);
+    }
+
+    function startPollingFallback(){
+      // Polling fallback keeps the TV/iPad grid live even if Supabase Realtime replication is not enabled.
+      if(pollingTimer) clearInterval(pollingTimer);
+      pollingTimer = setInterval(async () => {
+        if(document.hidden) return;
+        await loadData(false);
+      }, 3500);
+    }
+
+    function subscribeRealtime(){
+      if(realtimeChannel){
+        try { supabaseClient.removeChannel(realtimeChannel); } catch {}
+        realtimeChannel = null;
+      }
+
+      realtimeChannel = supabaseClient
+        .channel("lumi-grid-live-sync-v2")
+        .on("postgres_changes", { event:"*", schema:"public", table:"queue_entries" }, handleRealtimeUpdate)
+        .on("postgres_changes", { event:"*", schema:"public", table:"technicians" }, handleRealtimeUpdate)
+        .on("postgres_changes", { event:"*", schema:"public", table:"turn_transactions" }, handleRealtimeUpdate)
+        .on("postgres_changes", { event:"*", schema:"public", table:"staff_daily_status" }, handleRealtimeUpdate)
+        .subscribe((status) => {
+          console.log("Lumi Grid realtime status:", status);
+          if(status === "SUBSCRIBED"){
+            lastRealtimeAt = Date.now();
+            showToast("Lumi Grid live sync connected");
+          }
+          if(["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)){
+            console.warn("Realtime issue, polling fallback remains active:", status);
+          }
+        });
+
+      // Keep a polling fallback because public Realtime replication may be disabled per table.
+      startPollingFallback();
+
+      if(realtimeHeartbeatTimer) clearInterval(realtimeHeartbeatTimer);
+      realtimeHeartbeatTimer = setInterval(() => {
+        // If no realtime payload has arrived for a while, polling still refreshes the grid.
+        if(!lastRealtimeAt || Date.now() - lastRealtimeAt > 60000){
+          console.log("Lumi Grid heartbeat: polling fallback active");
+        }
+      }, 30000);
+    }
+
+    function initControls(){
+      initDisplayMode();
+      updateNextHeroToggleUI();
+      document.getElementById("nextHeroToggleBtn")?.addEventListener("click", () => setNextHeroVisible(!showNextHero));
+      document.getElementById("legendBtn")?.addEventListener("click", () => document.getElementById("legendWrap")?.classList.toggle("show"));
+      document.getElementById("refreshBtn")?.addEventListener("click", () => loadData(true));
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      initControls();
+      await loadData(false);
+      subscribeRealtime();
+      setInterval(() => { renderHero(); renderTopStatus(); }, 30000);
+    });
+
+  </script>
+</body>
+</html>

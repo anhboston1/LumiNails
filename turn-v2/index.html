@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi Turn System • Pro Dashboard</title>
+  <style>
+    :root{
+      --bg:#f7f4ef;
+      --bg2:#fbf9f5;
+      --panel:rgba(255,255,255,.92);
+      --text:#3c342d;
+      --muted:#7c746a;
+      --line:rgba(92,74,58,.13);
+      --gold:#c8a66b;
+      --gold-deep:#a78342;
+      --green:#557260;
+      --blue:#6f7f9a;
+      --danger:#b45b5b;
+      --shadow:0 22px 70px rgba(88,67,45,.12);
+      --soft-shadow:0 12px 34px rgba(88,67,45,.08);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+      color:var(--text);
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.20),transparent 25%),
+        radial-gradient(circle at bottom right,rgba(220,210,198,.30),transparent 28%),
+        linear-gradient(180deg,var(--bg2),var(--bg));
+    }
+
+    .shell{
+      max-width:1180px;
+      margin:0 auto;
+      padding:26px;
+    }
+
+    .topbar{
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      padding:24px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--gold-deep);
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .eyebrow:before{
+      content:"";
+      width:34px;
+      height:1px;
+      background:linear-gradient(90deg,var(--gold),transparent);
+      display:block;
+    }
+
+    h1{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(34px,5vw,58px);
+      line-height:1.02;
+      letter-spacing:-.035em;
+      font-weight:800;
+    }
+
+    .subtitle{
+      margin-top:12px;
+      color:var(--muted);
+      line-height:1.75;
+      max-width:680px;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      align-items:center;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-size:12px;
+      font-weight:900;
+      color:var(--text);
+      white-space:nowrap;
+    }
+
+    .pill.gold{
+      background:rgba(200,166,107,.15);
+      color:var(--gold-deep);
+      border-color:rgba(200,166,107,.26);
+    }
+
+    .pill.green{
+      background:rgba(85,114,96,.12);
+      color:var(--green);
+      border-color:rgba(85,114,96,.20);
+    }
+
+    .section{
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      padding:22px;
+      margin-bottom:18px;
+    }
+
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .section-title{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:30px;
+      font-weight:800;
+      letter-spacing:-.025em;
+      margin:0;
+    }
+
+    .section-note{
+      color:var(--muted);
+      margin-top:5px;
+      font-size:14px;
+      line-height:1.6;
+      font-weight:600;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+    }
+
+    .app-card{
+      position:relative;
+      overflow:hidden;
+      min-height:210px;
+      padding:18px;
+      border-radius:24px;
+      text-decoration:none;
+      color:inherit;
+      background:#fff;
+      border:1px solid var(--line);
+      box-shadow:var(--soft-shadow);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .app-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 18px 46px rgba(88,67,45,.14);
+      border-color:rgba(200,166,107,.48);
+    }
+
+    .app-card:after{
+      content:"";
+      position:absolute;
+      right:-35px;
+      top:-35px;
+      width:110px;
+      height:110px;
+      border-radius:999px;
+      background:rgba(200,166,107,.12);
+    }
+
+    .icon{
+      width:48px;
+      height:48px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,rgba(200,166,107,.20),rgba(255,255,255,.90));
+      border:1px solid rgba(200,166,107,.22);
+      font-size:23px;
+      margin-bottom:14px;
+    }
+
+    .app-name{
+      font-size:19px;
+      font-weight:950;
+      letter-spacing:-.01em;
+      margin-bottom:6px;
+    }
+
+    .app-desc{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
+      font-weight:650;
+    }
+
+    .app-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-top:16px;
+    }
+
+    .open-chip{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(200,166,107,.14);
+      color:var(--gold-deep);
+      font-size:12px;
+      font-weight:950;
+    }
+
+    .role-chip{
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(124,116,106,.10);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .status-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .status-card{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:22px;
+      padding:16px;
+      box-shadow:0 8px 22px rgba(88,67,45,.05);
+    }
+
+    .status-card small{
+      display:block;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+
+    .status-card strong{
+      font-size:25px;
+      font-family:Georgia,"Times New Roman",serif;
+      line-height:1;
+    }
+
+    .quick-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:46px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--text);
+      text-decoration:none;
+      font-weight:900;
+      box-shadow:0 8px 18px rgba(88,67,45,.05);
+      transition:.16s ease;
+    }
+
+    .button:hover{
+      transform:translateY(-2px);
+      border-color:rgba(200,166,107,.38);
+    }
+
+    .button.primary{
+      background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+      color:#fff;
+      border-color:rgba(167,131,66,.25);
+      box-shadow:0 12px 24px rgba(167,131,66,.22);
+    }
+
+    .footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+      padding:8px 0 22px;
+      font-weight:650;
+    }
+
+    @media(max-width:1100px){
+      .grid{grid-template-columns:repeat(3,1fr)}
+      .status-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:720px){
+      .shell{padding:16px}
+      .topbar,.section{border-radius:24px;padding:18px}
+      .grid{grid-template-columns:1fr}
+      .status-grid{grid-template-columns:1fr}
+      .app-card{min-height:170px}
+      .top-actions{justify-content:flex-start}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+
+    <section class="topbar">
+      <div>
+        <div class="eyebrow">Lumi Nails • Turn Manager</div>
+        <h1>Lumi Turn System</h1>
+        <div class="subtitle">
+          One clean dashboard for Admin, Front Desk, Customer Kiosk, Staff View, and Lumi Grid.
+          Designed for fast iPad access inside the salon.
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <span class="pill green">● Live localStorage</span>
+        <span class="pill gold">Key: lumi-turn-manager-v5</span>
+        <span class="pill" id="timePill">--:--</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Open an app</h2>
+          <div class="section-note">Choose the screen you want to use for today’s salon operation.</div>
+        </div>
+        <div class="quick-row">
+          <a class="button primary" href="./front-desk.html">Open Front Desk</a>
+          <a class="button" href="./lumi-grid.html">Open Grid</a>
+        </div>
+      </div>
+
+      <div class="grid">
+
+        <a class="app-card" href="./admin.html">
+          <div>
+            <div class="icon">🛠</div>
+            <div class="app-name">Admin</div>
+            <div class="app-desc">
+              Staff setup, daily reset, check-in order, and turn settings.
+            </div>
+          </div>
+          <div class="app-footer">
+            <span class="role-chip">Owner / Manager</span>
+            <span class="open-chip">Open →</span>
+          </div>
+        </a>
+
+        <a class="app-card" href="./front-desk.html">
+          <div>
+            <div class="icon">💼</div>
+            <div class="app-name">Front Desk</div>
+            <div class="app-desc">
+              Add guests, assign next, manage Finish / Ready / Break, and Auto Flow.
+            </div>
+          </div>
+          <div class="app-footer">
+            <span class="role-chip">Reception</span>
+            <span class="open-chip">Open →</span>
+          </div>
+        </a>
+
+        <a class="app-card" href="./customer-kiosk.html">
+          <div>
+            <div class="icon">📲</div>
+            <div class="app-name">Customer Kiosk</div>
+            <div class="app-desc">
+              Self check-in for guests. Works with Auto Flow when enabled.
+            </div>
+          </div>
+          <div class="app-footer">
+            <span class="role-chip">Guest iPad</span>
+            <span class="open-chip">Open →</span>
+          </div>
+        </a>
+
+        <a class="app-card" href="./staff-view.html">
+          <div>
+            <div class="icon">👩‍🔧</div>
+            <div class="app-name">Staff View</div>
+            <div class="app-desc">
+              Staff screen with Finish → Cooldown → Ready workflow.
+            </div>
+          </div>
+          <div class="app-footer">
+            <span class="role-chip">Staff</span>
+            <span class="open-chip">Open →</span>
+          </div>
+        </a>
+
+        <a class="app-card" href="./lumi-grid.html">
+          <div>
+            <div class="icon">📊</div>
+            <div class="app-name">Lumi Grid</div>
+            <div class="app-desc">
+              Live overview for the team: turns, serving status, and queue.
+            </div>
+          </div>
+          <div class="app-footer">
+            <span class="role-chip">Team View</span>
+            <span class="open-chip">Open →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">System snapshot</h2>
+          <div class="section-note">Quick local summary from the shared browser storage.</div>
+        </div>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <small>Employees</small>
+          <strong id="staffCount">--</strong>
+        </div>
+        <div class="status-card">
+          <small>Waiting</small>
+          <strong id="queueCount">--</strong>
+        </div>
+        <div class="status-card">
+          <small>Serving</small>
+          <strong id="servingCount">--</strong>
+        </div>
+        <div class="status-card">
+          <small>Auto Flow</small>
+          <strong id="autoFlowStatus">--</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Suggested daily flow</h2>
+          <div class="section-note">Simple order for a smooth day.</div>
+        </div>
+      </div>
+
+      <div class="quick-row">
+        <a class="button" href="./admin.html">1. Start New Day</a>
+        <a class="button" href="./admin.html">2. Check-in Staff</a>
+        <a class="button primary" href="./front-desk.html">3. Open Front Desk</a>
+        <a class="button" href="./lumi-grid.html">4. Open Grid</a>
+        <a class="button" href="./customer-kiosk.html">5. Open Kiosk</a>
+      </div>
+    </section>
+
+    <div class="footer">
+      Lumi Nails • Internal Salon System<br/>
+      Keep all apps in the same /turn/ folder so they share the same localStorage.
+    </div>
+
+  </main>
+
+  <script>
+    const STORAGE_KEY = "lumi-turn-manager-v5";
+    const AUTO_FLOW_STORAGE_KEY = "lumi-frontdesk-auto-flow";
+
+    function updateTime(){
+      const el = document.getElementById("timePill");
+      const now = new Date();
+      el.textContent = now.toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+    }
+
+    function readState(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      }catch{
+        return null;
+      }
+    }
+
+    function updateSnapshot(){
+      const state = readState();
+      const staff = state?.technicians || state?.staff || [];
+      const queue = state?.queue || [];
+      const serving = state?.serving || [];
+      const autoFlow = localStorage.getItem(AUTO_FLOW_STORAGE_KEY) === "on";
+
+      document.getElementById("staffCount").textContent = staff.length || 0;
+      document.getElementById("queueCount").textContent = queue.length || 0;
+      document.getElementById("servingCount").textContent = serving.length || 0;
+      document.getElementById("autoFlowStatus").textContent = autoFlow ? "ON" : "OFF";
+    }
+
+    updateTime();
+    updateSnapshot();
+    setInterval(updateTime, 1000);
+    setInterval(updateSnapshot, 1200);
+    window.addEventListener("storage", updateSnapshot);
+  </script>
+</body>
+</html>

@@ -74,15 +74,15 @@
     }
 
     .promo-bar-label {
-      color: #8b6a2c;
-      font-weight: 700;
+      color: #ea0d56;
+      font-weight: 900;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      font-size: 0.74rem;
+      font-size: 1.24rem;
     }
 
     .promo-bar-copy {
-      color: #5c6278;
+      color: #ea0d56;
       font-weight: 500;
     }
 
