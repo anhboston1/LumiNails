@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!-- LUMI_KIOSK_VERSION: combo-flexible-split-force-v2 -->
-<!-- LUMI_KIOSK_VERSION: combo-flexible-split-ticket-logic -->
 <!-- LUMI_KIOSK_VERSION: combo-first-service-screen -->
 <!-- LUMI_KIOSK_VERSION: service-aware-natural-retreat-upsells-fixed -->
 <html lang="vi">
@@ -1647,66 +1645,9 @@ function makeComboService(card){
     turn_weight: 2,
     duration_minutes: 90,
     is_combo: true,
-    group_name: 'Lumi Signature Combos',
-    combo_parts: []
+    group_name: 'Lumi Signature Combos'
   };
 }
-
-function comboPartsFor(combo){
-  const id = String(combo?.id || combo?.combo_id || '').toLowerCase();
-  const name = String(combo?.name || '').toLowerCase();
-  const price = Number(combo?.price ?? combo?.service_price ?? 0);
-
-  if(id.includes('natural_glow') || name.includes('natural glow')){
-    return [
-      {part:'hands', service_name:'Dip On Natural Nail', service_line:'manicure', service_group_id:null, price:55, turn_weight:1},
-      {part:'feet', service_name:'Lumi Aromatherapy Pedicure', service_line:'pedicure', service_group_id:null, price:55, turn_weight:1}
-    ];
-  }
-
-  if(id.includes('luxe') || name.includes('luxe')){
-    return [
-      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
-      {part:'feet', service_name:'Botanical Pedicure', service_line:'pedicure', service_group_id:null, price:67, turn_weight:1}
-    ];
-  }
-
-  if(id.includes('vip') || name.includes('vip')){
-    return [
-      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
-      {part:'feet', service_name:'Silk Pedicure', service_line:'pedicure', service_group_id:null, price:80, turn_weight:1}
-    ];
-  }
-
-  const half = price ? Math.round(price / 2) : 0;
-  return [
-    {part:'hands', service_name:`${combo?.name || 'Combo'} — Hands`, service_line:'manicure', service_group_id:null, price:half, turn_weight:1},
-    {part:'feet', service_name:`${combo?.name || 'Combo'} — Feet`, service_line:'pedicure', service_group_id:null, price:Math.max(0, price-half), turn_weight:1}
-  ];
-}
-
-function selectedComboServices(){
-  return model.selectedServices.filter(s=>{
-    const id = String(s.id || '').toLowerCase();
-    const name = String(s.name || s.service_name || '').toLowerCase();
-    const line = String(s.service_line || '').toLowerCase();
-    const group = String(s.service_group_id || '').toLowerCase();
-    return !!s.is_combo || line === 'combo' || group === 'combo' || id.includes('combo') || name.includes('combo');
-  });
-}
-
-function shouldSplitComboTickets(){
-  // Strict requested tech = one 2T combo ticket for that requested tech.
-  // Any Tech OR requested-but-flexible = split into hand/feet linked tickets.
-  const strictRequested = model.pref === 'requested' && model.requestedTechId && !model.isFlexible;
-  return !strictRequested;
-}
-
-function newComboGroupId(){
-  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
-  return 'combo_' + Date.now() + '_' + Math.random().toString(16).slice(2);
-}
-
 
 function selectSignatureCombo(card){
   if(!card) return;
@@ -2198,29 +2139,18 @@ function renderSummary(){const techName=appState.techs.find(t=>String(t.id)===St
   <div class="summary-row"><strong>Visit type</strong><span>${model.visitType==='appointment'?'Appointment':'Walk-in'}${model.appointmentTime?' • '+esc(model.appointmentTime):''}</span></div>
   <div class="summary-row"><strong>Preference</strong><span>${esc(pref)}</span></div>`; els.statusMsg.textContent=estimateWait();}
 function queuePayloadBase(customer){
-  const services=model.selectedServices;
-  const multiple=services.length>1;
-  const combo=appState.groups.find(isComboGroup);
-  const primary=services[0];
-  const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
-  const combos=selectedComboServices();
-  const primaryCombo=combos[0] || null;
+  const services=model.selectedServices; const multiple=services.length>1; const combo=appState.groups.find(isComboGroup); const primary=services[0]; const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
   const serviceName=multiple?services.map(s=>s.name).join(' + '):primary.name;
-  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1,is_combo:!!s.is_combo}));
+  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1}));
   return {
     customer_id:customer.id, customer_name:customer.name, customer_phone:customer.phone, customer_email:customer.email||null,
     queue_date:today(), source:'customer_kiosk', status:'waiting', checked_in_at:nowIso(), created_at:nowIso(),
     visit_type:model.visitType, guest_type:model.visitType==='appointment'?'appointment':'walk_in', appointment_time:appointmentTimeValue(),
     request_type:model.pref==='requested'?'requested':'walk_in', requested_tech_id:model.pref==='requested'?model.requestedTechId:null, requested_staff_id:model.pref==='requested'?model.requestedTechId:null,
     is_requested:model.pref==='requested', is_flexible:model.pref==='requested'?!!model.isFlexible:true,
-    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:primaryCombo?'combo':groupKey(multiple?(combo||group):group),
+    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:groupKey(multiple?(combo||group):group),
     service_id:multiple?null:dbId(primary.id), service_name:serviceName, service_price:selectedTotal(), turn_weight:services.reduce((sum,s)=>sum+serviceTurnWeight(s),0),
-    combo_services:multiple||primaryCombo?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
-    combo_group_id:primaryCombo?newComboGroupId():null,
-    combo_name:primaryCombo?primaryCombo.name:null,
-    combo_part:null,
-    is_combo_child:false,
-    parent_service_name:primaryCombo?primaryCombo.name:null,
+    combo_services:multiple?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
     notes:`Checked in from customer-kiosk. Selected services: ${services.map(s=>s.name).join(', ')}`
   };
 }
@@ -2232,7 +2162,7 @@ async function insertQueue(payload){
   const optionalQueueColumns = [
     'customer_email','customer_phone','customer_id','visit_type','guest_type','appointment_time',
     'requested_staff_id','requested_tech_id','is_requested','is_flexible','combo_services',
-    'split_mode','combo_parent_id','combo_index','combo_count','combo_group_id','combo_name','combo_part','is_combo_child','parent_service_name','notes','source','checked_in_at',
+    'split_mode','combo_parent_id','combo_index','combo_count','notes','source','checked_in_at',
     'service_price','service_line','service_group_id','service_id','turn_weight'
   ];
 
@@ -2263,69 +2193,6 @@ async function insertQueue(payload){
   }
   throw new Error('Could not insert queue entry after removing unsupported columns.');
 }
-
-function createComboSplitPayloads(customer){
-  const base = queuePayloadBase(customer);
-  const services = model.selectedServices || [];
-  const comboServices = selectedComboServices();
-
-  // Safety: if the selected service name says Combo, treat it as a combo even if flags are missing.
-  const combo = comboServices[0] || services.find(s=>{
-    const name = String(s.name || s.service_name || '').toLowerCase();
-    const id = String(s.id || '').toLowerCase();
-    return name.includes('combo') || id.includes('combo');
-  });
-
-  if(!combo || !shouldSplitComboTickets()){
-    return [base];
-  }
-
-  const comboGroupId = newComboGroupId();
-  const parts = comboPartsFor(combo);
-  const now = nowIso();
-
-  // Flexible combo: create linked child tickets, each 1T.
-  // Important: each child ticket has its own service_name, service_line, service_price, and turn_weight.
-  return parts.map((part, index)=>({
-    ...base,
-    status:'waiting',
-    created_at:now,
-    checked_in_at:now,
-    service_id:null,
-    service_group_id:null,
-    service_line:part.service_line,
-    service_name:part.service_name,
-    service_price:Number(part.price||0),
-    turn_weight:Number(part.turn_weight||1),
-    split_mode:true,
-    combo_group_id:comboGroupId,
-    combo_name:combo.name || base.service_name,
-    combo_part:part.part,
-    is_combo_child:true,
-    parent_service_name:combo.name || base.service_name,
-    combo_index:index+1,
-    combo_count:parts.length,
-    combo_services:parts.map((p,i)=>({
-      index:i+1,
-      part:p.part,
-      name:p.service_name,
-      price:p.price,
-      service_line:p.service_line,
-      turn_weight:p.turn_weight
-    })),
-    notes:`${combo.name || base.service_name} split ticket ${index+1}/${parts.length}: ${part.service_name}. Checked in from customer-kiosk.`
-  }));
-}
-
-async function insertQueueForCheckin(customer){
-  const payloads = createComboSplitPayloads(customer);
-  const inserted = [];
-  for(const payload of payloads){
-    inserted.push(await insertQueue(payload));
-  }
-  return inserted;
-}
-
 async function ensureCustomer(){
   const data={phone:model.phone,name:model.name,email:model.email};
 
@@ -2354,14 +2221,14 @@ async function submitCheckin(){
     const customer=await ensureCustomer();
     model.customer=customer;
 
-    const insertedTickets = await insertQueueForCheckin(customer);
-    await loadAll();
+    const payload=queuePayloadBase(customer);
+await insertQueue(payload);
+await loadAll();
 
     els.formArea.classList.add('hidden');
     els.successArea.classList.remove('hidden'); updateBirthdayVisibility();
     els.successText.textContent=`Thank you, ${model.name}. Please have a seat — our team will call you shortly.`;
     els.waitText.textContent=estimateWait();
-    if(insertedTickets && insertedTickets.length>1){ els.waitText.textContent = `${estimateWait()} • Combo split into ${insertedTickets.length} tickets`; }
 // Keep screen longer while debugging.
     // setTimeout(resetKiosk,18000)
   }

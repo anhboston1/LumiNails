@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<!-- FRONT_DESK_VERSION: trust-layer-nan-wait-fix -->
-<!-- FRONT_DESK_VERSION: live-assignment-feed -->
-<!-- FRONT_DESK_VERSION: single-brain-trust-layer-only-fixed-idle -->
-<!-- FRONT_DESK_VERSION: single-brain-trust-layer-only -->
-<!-- FRONT_DESK_VERSION: trust-layer-ui -->
+<!-- FRONT_DESK_VERSION: level-up-11 -->
 <!-- FRONT_DESK_VERSION: disabled-buttons-polish -->
 <html lang="vi">
 <head>
@@ -813,284 +809,113 @@ button.disabled:hover {
 }
 
 
-/* Lumi Smart Match UI */
-.trust-layer-panel{
-  margin:0 0 14px;
-  padding:16px;
+/* LUMI LEVEL UP — Front Desk polish */
+.lumi-step-guide{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:8px;
+}
+.lumi-step{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px solid rgba(222,213,200,.92);
+  background:rgba(255,255,255,.72);
+  color:var(--muted);
+  font-weight:850;
+  font-size:13px;
+}
+.lumi-step.done{
+  background:rgba(41,153,73,.10);
+  border-color:rgba(41,153,73,.22);
+  color:rgb(41,153,73);
+}
+.lumi-step .num{
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(200,166,107,.16);
+  color:var(--gold-deep);
+  font-weight:950;
+  flex:0 0 auto;
+}
+.lumi-step.done .num{
+  background:rgba(41,153,73,.16);
+  color:rgb(41,153,73);
+}
+.next-global-panel{
+  margin:12px 0 14px;
+  padding:14px 16px;
   border-radius:20px;
   border:1px solid rgba(200,166,107,.28);
   background:
-    radial-gradient(circle at top left,rgba(200,166,107,.12),transparent 34%),
-    linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,250,240,.82));
-  box-shadow:0 12px 32px rgba(88,67,45,.06);
-}
-.trust-layer-head{
+    radial-gradient(circle at top left,rgba(200,166,107,.14),transparent 34%),
+    linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,250,240,.88));
   display:flex;
   justify-content:space-between;
+  align-items:center;
   gap:12px;
   flex-wrap:wrap;
-  align-items:flex-start;
-  margin-bottom:10px;
+  box-shadow:0 12px 30px rgba(88,67,45,.06);
 }
-.trust-kicker{
+.next-global-kicker{
   color:var(--gold-deep);
   letter-spacing:.14em;
   text-transform:uppercase;
   font-size:11px;
   font-weight:950;
-  margin-bottom:4px;
 }
-.trust-title{
-  font-size:20px;
+.next-global-title{
+  font-size:22px;
   font-weight:950;
   color:var(--text);
 }
-.trust-sub{
+.next-global-sub{
   color:var(--muted);
   font-size:13px;
   font-weight:800;
-  line-height:1.45;
-  margin-top:4px;
+  margin-top:3px;
 }
-.trust-confidence{
+.next-global-action{
   display:inline-flex;
   align-items:center;
   gap:7px;
-  padding:8px 11px;
   border-radius:999px;
+  padding:9px 12px;
   background:rgba(41,153,73,.12);
   color:rgb(41,153,73);
-  border:1px solid rgba(41,153,73,.24);
-  font-size:12px;
+  border:1px solid rgba(41,153,73,.22);
   font-weight:950;
-  white-space:nowrap;
 }
-.trust-grid{
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:12px;
-}
-.trust-card{
-  border:1px solid rgba(216,208,196,.88);
-  background:rgba(255,255,255,.78);
-  border-radius:18px;
-  padding:13px 14px;
-}
-.trust-card-title{
-  font-size:13px;
-  font-weight:950;
-  color:var(--text);
-  margin-bottom:8px;
-}
-.trust-reasons{
-  display:grid;
-  gap:7px;
-}
-.trust-reason{
-  display:flex;
-  gap:8px;
-  align-items:flex-start;
-  color:var(--muted);
-  font-size:13px;
-  font-weight:800;
-  line-height:1.35;
-}
-.trust-reason .dot{
-  width:18px;
-  height:18px;
-  border-radius:999px;
-  background:rgba(41,153,73,.12);
-  color:rgb(41,153,73);
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  font-weight:950;
-  flex:0 0 auto;
-}
-.trust-log{
-  display:grid;
-  gap:7px;
-  max-height:118px;
-  overflow:auto;
-}
-.trust-log-item{
-  font-size:12px;
-  line-height:1.35;
-  color:var(--muted);
-  font-weight:800;
-  padding:7px 8px;
-  border-radius:12px;
-  background:rgba(247,244,239,.76);
-  border:1px solid rgba(216,208,196,.55);
-}
-.trust-log-item strong{color:var(--text)}
-.trust-empty{
-  color:var(--muted);
-  font-size:12px;
-  font-weight:800;
-  line-height:1.5;
-}
-.auto-flow-banner.auto-flow-active{
-  box-shadow:0 0 0 3px rgba(200,166,107,.09),0 10px 24px rgba(200,166,107,.08);
-}
-@media(max-width:900px){.trust-grid{grid-template-columns:1fr}}
-
-
-/* Lumi Single Brain UI — Trust Layer replaces AI Suggestion */
-#aiSuggestionPanel{display:none!important}
-.trust-layer-panel{
-  position:relative;
-}
-.trust-layer-panel::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:18px;
-  bottom:18px;
-  width:5px;
-  border-radius:999px;
-  background:linear-gradient(180deg,var(--gold),var(--gold-deep));
-}
-.trust-title{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:26px!important;
-  letter-spacing:-.025em;
-}
-.trust-match-line{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-  margin-top:8px;
-}
-.trust-match-chip{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:7px 10px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:950;
-  border:1px solid rgba(200,166,107,.24);
-  background:rgba(200,166,107,.12);
-  color:var(--gold-deep);
-}
-.trust-match-chip.green{
-  border-color:rgba(41,153,73,.24);
-  background:rgba(41,153,73,.12);
-  color:rgb(41,153,73);
-}
-.trust-match-chip.blue{
-  border-color:rgba(111,127,154,.22);
-  background:rgba(111,127,154,.12);
-  color:#526179;
-}
-.trust-card-title{
-  color:var(--gold-deep);
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  font-size:11px!important;
-}
-.trust-confidence{
-  box-shadow:0 0 0 3px rgba(41,153,73,.08);
-}
-
-
-/* Lumi Live Assignment Feed */
-.trust-log{
-  max-height:142px!important;
-  padding-right:2px;
-}
-.trust-log-item{
-  position:relative;
-  display:grid;
-  gap:4px;
-  padding:10px 10px 10px 12px!important;
-  border-radius:14px!important;
-  background:rgba(255,255,255,.82)!important;
-  border:1px solid rgba(216,208,196,.70)!important;
-  box-shadow:0 8px 18px rgba(88,67,45,.045);
-  overflow:hidden;
-}
-.trust-log-item::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:4px;
-  background:var(--gold);
-}
-.trust-log-item.feed-new{
-  animation:lumiFeedIn .42s ease both, lumiFeedGlow 1.8s ease 1;
-}
-@keyframes lumiFeedIn{
-  from{opacity:0;transform:translateY(-8px) scale(.98)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
-@keyframes lumiFeedGlow{
-  0%,100%{box-shadow:0 8px 18px rgba(88,67,45,.045)}
-  45%{box-shadow:0 0 0 4px rgba(41,153,73,.10),0 12px 28px rgba(41,153,73,.12)}
-}
-.trust-log-top{
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-  align-items:center;
-}
-.trust-log-time{
-  font-weight:950;
-  color:var(--text);
-  font-size:12px;
-}
-.trust-log-msg{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.35;
-  font-weight:850;
-}
-.trust-log-type{
+.combo-split-chip{
   display:inline-flex;
   align-items:center;
   gap:5px;
-  padding:4px 7px;
+  margin-top:6px;
+  padding:5px 8px;
   border-radius:999px;
-  font-size:10px;
-  font-weight:950;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  white-space:nowrap;
-}
-.trust-log-type.auto{
-  background:rgba(41,153,73,.13);
-  color:rgb(41,153,73);
-  border:1px solid rgba(41,153,73,.24);
-}
-.trust-log-type.manual{
-  background:rgba(111,127,154,.13);
+  background:rgba(111,127,154,.12);
   color:#526179;
   border:1px solid rgba(111,127,154,.22);
+  font-size:11px;
+  font-weight:950;
 }
-.trust-log-type.override{
-  background:rgba(180,91,91,.13);
-  color:#9f3f3f;
-  border:1px solid rgba(180,91,91,.24);
+.queue-action-disabled-note{
+  margin-top:8px;
+  color:#9b9389;
+  font-size:13px;
+  font-weight:850;
 }
-.trust-live-dot{
-  width:7px;
-  height:7px;
-  border-radius:999px;
-  background:rgb(41,153,73);
-  box-shadow:0 0 0 3px rgba(41,153,73,.12);
-  display:inline-block;
-}
-.trust-empty.live{
-  padding:10px;
-  border-radius:14px;
-  background:rgba(200,166,107,.08);
-  border:1px dashed rgba(200,166,107,.22);
-  color:var(--gold-deep);
+#headerAssignNextBtn:disabled{
+  background:linear-gradient(135deg,#eee7dc,#f7f2ea)!important;
+  color:#aaa096!important;
+  border-color:#e2d8cb!important;
 }
 
 </style>
@@ -1152,6 +977,12 @@ button.disabled:hover {
         <div class="card">
           <h2>Thêm khách mới</h2>
           <div class="muted">Nhập thông tin khách và thêm vào danh sách chờ. Việc gọi khách được thực hiện ở khu vực “Khách đang đợi” để giữ công bằng.</div>
+          <div class="lumi-step-guide" id="lumiStepGuide">
+            <div class="lumi-step" id="stepClientInfo"><span class="num">1</span><span>Enter customer name</span></div>
+            <div class="lumi-step" id="stepServiceInfo"><span class="num">2</span><span>Select at least one service</span></div>
+            <div class="lumi-step" id="stepReadyInfo"><span class="num">3</span><span>Add to waiting list</span></div>
+          </div>
+
           <div style="height:14px"></div>
           <div class="field-grid">
             <div class="field"><label for="clientName">Tên khách</label><input id="clientName" type="text" placeholder="Ví dụ: Christina" /></div>
@@ -1238,31 +1069,16 @@ button.disabled:hover {
           <div id="autoFlowBanner" class="auto-flow-banner auto-flow-inactive"><strong>Auto Flow OFF</strong><span>Manager sẽ gọi khách thủ công.</span></div>
 
           
-          <div id="trustLayerPanel" class="trust-layer-panel">
-            <div class="trust-layer-head">
-              <div>
-                <div class="trust-kicker">Lumi Smart Match</div>
-                <div class="trust-title" id="trustLayerTitle">System standing by</div>
-                <div class="trust-sub" id="trustLayerSub">Next match, reason, and Auto Flow status appear here.</div>
-              </div>
-              <div class="trust-confidence" id="trustConfidence">Ready</div>
+          <div id="nextGlobalPanel" class="next-global-panel">
+            <div>
+              <div class="next-global-kicker">Next action</div>
+              <div class="next-global-title" id="nextGlobalTitle">No clients waiting</div>
+              <div class="next-global-sub" id="nextGlobalSub">Front Desk is all caught up ✨</div>
             </div>
-            <div class="trust-grid">
-              <div class="trust-card">
-                <div class="trust-card-title">Why this match?</div>
-                <div class="trust-reasons" id="trustReasons">
-                  <div class="trust-empty">No waiting client yet.</div>
-                </div>
-              </div>
-              <div class="trust-card">
-                <div class="trust-card-title">Live assignment feed</div>
-                <div class="trust-log" id="trustLog">
-                  <div class="trust-empty">System ready — waiting for first assignment.</div>
-                </div>
-              </div>
-            </div>
+            <div class="next-global-action" id="nextGlobalAction">Ready</div>
           </div>
-          <div id="aiSuggestionPanel" class="ai-panel hidden" style="display:none!important;"></div>
+
+          <div id="aiSuggestionPanel" class="ai-panel"></div>
 
           <div id="statusArea"></div>
 
@@ -1405,9 +1221,9 @@ button.disabled:hover {
     const DEFAULT_TURN_SETTINGS = { simple_mode:true, requested_threshold:65, requested_below_turn:0.5, requested_at_or_above_turn:1, walk_in_turn:1 };
 
     const els = {
-      loginGate: document.getElementById("loginGate"), fdLoginUsername: document.getElementById("fdLoginUsername"), fdLoginPin: document.getElementById("fdLoginPin"), fdLoginBtn: document.getElementById("fdLoginBtn"), fdLoginError: document.getElementById("fdLoginError"), frontDeskSessionPill: document.getElementById("frontDeskSessionPill"), frontDeskLogoutBtn: document.getElementById("frontDeskLogoutBtn"),
+      loginGate: document.getElementById("loginGate"), nextGlobalPanel: document.getElementById("nextGlobalPanel"), nextGlobalTitle: document.getElementById("nextGlobalTitle"), nextGlobalSub: document.getElementById("nextGlobalSub"), nextGlobalAction: document.getElementById("nextGlobalAction"), stepClientInfo: document.getElementById("stepClientInfo"), stepServiceInfo: document.getElementById("stepServiceInfo"), stepReadyInfo: document.getElementById("stepReadyInfo"), fdLoginUsername: document.getElementById("fdLoginUsername"), fdLoginPin: document.getElementById("fdLoginPin"), fdLoginBtn: document.getElementById("fdLoginBtn"), fdLoginError: document.getElementById("fdLoginError"), frontDeskSessionPill: document.getElementById("frontDeskSessionPill"), frontDeskLogoutBtn: document.getElementById("frontDeskLogoutBtn"), nextGlobalPanel: document.getElementById("nextGlobalPanel"), nextGlobalTitle: document.getElementById("nextGlobalTitle"), nextGlobalSub: document.getElementById("nextGlobalSub"), nextGlobalAction: document.getElementById("nextGlobalAction"), stepClientInfo: document.getElementById("stepClientInfo"), stepServiceInfo: document.getElementById("stepServiceInfo"), stepReadyInfo: document.getElementById("stepReadyInfo"),
       refreshBtn: document.getElementById("refreshBtn"), updatedAt: document.getElementById("updatedAt"), statQueue: document.getElementById("statQueue"), statServing: document.getElementById("statServing"), statAvailable: document.getElementById("statAvailable"), statDone: document.getElementById("statDone"), statNext: document.getElementById("statNext"),
-      clientName: document.getElementById("clientName"), serviceLine: document.getElementById("serviceLine"), serviceSelect: document.getElementById("serviceSelect"), comboList: document.getElementById("comboList"), addServiceBtn: document.getElementById("addServiceBtn"), splitMode: document.getElementById("splitMode"), comboTotal: document.getElementById("comboTotal"), splitModeBox: document.getElementById("splitModeBox"), singleServiceBox: document.getElementById("singleServiceBox"), comboServiceBox: document.getElementById("comboServiceBox"), servicePrice: document.getElementById("servicePrice"), guestType: document.getElementById("guestType"), appointmentTime: document.getElementById("appointmentTime"), appointmentTimeBox: document.getElementById("appointmentTimeBox"), requestType: document.getElementById("requestType"), requestedFlexMode: document.getElementById("requestedFlexMode"), requestedFlexBox: document.getElementById("requestedFlexBox"), priorityTag: document.getElementById("priorityTag"), requestedTech: document.getElementById("requestedTech"), addBtn: document.getElementById("addBtn"), headerAssignNextBtn: document.getElementById("headerAssignNextBtn"), suggestionText: document.getElementById("suggestionText"), dayModeText: document.getElementById("dayModeText"), dayModePill: document.getElementById("dayModePill"), storageKeyText: document.getElementById("storageKeyText"), queueOrderText: document.getElementById("queueOrderText"), queueCountPill: document.getElementById("queueCountPill"), statusArea: document.getElementById("statusArea"), queueBody: document.getElementById("queueBody"), queueEmpty: document.getElementById("queueEmpty"), servingList: document.getElementById("servingList"), servingEmpty: document.getElementById("servingEmpty"), servingCountPill: document.getElementById("servingCountPill"), doneBody: document.getElementById("doneBody"), doneEmpty: document.getElementById("doneEmpty"), doneCountPill: document.getElementById("doneCountPill"), fairnessReport: document.getElementById("fairnessReport"), copyReportBtn: document.getElementById("copyReportBtn"), reportDatePill: document.getElementById("reportDatePill"), lockOverlay: document.getElementById("lockOverlay"), toastWrap: document.getElementById("toastWrap"), aiSuggestionPanel: document.getElementById("aiSuggestionPanel"), trustLayerPanel: document.getElementById("trustLayerPanel"), trustLayerTitle: document.getElementById("trustLayerTitle"), trustLayerSub: document.getElementById("trustLayerSub"), trustConfidence: document.getElementById("trustConfidence"), trustReasons: document.getElementById("trustReasons"), trustLog: document.getElementById("trustLog"),
+      clientName: document.getElementById("clientName"), serviceLine: document.getElementById("serviceLine"), serviceSelect: document.getElementById("serviceSelect"), comboList: document.getElementById("comboList"), addServiceBtn: document.getElementById("addServiceBtn"), splitMode: document.getElementById("splitMode"), comboTotal: document.getElementById("comboTotal"), splitModeBox: document.getElementById("splitModeBox"), singleServiceBox: document.getElementById("singleServiceBox"), comboServiceBox: document.getElementById("comboServiceBox"), servicePrice: document.getElementById("servicePrice"), guestType: document.getElementById("guestType"), appointmentTime: document.getElementById("appointmentTime"), appointmentTimeBox: document.getElementById("appointmentTimeBox"), requestType: document.getElementById("requestType"), requestedFlexMode: document.getElementById("requestedFlexMode"), requestedFlexBox: document.getElementById("requestedFlexBox"), priorityTag: document.getElementById("priorityTag"), requestedTech: document.getElementById("requestedTech"), addBtn: document.getElementById("addBtn"), headerAssignNextBtn: document.getElementById("headerAssignNextBtn"), suggestionText: document.getElementById("suggestionText"), dayModeText: document.getElementById("dayModeText"), dayModePill: document.getElementById("dayModePill"), storageKeyText: document.getElementById("storageKeyText"), queueOrderText: document.getElementById("queueOrderText"), queueCountPill: document.getElementById("queueCountPill"), statusArea: document.getElementById("statusArea"), queueBody: document.getElementById("queueBody"), queueEmpty: document.getElementById("queueEmpty"), servingList: document.getElementById("servingList"), servingEmpty: document.getElementById("servingEmpty"), servingCountPill: document.getElementById("servingCountPill"), doneBody: document.getElementById("doneBody"), doneEmpty: document.getElementById("doneEmpty"), doneCountPill: document.getElementById("doneCountPill"), fairnessReport: document.getElementById("fairnessReport"), copyReportBtn: document.getElementById("copyReportBtn"), reportDatePill: document.getElementById("reportDatePill"), lockOverlay: document.getElementById("lockOverlay"), toastWrap: document.getElementById("toastWrap"), aiSuggestionPanel: document.getElementById("aiSuggestionPanel"),
       requestTechModal: document.getElementById("requestTechModal"), requestTechSelect: document.getElementById("requestTechSelect"), requestTechPreview: document.getElementById("requestTechPreview"), requestTechCancelBtn: document.getElementById("requestTechCancelBtn"), requestTechConfirmBtn: document.getElementById("requestTechConfirmBtn"),
       openComboPickerBtn: document.getElementById("openComboPickerBtn"), comboPickerModal: document.getElementById("comboPickerModal"), comboPickerBody: document.getElementById("comboPickerBody"), comboPickerSummary: document.getElementById("comboPickerSummary"), comboPickerCancelBtn: document.getElementById("comboPickerCancelBtn"), comboPickerConfirmBtn: document.getElementById("comboPickerConfirmBtn"), staffStatusList: document.getElementById("staffStatusList"), staffStatusEmpty: document.getElementById("staffStatusEmpty"), staffStatusCountPill: document.getElementById("staffStatusCountPill")
     };
@@ -1849,16 +1665,6 @@ button.disabled:hover {
       if(!resolvedGroupId && !client.service_line) return true;
 
       return false;
-    }
-
-    
-    function serviceMatchesTech(client, tech){
-      // Compatibility wrapper for Trust Layer.
-      // Existing Front Desk logic uses techCanDo(tech, client).
-      try{
-        if(typeof techCanDo === "function") return techCanDo(tech, client);
-      }catch(_){}
-      return true;
     }
 
     function getAutoAssignConfig(){
@@ -2361,7 +2167,6 @@ button.disabled:hover {
           );
         }
         toast("Assigned", `${client.customer_name} → ${tech.name}`);
-        pushTrustLog(`${client.customer_name} → ${tech.name}`, force ? 'override' : (autoFlowEnabled ? 'auto' : 'manual'));
       }catch(err){ alert(err.message || String(err)); }
       finally{ setLocked(false); await loadAll(); }
     }
@@ -2444,6 +2249,7 @@ button.disabled:hover {
     }
 
     function updateAddButtonState(){
+      updateAddClientStepGuide();
       const btn = els.addBtn || document.getElementById("addBtn");
       if(!btn) return;
 
@@ -2467,200 +2273,43 @@ button.disabled:hover {
     }
 
 
+    function updateAddClientStepGuide(){
+      const hasClient = hasClientInfoForAdd();
+      const hasService = hasSelectedServiceForAdd();
+      const ready = hasClient && hasService;
+      els.stepClientInfo?.classList.toggle("done", hasClient);
+      els.stepServiceInfo?.classList.toggle("done", hasService);
+      els.stepReadyInfo?.classList.toggle("done", ready);
+    }
 
-    function trustIdleText(tech){
-      try{
-        const mins = idleMinutesForTech(tech?.id);
-        if(!Number.isFinite(mins) || mins >= 9999) return "No previous work today";
-        if(mins <= 0) return "Just now";
-        return `${mins} min`;
-      }catch(_){
-        return "--";
+    function comboVisualChip(c){
+      const isCombo = !!c.is_combo_child || !!c.combo_name || !!c.split_mode || String(c.service_line || "").toLowerCase() === "combo";
+      if(!isCombo) return "";
+      if(c.is_combo_child || c.combo_part){
+        const part = c.combo_part ? ` • ${String(c.combo_part).toUpperCase()}` : "";
+        return `<div class="combo-split-chip">🔀 Split combo${part}</div>`;
       }
+      return `<div class="combo-split-chip">💎 Combo • ${Number(c.turn_weight || 2)}T</div>`;
     }
 
-    function trustConfidenceFor(client, tech){
-      if(!client) return {label:"Ready", score:0};
-      if(!tech) return {label:"Paused", score:0};
-      let score = 70;
-      const ready = String(tech.status || "").toLowerCase() === "ready";
-      if(ready) score += 10;
-      if(Number(effectiveTurnBalance(tech)) <= Math.min(...readyTechs().map(t=>Number(effectiveTurnBalance(t))), Number(effectiveTurnBalance(tech)))) score += 8;
-      if(getRequestType(client) === "requested" && String(client.requested_tech_id || "") === String(tech.id)) score += 8;
-      if(serviceMatchesTech(client, tech)) score += 4;
-      score = Math.min(99, Math.max(0, score));
-      if(score >= 92) return {label:`Strong match ${score}%`, score};
-      if(score >= 82) return {label:`Good match ${score}%`, score};
-      return {label:`Match ${score}%`, score};
-    }
+    function updateNextGlobalPanel(){
+      const next = nextClient();
+      const best = next ? getBestTechForClient(next) : null;
 
-    function trustReasonsFor(client, tech){
-      if(!client) return ["No waiting client. System is standing by."];
-      if(!tech) return ["Waiting for an eligible ready technician.", "Requested-tech and skill rules are still protected.", "Auto Flow will continue when a match is available."];
+      if(!els.nextGlobalTitle) return;
 
-      const reasons = [];
-      reasons.push(`${tech.name} is currently available.`);
-      reasons.push(`Turn balance: ${Number(effectiveTurnBalance(tech)).toFixed(Number(effectiveTurnBalance(tech)) % 1 ? 1 : 0)}T.`);
-      const idle = trustIdleText(tech);
-      reasons.push(`Idle / ready time: ${idle}.`);
-
-      if(serviceMatchesTech(client, tech)) reasons.push(`Matches service type: ${client.service_name || "service"}.`);
-      else reasons.push("No strict service-skill blocker found.");
-
-      if(getRequestType(client) === "requested"){
-        if(String(client.requested_tech_id || "") === String(tech.id)) reasons.push("Customer requested this technician.");
-        else if(client.requested_flex_mode === "flexible") reasons.push("Requested-tech guest is flexible if needed.");
-      }
-
-      if(client.priority_tag && client.priority_tag !== "none") reasons.push(`Priority honored: ${String(client.priority_tag).toUpperCase()}.`);
-      return reasons.slice(0,5);
-    }
-
-    function trustLogTypeFromMessage(message){
-      const msg = String(message || "").toLowerCase();
-      if(msg.includes("override")) return "override";
-      if(msg.includes("auto flow") || msg.includes("(auto")) return "auto";
-      return "manual";
-    }
-
-    function trustLogTypeLabel(type){
-      if(type === "auto") return "Auto";
-      if(type === "override") return "Override";
-      return "Manual";
-    }
-
-    function trustLogTypeIcon(type){
-      if(type === "auto") return "⚡";
-      if(type === "override") return "↩";
-      return "👤";
-    }
-
-    function pushTrustLog(message, type){
-      try{
-        const key = "lumi-frontdesk-trust-log";
-        const logs = JSON.parse(localStorage.getItem(key) || "[]");
-        const resolvedType = type || trustLogTypeFromMessage(message);
-        logs.unshift({
-          id: Date.now() + "_" + Math.random().toString(16).slice(2),
-          time:new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"}),
-          message,
-          type: resolvedType
-        });
-        localStorage.setItem(key, JSON.stringify(logs.slice(0,18)));
-      }catch(_){}
-    }
-
-    function readTrustLog(){
-      try{ return JSON.parse(localStorage.getItem("lumi-frontdesk-trust-log") || "[]"); }
-      catch(_){ return []; }
-    }
-
-    function renderTrustLog(){
-      if(!els.trustLog) return;
-      const logs = readTrustLog();
-      if(!logs.length){
-        els.trustLog.innerHTML = `<div class="trust-empty live"><span class="trust-live-dot"></span> System ready — waiting for first assignment.</div>`;
-        return;
-      }
-      els.trustLog.innerHTML = logs.slice(0,6).map((log,index)=>{
-        const type = log.type || trustLogTypeFromMessage(log.message);
-        return `
-          <div class="trust-log-item ${index===0?'feed-new':''}">
-            <div class="trust-log-top">
-              <span class="trust-log-time">${escapeHtml(log.time)}</span>
-              <span class="trust-log-type ${escapeHtml(type)}">${trustLogTypeIcon(type)} ${trustLogTypeLabel(type)}</span>
-            </div>
-            <div class="trust-log-msg">${escapeHtml(log.message)}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    
-    function trustWaitText(client){
-      try{
-        const value =
-          client?.checked_in_at ||
-          client?.checkedInAt ||
-          client?.created_at ||
-          client?.createdAt ||
-          client?.queue_time ||
-          client?.queueTime ||
-          client?.time;
-
-        if(!value) return "0 min wait";
-
-        const minutes = waitMinutes(value);
-        if(!Number.isFinite(minutes) || Number.isNaN(minutes) || minutes < 0) return "0 min wait";
-        return `${minutes} min wait`;
-      }catch(_){
-        return "0 min wait";
-      }
-    }
-
-    function updateTrustLayer(){
-      if(!els.trustLayerPanel) return;
-      const client = nextClient();
-      const tech = client ? getBestTechForClient(client) : null;
-      const confidence = trustConfidenceFor(client, tech);
-
-      if(!client){
-        els.trustLayerTitle.textContent = autoFlowEnabled ? "Auto Flow ON • standing by" : "Manual mode • standing by";
-        els.trustLayerSub.innerHTML = autoFlowEnabled
-          ? `No clients waiting. Lumi will assign automatically when a guest checks in.`
-          : `No clients waiting. Use “Gọi khách tiếp theo” when a guest is added.`;
-        els.trustConfidence.textContent = autoFlowEnabled ? "Auto ready" : "Manual";
-        els.trustReasons.innerHTML = `<div class="trust-empty">No waiting client yet.</div>`;
-        renderTrustLog();
+      if(!next){
+        els.nextGlobalTitle.textContent = "No clients waiting";
+        els.nextGlobalSub.textContent = "Front Desk is all caught up ✨";
+        els.nextGlobalAction.textContent = "Ready";
+        els.nextGlobalAction.className = "next-global-action";
         return;
       }
 
-      const serviceName = client.service_name || "Service";
-      const turnText = `${Number(client.turn_weight || 1)}T`;
-      const waitText = trustWaitText(client);
-
-      if(!tech){
-        els.trustLayerTitle.textContent = `${client.customer_name} → waiting for eligible tech`;
-        els.trustLayerSub.innerHTML = `
-          <div class="trust-match-line">
-            <span class="trust-match-chip">${escapeHtml(serviceName)}</span>
-            <span class="trust-match-chip blue">${escapeHtml(turnText)}</span>
-            <span class="trust-match-chip">${escapeHtml(waitText)}</span>
-          </div>
-          <div style="margin-top:8px;">No eligible ready tech is available yet. Requested-tech and skill rules are protected.</div>
-        `;
-        els.trustConfidence.textContent = "Waiting for tech";
-      }else{
-        els.trustLayerTitle.textContent = `${client.customer_name} → ${tech.name}`;
-        els.trustLayerSub.innerHTML = `
-          <div class="trust-match-line">
-            <span class="trust-match-chip green">Best match</span>
-            <span class="trust-match-chip">${escapeHtml(serviceName)}</span>
-            <span class="trust-match-chip blue">${escapeHtml(turnText)}</span>
-            <span class="trust-match-chip">${escapeHtml(waitText)}</span>
-          </div>
-          <div style="margin-top:8px;">${autoFlowEnabled ? "Auto Flow will assign this match automatically." : "Ready for manual assignment."}</div>
-        `;
-        els.trustConfidence.textContent = confidence.label;
-      }
-
-      const reasons = trustReasonsFor(client, tech);
-      els.trustReasons.innerHTML = reasons.map(r=>`
-        <div class="trust-reason"><span class="dot">✓</span><span>${escapeHtml(r)}</span></div>
-      `).join("");
-      renderTrustLog();
-    }
-
-
-    function safeUpdateTrustLayer(){
-      try{ updateTrustLayer(); }
-      catch(error){
-        console.warn("Trust Layer error", error);
-        if(els.trustLayerTitle) els.trustLayerTitle.textContent = "Smart Match";
-        if(els.trustLayerSub) els.trustLayerSub.textContent = "Trust details are temporarily unavailable, but queue assignment still works.";
-        if(els.trustConfidence) els.trustConfidence.textContent = "Queue OK";
-        if(els.trustReasons) els.trustReasons.innerHTML = `<div class="trust-empty">Live assignment feedic is still active.</div>`;
-      }
+      els.nextGlobalTitle.textContent = `${next.customer_name} → ${best ? best.name : "No ready tech"}`;
+      els.nextGlobalSub.textContent = `${next.service_name || "Service"} • ${Number(next.turn_weight || 1)}T • ${best ? "Tap Gọi khách tiếp theo" : "Waiting for eligible tech"}`;
+      els.nextGlobalAction.textContent = best ? "Assign ready" : "No ready tech";
+      els.nextGlobalAction.className = "next-global-action";
     }
 
     function renderAll(){
@@ -2669,7 +2318,7 @@ button.disabled:hover {
       els.statQueue.textContent=appState.queue.length; els.statServing.textContent=appState.serving.length; els.statAvailable.textContent=readyTechs().length; els.statDone.textContent=appState.history.length; els.statNext.textContent=nextClient()?.customer_name || "--";
       els.dayModeText.textContent = appState.dayMode === "new_day" ? "New Day" : "Normal Day"; els.dayModePill.textContent=appState.dayMode === "new_day" ? "New Day" : "Normal"; els.storageKeyText.textContent="Supabase live database"; els.queueOrderText.textContent="Realtime";
       els.queueCountPill.textContent=`${appState.queue.length} khách`; els.servingCountPill.textContent=`${appState.serving.length} khách`; els.doneCountPill.textContent=`${appState.history.length} khách`;
-      renderQueue(); renderServing(); renderStaffStatus(); renderDone(); renderReport(); renderSuggestion(); safeUpdateTrustLayer(); updateHeaderNextButtonState(); updateAddButtonState(); safeUpdateTrustLayer();
+      renderQueue(); renderServing(); renderStaffStatus(); renderDone(); renderReport(); renderSuggestion(); updateHeaderNextButtonState(); updateAddButtonState(); updateNextGlobalPanel(); updateHeaderNextButtonState(); updateAddButtonState(); updateNextGlobalPanel();
     }
     function labelStack(c){
       const main=c.guest_type === "appointment" ? `<span class="tag appt">◷ Appt</span>` : `<span class="tag walk">● Walk-in</span>`;
@@ -2839,8 +2488,9 @@ Each service can then be assigned to the best qualified ready technician. This i
       els.doneBody.innerHTML = [...appState.history].reverse().map(c=>`<tr><td>${escapeHtml(c.customer_name)}</td><td>${escapeHtml(c.service_name)}</td><td>${escapeHtml(techName(c.assigned_tech_id))}</td><td>${Number(c.turn_weight||1)}T</td><td>${timeOnly(c.completed_at)}</td></tr>`).join("");
     }
     function renderSuggestion(){
-      // AI Suggestion is merged into Lumi Smart Match / Trust Layer.
-      if(els.aiSuggestionPanel) els.aiSuggestionPanel.innerHTML = "";
+      const n=nextClient();
+      els.suggestionText.textContent = n ? `Next: ${n.customer_name} • ${n.service_name}` : "Chưa có khách trong danh sách chờ.";
+      if(els.aiSuggestionPanel){ const best=n?getBestTechForClient(n):null; els.aiSuggestionPanel.innerHTML = n ? `<div class="ai-panel-head"><div class="ai-title">AI Suggestion</div><span class="ai-score">${best?"Ready":"Waiting"}</span></div><div class="ai-body">${escapeHtml(n.customer_name)} → ${best?escapeHtml(best.name):"No ready tech yet"}</div><div class="ai-reason">Based on lowest live turns, longest idle time, then check-in order.</div>` : `<div class="ai-body">No waiting clients.</div>`; }
     }
     function renderReport(){
       const byTech={}; appState.technicians.forEach(t=>byTech[t.id]={name:t.name, turn:Number(effectiveTurnBalance(t)||0), count:0});
