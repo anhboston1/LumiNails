@@ -206,6 +206,7 @@
               <button class="tab-btn active" id="tabDayBtn" type="button">Day Control<span class="tab-desc">Start new day, check-in, priority order</span></button>
               <button class="tab-btn" id="tabStaffBtn" type="button">Staff Admin<span class="tab-desc">Thêm / sửa nhân viên, role, skills, status</span></button>
               <button class="tab-btn" id="tabCustomersBtn" type="button">Customers<span class="tab-desc">View, add/edit, SMS/email promotions</span></button>
+              <button class="tab-btn" id="tabCallsBtn" type="button">Retell Calls<span class="tab-desc">Owner view AI receptionist call logs</span></button>
               <button class="tab-btn" id="tabServicesBtn" type="button">Services<span class="tab-desc">Owner thêm / sửa service groups và services</span></button>
               <button class="tab-btn" id="tabTurnHistoryBtn" type="button">Turn History<span class="tab-desc">Owner view by date, Lumi Grid style</span></button>
               <button class="tab-btn" id="tabTurnBtn" type="button">Turn Settings<span class="tab-desc">Cấu hình cách tính turn</span></button>
@@ -311,6 +312,49 @@
                 <span class="pill" id="customerCountPill">0 customers</span>
               </div>
               <div id="customersList" class="customer-grid"></div>
+            </div>
+          </div>
+
+
+          <div id="callsTab" class="hidden">
+            <div class="card">
+              <div class="callout">
+                <h3>Retell AI Call Logs</h3>
+                <p>Owner can review inbound AI receptionist calls, caller phone number, summary, transcript, and follow-up status from Supabase <strong>call_logs</strong>.</p>
+              </div>
+
+              <div class="customer-toolbar">
+                <div class="field">
+                  <label for="callSearch">Search calls</label>
+                  <input id="callSearch" type="text" placeholder="Search phone, summary, transcript, service" />
+                </div>
+                <div class="field">
+                  <label for="callFilter">Follow-up filter</label>
+                  <select id="callFilter">
+                    <option value="all">All calls</option>
+                    <option value="follow_up">Needs follow-up</option>
+                    <option value="needs_sms">Needs SMS</option>
+                    <option value="needs_call_back">Needs call back</option>
+                    <option value="completed">Completed</option>
+                    <option value="no_follow_up">No follow-up</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="callLimit">Show</label>
+                  <select id="callLimit">
+                    <option value="25">Latest 25</option>
+                    <option value="50">Latest 50</option>
+                    <option value="100">Latest 100</option>
+                  </select>
+                </div>
+                <button class="btn-primary" id="refreshCallsBtn" type="button">Refresh Calls</button>
+              </div>
+
+              <div class="item-top">
+                <h2>Recent Calls</h2>
+                <span class="pill" id="callCountPill">0 calls</span>
+              </div>
+              <div id="callsList" class="customer-grid"></div>
             </div>
           </div>
 
@@ -486,6 +530,7 @@
       serviceGroups:[],
       services:[],
       customers:[],
+      callLogs:[],
       queueEntries:[],
       customerStats:{},
       selectedServiceGroupFilter:'all',
@@ -493,6 +538,9 @@
       customerSearch:'',
       customerSort:'last_desc',
       customerFilter:'all',
+      callSearch:'',
+      callFilter:'all',
+      callLimit:25,
       turnHistoryRows:[], turnHistoryDate:'', turnHistorySearch:'',
       session:null,
       dayMode:'new_day'
@@ -513,6 +561,7 @@
       roleSummary:document.getElementById('roleSummary'), roleBadge:document.getElementById('roleBadge'),
       tabDayBtn:document.getElementById('tabDayBtn'), tabStaffBtn:document.getElementById('tabStaffBtn'), tabServicesBtn:document.getElementById('tabServicesBtn'), tabTurnBtn:document.getElementById('tabTurnBtn'), tabTurnHistoryBtn:document.getElementById('tabTurnHistoryBtn'), turnHistoryTab:document.getElementById('turnHistoryTab'), turnHistoryDate:document.getElementById('turnHistoryDate'), turnHistorySearch:document.getElementById('turnHistorySearch'), loadTurnHistoryBtn:document.getElementById('loadTurnHistoryBtn'), turnHistoryGrid:document.getElementById('turnHistoryGrid'), historyDateLabel:document.getElementById('historyDateLabel'), historyTechCount:document.getElementById('historyTechCount'), historyTurnTotal:document.getElementById('historyTurnTotal'), historyTicketTotal:document.getElementById('historyTicketTotal'), dayTab:document.getElementById('dayTab'), staffTab:document.getElementById('staffTab'), servicesTab:document.getElementById('servicesTab'), turnTab:document.getElementById('turnTab'),
       tabCustomersBtn:document.getElementById('tabCustomersBtn'), customersTab:document.getElementById('customersTab'),
+      tabCallsBtn:document.getElementById('tabCallsBtn'), callsTab:document.getElementById('callsTab'), callSearch:document.getElementById('callSearch'), callFilter:document.getElementById('callFilter'), callLimit:document.getElementById('callLimit'), refreshCallsBtn:document.getElementById('refreshCallsBtn'), callsList:document.getElementById('callsList'), callCountPill:document.getElementById('callCountPill'),
       tabTurnHistoryBtn:document.getElementById('tabTurnHistoryBtn'), turnHistoryTab:document.getElementById('turnHistoryTab'), turnHistoryDate:document.getElementById('turnHistoryDate'), turnHistorySearch:document.getElementById('turnHistorySearch'), loadTurnHistoryBtn:document.getElementById('loadTurnHistoryBtn'), turnHistoryGrid:document.getElementById('turnHistoryGrid'), historyDateLabel:document.getElementById('historyDateLabel'), historyTechCount:document.getElementById('historyTechCount'), historyTurnTotal:document.getElementById('historyTurnTotal'), historyTicketTotal:document.getElementById('historyTicketTotal'), customerSearch:document.getElementById('customerSearch'), customerSort:document.getElementById('customerSort'), customerFilter:document.getElementById('customerFilter'), customersList:document.getElementById('customersList'), customerCountPill:document.getElementById('customerCountPill'), openAddCustomerBtn:document.getElementById('openAddCustomerBtn'), customerModal:document.getElementById('customerModal'), customerModalTitle:document.getElementById('customerModalTitle'), closeCustomerModalBtn:document.getElementById('closeCustomerModalBtn'), customerEditText:document.getElementById('customerEditText'), customerNameInput:document.getElementById('customerNameInput'), customerPhoneInput:document.getElementById('customerPhoneInput'), customerEmailInput:document.getElementById('customerEmailInput'), customerBirthdayMonthInput:document.getElementById('customerBirthdayMonthInput'), customerBirthdayDayInput:document.getElementById('customerBirthdayDayInput'), saveCustomerBtn:document.getElementById('saveCustomerBtn'), cancelCustomerEditBtn:document.getElementById('cancelCustomerEditBtn'),
       safeResetBtn:document.getElementById('safeResetBtn'), fullResetBtn:document.getElementById('fullResetBtn'), checkInList:document.getElementById('checkInList'), priorityList:document.getElementById('priorityList'),
       groupModal:document.getElementById('groupModal'), groupModalTitle:document.getElementById('groupModalTitle'), closeGroupModalBtn:document.getElementById('closeGroupModalBtn'), openAddGroupBtn:document.getElementById('openAddGroupBtn'), groupName:document.getElementById('groupName'), groupOrder:document.getElementById('groupOrder'), groupActive:document.getElementById('groupActive'), saveGroupBtn:document.getElementById('saveGroupBtn'), cancelGroupEditBtn:document.getElementById('cancelGroupEditBtn'), groupEditText:document.getElementById('groupEditText'), serviceGroupsList:document.getElementById('serviceGroupsList'), groupCountPill:document.getElementById('groupCountPill'),
@@ -563,13 +612,14 @@
     }
 
     async function loadAllData(){
-      const [usersRes, techsRes, settingsRes, groupsRes, servicesRes, customersRes, queueRes] = await Promise.all([
+      const [usersRes, techsRes, settingsRes, groupsRes, servicesRes, customersRes, callsRes, queueRes] = await Promise.all([
         supabaseClient.from('app_users').select('*').order('created_at', { ascending:true }),
         supabaseClient.from('technicians').select('*').order('name', { ascending:true }),
         supabaseClient.from('turn_settings').select('*').eq('id', 1).maybeSingle(),
         supabaseClient.from('service_groups').select('*').order('display_order', { ascending:true }).order('name', { ascending:true }),
         supabaseClient.from('services').select('*').order('display_order', { ascending:true }).order('name', { ascending:true }),
         supabaseClient.from('customers').select('*').order('created_at', { ascending:false }),
+        supabaseClient.from('call_logs').select('*').order('created_at', { ascending:false }).limit(Number(state.callLimit || 25)),
         supabaseClient.from('queue_entries').select('*').order('created_at', { ascending:false }).limit(1000)
       ]);
 
@@ -579,6 +629,7 @@
       if(groupsRes.error && groupsRes.error.code !== '42P01') throw groupsRes.error;
       if(servicesRes.error && servicesRes.error.code !== '42P01') throw servicesRes.error;
       if(customersRes.error && customersRes.error.code !== '42P01') throw customersRes.error;
+      if(callsRes.error && callsRes.error.code !== '42P01') console.warn('Call logs load skipped:', callsRes.error.message);
       if(queueRes.error && queueRes.error.code !== '42P01') throw queueRes.error;
 
       state.users = usersRes.data || [];
@@ -598,6 +649,7 @@
       state.serviceGroups = groupsRes.error ? [] : (groupsRes.data || []);
       state.services = servicesRes.error ? [] : (servicesRes.data || []).map(s=>({...s, price:s.price==null?'':Number(s.price), duration_minutes:s.duration_minutes==null?'':Number(s.duration_minutes), turn_weight:Number(s.turn_weight||1)}));
       state.customers = customersRes.error ? [] : (customersRes.data || []);
+      state.callLogs = callsRes.error ? [] : (callsRes.data || []);
       state.queueEntries = queueRes.error ? [] : (queueRes.data || []);
       computeCustomerStats();
       state.dayMode = state.technicians.some(t=>t.check_in_order != null) ? 'normal_day' : 'new_day';
@@ -700,6 +752,95 @@
       if(!stats.lastCheckIn) return false;
       return (Date.now()-new Date(stats.lastCheckIn).getTime())/(1000*60*60*24) >= 30;
     }
+    function callStatusBadge(status, followUpNeeded){
+      const s=String(status||'new');
+      if(s==='completed') return '<span class="badge success">Completed</span>';
+      if(s==='needs_sms') return '<span class="badge warning">Needs SMS</span>';
+      if(s==='needs_call_back') return '<span class="badge danger">Call back</span>';
+      if(s==='no_follow_up') return '<span class="badge info">No follow-up</span>';
+      if(followUpNeeded) return '<span class="badge warning">Follow-up</span>';
+      return '<span class="badge info">New</span>';
+    }
+    function renderCallsList(){
+      if(!els.callsList) return;
+      const q=String(state.callSearch||'').trim().toLowerCase();
+      const filter=state.callFilter||'all';
+      let rows=[...(state.callLogs||[])].filter(call=>{
+        if(filter==='follow_up' && !call.follow_up_needed) return false;
+        if(filter!=='all' && filter!=='follow_up' && String(call.follow_up_status||'')!==filter) return false;
+        if(!q) return true;
+        return [call.from_number, call.to_number, call.summary, call.transcript, call.customer_intent, call.requested_service, call.extracted_name, call.follow_up_status]
+          .join(' ').toLowerCase().includes(q);
+      });
+      els.callCountPill.textContent=`${rows.length} calls`;
+      if(!rows.length){
+        els.callsList.innerHTML='<div class="empty">No Retell calls found yet. After Retell sends a call_analyzed webhook, calls will appear here.</div>';
+        return;
+      }
+      els.callsList.innerHTML=rows.map(call=>{
+        const created=call.created_at?new Date(call.created_at).toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}):'--';
+        const duration=call.duration_seconds?`${call.duration_seconds}s`:'--';
+        const summary=call.summary||call.customer_intent||'No summary yet';
+        const transcript=call.transcript||'No transcript saved yet.';
+        const phone=call.from_number||'Unknown caller';
+        const tel=String(phone).replace(/[^+\d]/g,'');
+        return `<div class="customer-card">
+          <div class="customer-card-top">
+            <div>
+              <div class="customer-name">📞 ${escapeHtml(phone)}</div>
+              <div class="customer-detail-line">To: ${escapeHtml(call.to_number||'--')} • ${escapeHtml(created)} • Duration: ${escapeHtml(duration)}</div>
+              <div class="customer-detail-line">Call ID: ${escapeHtml(call.retell_call_id||'--')}</div>
+              <div class="customer-detail-line"><strong>Summary:</strong> ${escapeHtml(summary)}</div>
+              ${call.requested_service?`<div class="customer-detail-line">Requested service: <strong>${escapeHtml(call.requested_service)}</strong></div>`:''}
+            </div>
+            <div class="badge-row">${callStatusBadge(call.follow_up_status, call.follow_up_needed)}</div>
+          </div>
+          <details style="margin-top:14px;">
+            <summary style="cursor:pointer;font-weight:900;color:var(--gold-deep);">View transcript</summary>
+            <div class="status-box" style="white-space:pre-wrap;margin-top:10px;">${escapeHtml(transcript)}</div>
+          </details>
+          <div class="customer-actions">
+            ${tel?`<a href="tel:${tel}">Call Back</a><button class="btn-primary" type="button" onclick="sendCallSms('${escapeHtml(call.id)}', this)">Send SMS</button>`:''}
+            ${call.sms_sent_at?`<span class="pill success">SMS sent</span>`:''}
+            ${call.recording_url?`<a href="${escapeHtml(call.recording_url)}" target="_blank" rel="noopener">Recording</a>`:''}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+
+    async function sendCallSms(callLogId, button){
+      if(!callLogId){ alert('Missing call log ID.'); return; }
+      const confirmed = confirm('Send follow-up SMS to this caller now?');
+      if(!confirmed) return;
+
+      const originalText = button ? button.textContent : '';
+      try{
+        if(button){ button.disabled = true; button.textContent = 'Sending...'; }
+
+        const response = await fetch('https://project-17o5z.vercel.app/api/sms/send-followup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ call_log_id: callLogId })
+        }); 
+
+        const result = await response.json().catch(()=>({}));
+
+        if(!response.ok){
+          const detail = result?.detail ? JSON.stringify(result.detail) : '';
+          throw new Error(result?.error || detail || 'SMS failed');
+        }
+
+        alert(`SMS sent successfully to ${result.to || 'caller'}.`);
+        await refreshFromDb();
+        switchTab('calls');
+      }catch(error){
+        alert(`SMS failed: ${error.message}`);
+      }finally{
+        if(button){ button.disabled = false; button.textContent = originalText || 'Send SMS'; }
+      }
+    }
+
     function renderCustomersList(){
       if(!els.customersList) return;
       const q=String(state.customerSearch||'').trim().toLowerCase();
@@ -838,6 +979,11 @@
       els.turnHistorySearch?.addEventListener('input', ()=>{state.turnHistorySearch=els.turnHistorySearch.value;renderTurnHistoryGrid();});
 
       els.tabCustomersBtn?.addEventListener('click', ()=>switchTab('customers'));
+      els.tabCallsBtn?.addEventListener('click', ()=>switchTab('calls'));
+      els.callSearch?.addEventListener('input', ()=>{state.callSearch=els.callSearch.value;renderCallsList();});
+      els.callFilter?.addEventListener('change', ()=>{state.callFilter=els.callFilter.value;renderCallsList();});
+      els.callLimit?.addEventListener('change', async()=>{state.callLimit=Number(els.callLimit.value||25);await refreshFromDb();});
+      els.refreshCallsBtn?.addEventListener('click', async()=>{await refreshFromDb();switchTab('calls');});
       els.customerSearch?.addEventListener('input', ()=>{state.customerSearch=els.customerSearch.value;renderCustomersList();});
       els.customerSort?.addEventListener('change', ()=>{state.customerSort=els.customerSort.value;renderCustomersList();});
       els.customerFilter?.addEventListener('change', ()=>{state.customerFilter=els.customerFilter.value;renderCustomersList();});
@@ -948,6 +1094,7 @@
         .on('postgres_changes', { event:'*', schema:'public', table:'service_groups' }, refreshFromDb)
         .on('postgres_changes', { event:'*', schema:'public', table:'services' }, refreshFromDb)
         .on('postgres_changes', { event:'*', schema:'public', table:'customers' }, refreshFromDb)
+        .on('postgres_changes', { event:'*', schema:'public', table:'call_logs' }, refreshFromDb)
         .on('postgres_changes', { event:'*', schema:'public', table:'queue_entries' }, refreshFromDb)
         .on('postgres_changes', { event:'*', schema:'public', table:'turn_transactions' }, refreshFromDb)
         .subscribe();
@@ -959,16 +1106,19 @@
       els.tabStaffBtn.classList.toggle('active', tab==='staff');
       els.tabServicesBtn.classList.toggle('active', tab==='services');
       els.tabCustomersBtn?.classList.toggle('active', tab==='customers');
+      els.tabCallsBtn?.classList.toggle('active', tab==='calls');
       els.tabTurnBtn.classList.toggle('active', tab==='turn');
       els.tabTurnHistoryBtn?.classList.toggle('active', tab==='turnHistory');
       els.dayTab.classList.toggle('hidden', tab!=='day');
       els.staffTab.classList.toggle('hidden', tab!=='staff');
       els.servicesTab.classList.toggle('hidden', tab!=='services');
       els.customersTab?.classList.toggle('hidden', tab!=='customers');
+      els.callsTab?.classList.toggle('hidden', tab!=='calls');
       els.turnTab.classList.toggle('hidden', tab!=='turn');
       els.turnHistoryTab?.classList.toggle('hidden', tab!=='turnHistory');
-      els.modePill.textContent=tab==='day'?'Day Control':tab==='staff'?'Staff Admin':tab==='customers'?'Customers':tab==='turnHistory'?'Turn History':tab==='turnHistory'?'Turn History':tab==='services'?'Services':'Turn Settings';
+      els.modePill.textContent=tab==='day'?'Day Control':tab==='staff'?'Staff Admin':tab==='customers'?'Customers':tab==='calls'?'Retell Calls':tab==='turnHistory'?'Turn History':tab==='services'?'Services':'Turn Settings';
       if(tab==='customers') renderCustomersList();
+      if(tab==='calls') renderCallsList();
       if(tab==='turnHistory'){ if(els.turnHistoryDate && !els.turnHistoryDate.value) els.turnHistoryDate.value=turnHistoryDateDefault(); loadTurnHistory(); }
       if(tab==='turnHistory'){ if(els.turnHistoryDate && !els.turnHistoryDate.value) els.turnHistoryDate.value=turnHistoryDateDefault(); loadTurnHistory(); }
       if(tab==='turn') populateTurnSettingsForm();
@@ -1755,6 +1905,7 @@
       populateServiceGroupFilterSelect();
       renderServiceGroupsList();
       renderServicesList();
+      renderCallsList();
       populateTurnSettingsForm();
       populateRoleOptions();
       switchTab(activeTab);
@@ -1781,6 +1932,13 @@
     Run this in Supabase SQL Editor BEFORE using this page:
 
     create extension if not exists pgcrypto;
+
+    -- Required for Retell Calls tab if call_logs has RLS enabled:
+    -- This simple prototype policy lets logged-in Admin Panel users read call logs through the browser anon key.
+    -- For production, replace this with Supabase Auth based policies.
+    create policy if not exists "Allow prototype read call logs"
+    on public.call_logs for select
+    using (true);
 
     create table if not exists app_users (
       id uuid primary key default gen_random_uuid(),

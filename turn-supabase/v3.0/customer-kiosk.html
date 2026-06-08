@@ -1,12 +1,227 @@
 <!DOCTYPE html>
+<!-- LUMI_KIOSK_VERSION: final-locked-layout-sticky-cta -->
+<!-- LUMI_KIOSK_VERSION: luxury-sticky-cta-bar -->
+<!-- LUMI_KIOSK_VERSION: combo-switch-fix -->
+<!-- LUMI_KIOSK_VERSION: larger-keypad-continue-aligned -->
+<!-- LUMI_KIOSK_VERSION: phone-display-pro-animation -->
+<!-- LUMI_KIOSK_VERSION: pro-keypad-icons-longpress -->
+<!-- LUMI_KIOSK_VERSION: continue-after-phone-error-fix -->
+<!-- LUMI_KIOSK_VERSION: next-level-circular-keypad -->
+<!-- LUMI_KIOSK_VERSION: phone-clean-no-title-no-steps-small-keypad -->
+<!-- LUMI_KIOSK_VERSION: combo-flexible-split-force-v2 -->
+<!-- LUMI_KIOSK_VERSION: combo-flexible-split-ticket-logic -->
 <!-- LUMI_KIOSK_VERSION: combo-first-service-screen -->
 <!-- LUMI_KIOSK_VERSION: service-aware-natural-retreat-upsells-fixed -->
+<!-- LUMI_KIOSK_VERSION: keypad-15-percent-smaller -->
 <html lang="vi">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Lumi Nails • Customer Check-in Kiosk</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+// Lumi next-level keypad feedback
+(function(){
+  function addKeypadFeedback(){
+    const keys = document.querySelectorAll('.key-btn');
+    const display = document.getElementById('phoneDisplay');
+    const displayWrap = display?.closest('.phone-display-wrap');
+
+    keys.forEach(btn=>{
+      if(btn.dataset.lumiFeedbackBound === "true") return;
+      btn.dataset.lumiFeedbackBound = "true";
+
+      const animate = ()=>{
+        btn.classList.remove('key-pressed');
+        void btn.offsetWidth;
+        btn.classList.add('key-pressed');
+        setTimeout(()=>btn.classList.remove('key-pressed'), 150);
+
+        if(display){
+          display.classList.remove('phone-digit-pop');
+          void display.offsetWidth;
+          display.classList.add('phone-digit-pop');
+          setTimeout(()=>display.classList.remove('phone-digit-pop'), 220);
+        }
+
+        if(displayWrap){
+          displayWrap.classList.add('phone-display-glow');
+          setTimeout(()=>displayWrap.classList.remove('phone-display-glow'), 220);
+        }
+      };
+
+      btn.addEventListener('pointerdown', animate, {passive:true});
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', addKeypadFeedback);
+  setTimeout(addKeypadFeedback, 300);
+})();
+
+
+// Lumi pro keypad behavior: icon controls + long-press delete to clear all
+(function(){
+  function phoneDigitsOnly(){
+    const input = document.getElementById('clientPhone');
+    return (input?.value || '').replace(/\D/g,'');
+  }
+
+  function setPhoneDigits(digits){
+    const input = document.getElementById('clientPhone');
+    if(!input) return;
+    input.value = String(digits || '').slice(0,10);
+    input.dispatchEvent(new Event('input', {bubbles:true}));
+  }
+
+  function clearPhoneWithGlow(){
+    setPhoneDigits('');
+    const display = document.getElementById('phoneDisplay');
+    const wrap = display?.closest('.phone-display-wrap');
+    if(wrap){
+      wrap.classList.add('phone-clear-glow');
+      setTimeout(()=>wrap.classList.remove('phone-clear-glow'), 260);
+    }
+    if(display){
+      display.classList.remove('phone-digit-pop');
+      void display.offsetWidth;
+      display.classList.add('phone-digit-pop');
+      setTimeout(()=>display.classList.remove('phone-digit-pop'), 220);
+    }
+  }
+
+  function bindProKeypad(){
+    const del = document.querySelector('.key-delete[data-action="delete"]');
+    const clear = document.querySelector('.key-clear[data-action="clear"]');
+
+    if(clear && clear.dataset.proBound !== "true"){
+      clear.dataset.proBound = "true";
+      clear.addEventListener('click', (e)=>{
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        clearPhoneWithGlow();
+      }, true);
+    }
+
+    if(del && del.dataset.proBound !== "true"){
+      del.dataset.proBound = "true";
+      let timer = null;
+      let longPressed = false;
+
+      const start = ()=>{
+        longPressed = false;
+        del.classList.add('long-press-active');
+        clearTimeout(timer);
+        timer = setTimeout(()=>{
+          longPressed = true;
+          clearPhoneWithGlow();
+          del.classList.remove('long-press-active');
+        }, 650);
+      };
+
+      const end = (e)=>{
+        clearTimeout(timer);
+        del.classList.remove('long-press-active');
+        if(longPressed){
+          e?.preventDefault?.();
+          e?.stopImmediatePropagation?.();
+        }
+      };
+
+      del.addEventListener('pointerdown', start, {passive:true});
+      del.addEventListener('pointerup', end, true);
+      del.addEventListener('pointercancel', end, true);
+      del.addEventListener('pointerleave', end, true);
+      del.addEventListener('click', (e)=>{
+        if(longPressed){
+          e.preventDefault();
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', bindProKeypad);
+  setTimeout(bindProKeypad, 300);
+})();
+
+
+// Lumi phone display animation upgrade
+(function(){
+  function animatePhoneDisplay(isClear=false){
+    const display = document.getElementById('phoneDisplay');
+    const wrap = display?.closest('.phone-display-wrap');
+    if(!display || !wrap) return;
+
+    display.classList.remove('phone-digit-pop');
+    void display.offsetWidth;
+    display.classList.add('phone-digit-pop');
+
+    wrap.classList.remove('phone-display-glow','phone-clear-glow');
+    wrap.classList.add(isClear ? 'phone-clear-glow' : 'phone-display-glow');
+
+    setTimeout(()=>display.classList.remove('phone-digit-pop'), 220);
+    setTimeout(()=>wrap.classList.remove('phone-display-glow','phone-clear-glow'), 280);
+  }
+
+  function bindPhoneDisplayAnimation(){
+    const input = document.getElementById('clientPhone');
+    if(!input || input.dataset.lumiDisplayAnimationBound === "true") return;
+    input.dataset.lumiDisplayAnimationBound = "true";
+
+    let lastValue = input.value || "";
+    input.addEventListener('input', ()=>{
+      const current = input.value || "";
+      const isClear = current.length < lastValue.length && current.length === 0;
+      animatePhoneDisplay(isClear);
+      lastValue = current;
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', bindPhoneDisplayAnimation);
+  setTimeout(bindPhoneDisplayAnimation, 300);
+})();
+
+
+// Lumi combo switch fix: keep combo cards clickable after re-render
+(function(){
+  if(window.__lumiComboSwitchFixBound) return;
+  window.__lumiComboSwitchFixBound = true;
+
+  document.addEventListener('click', function(event){
+    const card = event.target.closest('#signatureComboGrid .combo-card');
+    if(!card) return;
+    event.preventDefault();
+    if(typeof selectSignatureCombo === 'function'){
+      selectSignatureCombo(card);
+    }
+  }, true);
+
+  document.addEventListener('keydown', function(event){
+    if(event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest('#signatureComboGrid .combo-card');
+    if(!card) return;
+    event.preventDefault();
+    if(typeof selectSignatureCombo === 'function'){
+      selectSignatureCombo(card);
+    }
+  }, true);
+})();
+
+
+// Lumi phone step body class for sticky CTA targeting
+(function(){
+  function updatePhoneStepActive(){
+    const step1 = document.getElementById('step1');
+    const isActive = step1 && !step1.classList.contains('hidden');
+    document.body.classList.toggle('phone-step-active', !!isActive);
+  }
+  document.addEventListener('DOMContentLoaded', ()=>{
+    updatePhoneStepActive();
+    setTimeout(updatePhoneStepActive, 250);
+  });
+  setInterval(updatePhoneStepActive, 500);
+})();
+
+</script>
 <script>
   const SUPABASE_URL = "https://fvnfyimfdhlxkkuicdlc.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_wbIl0R3YcMCmmlbbc1uX7A_AyF5huy2";
@@ -51,13 +266,15 @@ body.service-step-active{padding-bottom:106px}
   grid-template-columns:minmax(320px,0.9fr) minmax(360px,1.1fr);
   gap:28px;
   align-items:stretch;
-  margin-top:22px;
+  margin-top:12px !important;
 }
 .phone-offer-panel,.phone-keypad-panel{
   background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,250,240,.86));
   border:1px solid rgba(216,208,196,.86);
   border-radius:28px;
   padding:24px;
+  padding-top:14px !important;
+  margin-top: 14 !important;
   box-shadow:0 14px 38px rgba(88,67,45,.08);
 }
 .offer-kicker{
@@ -339,7 +556,32 @@ body.service-step-active{padding-bottom:106px}
   padding:16px 16px;
   align-items:flex-start;
 }
-.service-check input{
+.service-check{
+  grid-template-columns:44px minmax(0,1fr) auto !important;
+  gap:10px !important;
+  align-items:flex-start !important;
+}
+
+.service-check input[type="checkbox"]{
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  min-height:28px !important;
+  padding:0 !important;
+  margin:4px 0 0 4px !important;
+  flex:none !important;
+}
+
+.service-name{
+  line-height:1.25 !important;
+  overflow-wrap:break-word !important;
+}
+/* .service-check input{
+  margin-top:7px;
+} */
+ .service-check input{
+  width:22px;
+  height:22px;
   margin-top:7px;
 }
 .service-main{
@@ -855,27 +1097,844 @@ body.service-step-active{padding-bottom:106px}
 .regular-services-divider:before,.regular-services-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(200,166,107,.36),transparent)}
 @media(max-width:980px){.combo-card-grid{grid-template-columns:1fr}.combo-card{min-height:190px}}
 
+
+/* LUMI FINAL KIOSK PHONE CLEANUP
+   - removed phone title/subtitle/step pills
+   - keypad buttons reduced to about 2/3 size
+*/
+#stepTitle,
+#stepSubtitle,
+.step-row{
+  display:none!important;
+}
+
+#formArea > .card{
+  padding-top:24px!important;
+}
+
+#step1 .phone-kiosk-layout{
+  margin-top:0!important;
+}
+
+.keypad{
+  grid-template-columns:repeat(3,minmax(70px,1fr))!important;
+  gap:12px!important;
+}
+
+.key-btn{
+  min-height:56px!important;
+  height:56px!important;
+  aspect-ratio:auto!important;
+  border-radius:999px!important;
+  font-size:28px!important;
+  box-shadow:0 8px 18px rgba(88,67,45,.06)!important;
+}
+
+.key-delete,
+.key-clear{
+  font-size:14px!important;
+  border-radius:20px!important;
+}
+
+.phone-actions .btn-primary,
+#lookupPhoneBtn{
+  min-height:58px!important;
+  height:58px!important;
+  border-radius:22px!important;
+}
+
+.phone-keypad-panel{
+  gap:14px!important;
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  html, body{
+    overflow:auto!important;
+  }
+
+  .shell{
+    height:auto!important;
+    min-height:100vh!important;
+    overflow:visible!important;
+  }
+
+  #formArea > .card{
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+    padding-top:22px!important;
+  }
+
+  .phone-kiosk-layout{
+    margin-top:0!important;
+  }
+
+  .keypad{
+    grid-template-columns:repeat(3,minmax(70px,1fr))!important;
+    gap:10px!important;
+    max-width:none!important;
+    width:100%!important;
+  }
+
+  .key-btn{
+    min-height:52px!important;
+    height:52px!important;
+    max-height:52px!important;
+    font-size:26px!important;
+  }
+
+  .key-delete,
+  .key-clear{
+    font-size:14px!important;
+  }
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn{
+    min-height:54px!important;
+    height:54px!important;
+  }
+}
+
+
+/* LUMI NEXT LEVEL KEYPAD — circular premium touch UI */
+.keypad{
+  display:grid!important;
+  grid-template-columns:repeat(3,76px)!important;
+  gap:16px 24px!important;
+  justify-content:center!important;
+  align-content:center!important;
+  width:100%!important;
+  max-width:420px!important;
+  margin:0 auto!important;
+}
+
+.key-btn{
+  width:76px!important;
+  height:76px!important;
+  min-width:76px!important;
+  min-height:76px!important;
+  max-width:76px!important;
+  max-height:76px!important;
+  aspect-ratio:1/1!important;
+  border-radius:50%!important;
+  padding:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:30px!important;
+  line-height:1!important;
+  font-weight:950!important;
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.92),rgba(255,255,255,.62)),
+    linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,250,240,.82))!important;
+  border:1.5px solid rgba(200,166,107,.30)!important;
+  box-shadow:
+    0 10px 24px rgba(88,67,45,.08),
+    inset 0 1px 0 rgba(255,255,255,.88)!important;
+  transform:translateZ(0)!important;
+  transition:transform .10s ease, box-shadow .14s ease, border-color .14s ease, background .14s ease!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+.key-btn::after{
+  content:"";
+  position:absolute;
+  inset:50%;
+  width:0;
+  height:0;
+  border-radius:999px;
+  background:rgba(200,166,107,.18);
+  transform:translate(-50%,-50%);
+  opacity:0;
+  transition:width .28s ease,height .28s ease,opacity .28s ease;
+}
+
+.key-btn:active,
+.key-btn.key-pressed{
+  transform:scale(.92)!important;
+  border-color:rgba(200,166,107,.58)!important;
+  box-shadow:
+    0 5px 14px rgba(88,67,45,.14),
+    0 0 0 6px rgba(200,166,107,.10),
+    inset 0 1px 0 rgba(255,255,255,.90)!important;
+}
+
+.key-btn:active::after,
+.key-btn.key-pressed::after{
+  width:110px;
+  height:110px;
+  opacity:1;
+}
+
+.key-delete,
+.key-clear{
+  width:100%!important;
+  min-width:98px!important;
+  max-width:none!important;
+  height:56px!important;
+  min-height:56px!important;
+  max-height:56px!important;
+  border-radius:999px!important;
+  font-size:15px!important;
+  font-weight:950!important;
+  aspect-ratio:auto!important;
+  padding:0 14px!important;
+  background:linear-gradient(135deg,rgba(255,248,239,.98),rgba(255,255,255,.90))!important;
+}
+
+.key-delete:active,
+.key-clear:active,
+.key-delete.key-pressed,
+.key-clear.key-pressed{
+  transform:scale(.96)!important;
+}
+
+.phone-display-wrap{
+  transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease!important;
+}
+
+.phone-display-wrap.phone-display-glow{
+  border-color:rgba(200,166,107,.62)!important;
+  box-shadow:
+    0 0 0 5px rgba(200,166,107,.10),
+    0 14px 32px rgba(88,67,45,.08)!important;
+  transform:translateY(-1px)!important;
+}
+
+.phone-display{
+  transition:transform .14s ease, opacity .14s ease!important;
+}
+
+.phone-display.phone-digit-pop{
+  animation:lumiDigitPop .18s ease both;
+}
+
+@keyframes lumiDigitPop{
+  0%{transform:scale(.985);opacity:.82}
+  55%{transform:scale(1.018);opacity:1}
+  100%{transform:scale(1);opacity:1}
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  .keypad{
+    grid-template-columns:repeat(3,68px)!important;
+    gap:12px 22px!important;
+    max-width:380px!important;
+  }
+  .key-btn{
+    width:68px!important;
+    height:68px!important;
+    min-width:68px!important;
+    min-height:68px!important;
+    max-width:68px!important;
+    max-height:68px!important;
+    font-size:28px!important;
+  }
+  .key-delete,
+  .key-clear{
+    width:100%!important;
+    min-width:92px!important;
+    height:52px!important;
+    min-height:52px!important;
+    max-height:52px!important;
+    font-size:14px!important;
+  }
+}
+
+
+/* Compatibility placeholders: keep JS working but keep UI clean */
+#stepTitle.hidden,
+#stepSubtitle.hidden,
+.step-row{
+  display:none!important;
+}
+
+
+/* LUMI PRO KEYPAD BEHAVIOR — icon controls + long-press delete */
+.keypad{
+  grid-template-columns:repeat(3,76px)!important;
+  gap:20px 30px!important;
+  justify-content:center!important;
+  max-width:440px!important;
+}
+
+.key-delete,
+.key-clear{
+  width:76px!important;
+  height:54px!important;
+  min-width:76px!important;
+  min-height:54px!important;
+  max-width:76px!important;
+  max-height:54px!important;
+  aspect-ratio:auto!important;
+  border-radius:999px!important;
+  font-size:28px!important;
+  letter-spacing:0!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  padding:0!important;
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.94),rgba(255,255,255,.64)),
+    linear-gradient(135deg,rgba(255,248,239,.98),rgba(255,255,255,.90))!important;
+  color:var(--muted)!important;
+}
+
+.key-delete{
+  color:var(--gold-deep)!important;
+}
+
+.key-clear{
+  color:#9b7a45!important;
+  opacity:.72!important;
+}
+
+.key-delete:active,
+.key-delete.key-pressed{
+  background:rgba(200,166,107,.18)!important;
+  color:var(--gold-deep)!important;
+}
+
+.key-clear:active,
+.key-clear.key-pressed{
+  background:rgba(180,91,91,.12)!important;
+  color:#9f3f3f!important;
+  opacity:1!important;
+}
+
+.key-delete.long-press-active{
+  box-shadow:
+    0 0 0 7px rgba(200,166,107,.13),
+    0 8px 22px rgba(88,67,45,.10)!important;
+  transform:scale(.94)!important;
+}
+
+.key-delete.long-press-active::before{
+  content:"Clear";
+  position:absolute;
+  bottom:-26px;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--gold-deep);
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.phone-display-wrap.phone-clear-glow{
+  border-color:rgba(180,91,91,.38)!important;
+  box-shadow:0 0 0 5px rgba(180,91,91,.08),0 14px 32px rgba(88,67,45,.08)!important;
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  .keypad{
+    grid-template-columns:repeat(3,68px)!important;
+    gap:14px 28px!important;
+    max-width:410px!important;
+  }
+
+  .key-delete,
+  .key-clear{
+    width:68px!important;
+    height:48px!important;
+    min-width:68px!important;
+    min-height:48px!important;
+    max-width:68px!important;
+    max-height:48px!important;
+    font-size:25px!important;
+  }
+}
+
+
+/* LUMI ALIGNMENT UPDATE — make delete/clear circular like 0 */
+.keypad{
+  display:grid!important;
+  grid-template-columns:repeat(3,76px)!important;
+  gap:18px 28px!important;
+  justify-content:center!important;
+  align-items:center!important;
+}
+
+.key-delete,
+.key-clear{
+  width:76px!important;
+  height:76px!important;
+  min-width:76px!important;
+  min-height:76px!important;
+  max-width:76px!important;
+  max-height:76px!important;
+  border-radius:50%!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+
+  background:
+    radial-gradient(circle at 35% 25%,rgba(255,255,255,.92),rgba(255,255,255,.62)),
+    linear-gradient(135deg,rgba(255,250,240,.82),rgba(255,255,255,.9))!important;
+
+  border:1.5px solid rgba(200,166,107,.30)!important;
+
+  box-shadow:
+    0 10px 24px rgba(88,67,45,.08),
+    inset 0 1px 0 rgba(255,255,255,.88)!important;
+}
+
+.key-delete{ font-size:30px!important; color:#8a6a3c!important; }
+.key-clear{ font-size:26px!important; color:#c2a57a!important; opacity:.85!important; }
+
+
+/* LUMI PHONE DISPLAY PRO — single-line + premium digit animation */
+.phone-display-wrap{
+  overflow:hidden!important;
+}
+
+.phone-display{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  font-size:clamp(34px,4.2vw,50px)!important;
+  letter-spacing:.035em!important;
+  line-height:1!important;
+  min-height:58px!important;
+  max-width:100%!important;
+  transform-origin:center!important;
+}
+
+.phone-display.empty{
+  opacity:.62!important;
+  letter-spacing:.04em!important;
+}
+
+.phone-display.phone-digit-pop{
+  animation:lumiPhoneDigitPop .18s ease both!important;
+}
+
+.phone-display-wrap.phone-display-glow{
+  border-color:rgba(200,166,107,.62)!important;
+  box-shadow:
+    0 0 0 5px rgba(200,166,107,.10),
+    0 14px 32px rgba(88,67,45,.08)!important;
+}
+
+.phone-display-wrap.phone-clear-glow{
+  border-color:rgba(180,91,91,.38)!important;
+  box-shadow:
+    0 0 0 5px rgba(180,91,91,.08),
+    0 14px 32px rgba(88,67,45,.08)!important;
+}
+
+@keyframes lumiPhoneDigitPop{
+  0%{transform:scale(.982);opacity:.78;filter:blur(.2px)}
+  52%{transform:scale(1.015);opacity:1;filter:blur(0)}
+  100%{transform:scale(1);opacity:1;filter:blur(0)}
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  .phone-display{
+    font-size:clamp(30px,3.6vw,44px)!important;
+    letter-spacing:.025em!important;
+  }
+  .phone-display-wrap{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+}
+
+
+/* LUMI KEYPAD 20% LARGER + CONTINUE ALIGNMENT */
+.phone-keypad-panel{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  height:100%!important;
+}
+
+.keypad{
+  grid-template-columns:repeat(3,92px)!important;
+  gap:20px 32px!important;
+  justify-content:center!important;
+  align-items:center!important;
+  margin:10px auto 18px!important;
+  max-width:470px!important;
+}
+
+.key-btn{
+  width:92px!important;
+  height:92px!important;
+  min-width:92px!important;
+  min-height:92px!important;
+  max-width:92px!important;
+  max-height:92px!important;
+  font-size:34px!important;
+}
+
+.key-delete,
+.key-clear{
+  width:92px!important;
+  height:92px!important;
+  min-width:92px!important;
+  min-height:92px!important;
+  max-width:92px!important;
+  max-height:92px!important;
+  border-radius:50%!important;
+}
+
+.key-delete{font-size:34px!important;}
+.key-clear{font-size:30px!important;}
+
+.phone-actions{
+  margin-top:auto!important;
+  width:100%!important;
+}
+
+.phone-actions .btn-primary,
+#lookupPhoneBtn{
+  height:64px!important;
+  min-height:64px!important;
+  border-radius:24px!important;
+  font-size:21px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  .keypad{
+    grid-template-columns:repeat(3,82px)!important;
+    gap:16px 28px!important;
+    max-width:430px!important;
+    margin:8px auto 14px!important;
+  }
+
+  .key-btn,
+  .key-delete,
+  .key-clear{
+    width:82px!important;
+    height:82px!important;
+    min-width:82px!important;
+    min-height:82px!important;
+    max-width:82px!important;
+    max-height:82px!important;
+  }
+
+  .key-btn{font-size:31px!important;}
+  .key-delete{font-size:31px!important;}
+  .key-clear{font-size:27px!important;}
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn{
+    height:58px!important;
+    min-height:58px!important;
+  }
+}
+
+
+/* LUMI LUXURY STICKY CTA BAR — phone screen */
+body.phone-step-active .phone-display-wrap,
+#step1 .phone-display-wrap{
+  padding:14px 18px!important;
+  border-radius:20px!important;
+  transform:scale(.90)!important;
+  transform-origin:top center!important;
+}
+
+body.phone-step-active .phone-display,
+#step1 .phone-display{
+  font-size:clamp(30px,3.8vw,44px)!important;
+  min-height:46px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+
+body.phone-step-active .phone-keypad-panel,
+#step1 .phone-keypad-panel{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+  padding-bottom:88px!important;
+  overflow:hidden!important;
+}
+
+body.phone-step-active .keypad,
+#step1 .keypad{
+  margin:4px auto 10px!important;
+}
+
+body.phone-step-active .phone-actions,
+#step1 .phone-actions{
+  position:absolute!important;
+  left:20px!important;
+  right:20px!important;
+  bottom:18px!important;
+  margin:0!important;
+  padding:10px!important;
+  border-radius:26px!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.72),rgba(255,250,240,.58)),
+    rgba(255,255,255,.74)!important;
+  border:1px solid rgba(200,166,107,.22)!important;
+  box-shadow:
+    0 -10px 30px rgba(88,67,45,.08),
+    0 12px 36px rgba(167,131,66,.12)!important;
+  backdrop-filter:blur(14px)!important;
+  z-index:50!important;
+}
+
+body.phone-step-active .phone-actions .btn-primary,
+body.phone-step-active #lookupPhoneBtn,
+#step1 .phone-actions .btn-primary,
+#step1 #lookupPhoneBtn{
+  width:100%!important;
+  height:58px!important;
+  min-height:58px!important;
+  border-radius:20px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:21px!important;
+  box-shadow:0 12px 26px rgba(167,131,66,.22)!important;
+}
+
+body.phone-step-active #lookupPhoneBtn:not(:disabled),
+#step1 #lookupPhoneBtn:not(:disabled){
+  animation:lumiCtaReadyGlow 1.8s ease-in-out infinite;
+}
+
+@keyframes lumiCtaReadyGlow{
+  0%,100%{box-shadow:0 12px 26px rgba(167,131,66,.22)}
+  50%{box-shadow:0 14px 34px rgba(167,131,66,.34),0 0 0 5px rgba(200,166,107,.10)}
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  body.phone-step-active .phone-keypad-panel,
+  #step1 .phone-keypad-panel{
+    padding-bottom:82px!important;
+  }
+
+  body.phone-step-active .phone-actions,
+  #step1 .phone-actions{
+    left:18px!important;
+    right:18px!important;
+    bottom:16px!important;
+    padding:9px!important;
+  }
+
+  body.phone-step-active .phone-actions .btn-primary,
+  body.phone-step-active #lookupPhoneBtn,
+  #step1 .phone-actions .btn-primary,
+  #step1 #lookupPhoneBtn{
+    height:54px!important;
+    min-height:54px!important;
+    font-size:20px!important;
+  }
+}
+
+
+/* LUMI KEYPAD 10% SMALLER (refined balance) */
+.keypad{
+  grid-template-columns:repeat(3,82px)!important;
+  gap:18px 28px!important;
+}
+
+.key-btn,
+.key-delete,
+.key-clear{
+  width:82px!important;
+  height:82px!important;
+  min-width:82px!important;
+  min-height:82px!important;
+  max-width:82px!important;
+  max-height:82px!important;
+}
+
+.key-btn{
+  font-size:30px!important;
+}
+
+.key-delete{
+  font-size:30px!important;
+}
+
+.key-clear{
+  font-size:26px!important;
+}
+
+
+/* LUMI PADDING COMPRESSION (targeted) */
+.card, .panel{
+  padding:18px 20px !important;
+}
+
+.main-content{
+  gap:16px !important;
+}
+
+.two-column-layout{
+  gap:16px !important;
+}
+
+.lumi-rewards-card{
+  padding:16px 18px !important;
+}
+
+.lumi-rewards-card .points-box{
+  padding:18px !important;
+}
+
+/* keep keypad and CTA unchanged */
+
+
+/* LUMI FINAL LOCKED LAYOUT — CTA always visible, no kiosk confusion */
+#step1 .phone-keypad-panel{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  height:100%!important;
+  padding-bottom:96px!important;
+  overflow:hidden!important;
+}
+
+#step1 .phone-display-wrap{
+  flex:0 0 auto!important;
+}
+
+#step1 .keypad{
+  flex:1 1 auto!important;
+  align-content:center!important;
+  margin:4px auto 10px!important;
+}
+
+#step1 .phone-actions{
+  position:absolute!important;
+  left:18px!important;
+  right:18px!important;
+  bottom:16px!important;
+  margin:0!important;
+  padding:10px!important;
+  border-radius:26px!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.78),rgba(255,250,240,.64)),
+    rgba(255,255,255,.80)!important;
+  border:1px solid rgba(200,166,107,.24)!important;
+  box-shadow:
+    0 -10px 30px rgba(88,67,45,.08),
+    0 12px 34px rgba(167,131,66,.14)!important;
+  backdrop-filter:blur(14px)!important;
+  z-index:80!important;
+}
+
+#step1 .phone-actions .btn-primary,
+#step1 #lookupPhoneBtn{
+  width:100%!important;
+  height:58px!important;
+  min-height:58px!important;
+  border-radius:20px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:21px!important;
+}
+
+#step1 #lookupPhoneBtn:not(:disabled){
+  animation:lumiFinalCtaReady 1.8s ease-in-out infinite;
+}
+
+@keyframes lumiFinalCtaReady{
+  0%,100%{box-shadow:0 12px 26px rgba(167,131,66,.22)}
+  50%{box-shadow:0 14px 34px rgba(167,131,66,.34),0 0 0 5px rgba(200,166,107,.10)}
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  #step1 .phone-keypad-panel{
+    padding-bottom:88px!important;
+  }
+
+  #step1 .phone-actions{
+    left:16px!important;
+    right:16px!important;
+    bottom:14px!important;
+    padding:9px!important;
+  }
+
+  #step1 .phone-actions .btn-primary,
+  #step1 #lookupPhoneBtn{
+    height:54px!important;
+    min-height:54px!important;
+    font-size:20px!important;
+  }
+}
+
+
+/* LUMI KEYPAD 15% SMALLER — final override */
+#step1 .keypad{
+  grid-template-columns:repeat(3,70px)!important;
+  gap:16px 24px!important;
+}
+
+#step1 .key-btn,
+#step1 .key-delete,
+#step1 .key-clear{
+  width:70px!important;
+  height:70px!important;
+  min-width:70px!important;
+  min-height:70px!important;
+  max-width:70px!important;
+  max-height:70px!important;
+}
+
+#step1 .key-btn{
+  font-size:26px!important;
+}
+
+#step1 .key-delete{
+  font-size:26px!important;
+}
+
+#step1 .key-clear{
+  font-size:22px!important;
+}
+
+@media (min-width:900px) and (max-width:1366px) and (orientation:landscape){
+  #step1 .keypad{
+    grid-template-columns:repeat(3,70px)!important;
+    gap:14px 22px!important;
+  }
+
+  #step1 .key-btn,
+  #step1 .key-delete,
+  #step1 .key-clear{
+    width:70px!important;
+    height:70px!important;
+    min-width:70px!important;
+    min-height:70px!important;
+    max-width:70px!important;
+    max-height:70px!important;
+  }
+
+  #step1 .key-btn{font-size:26px!important;}
+  #step1 .key-delete{font-size:26px!important;}
+  #step1 .key-clear{font-size:22px!important;}
+}
+
 </style>
 </head>
 <body>
-<div class="shell">
-  <section class="topbar">
+<div class="shell" style="margin-top: -10px !important;">
+  <section class="topbar" style="padding-bottom: 15px !important;padding-top: 10px !important;">
     <div><div class="eyebrow">Lumi Nails • Self Check-in</div><h1>Welcome to Lumi</h1><div class="muted">Please check in below. Our team will call you shortly.</div></div>
     <div><span class="pill" id="queuePill">Loading...</span><div class="mini-admin">Customer Kiosk</div></div>
   </section>
 
-  <section id="formArea">
+  <section id="formArea"  style="margin-top: -10px !important;">
     <div class="card">
-      <h2 id="stepTitle">Your phone number</h2>
-      <div class="muted" id="stepSubtitle">Enter your phone number so we can find your profile or create a new one.</div>
-      <div class="step-row">
-        <span class="step-pill active" id="pill1">1. Phone</span>
-        <span class="step-pill" id="pill2">2. Profile</span>
-        <span class="step-pill" id="pill3">3. Services</span>
-        <span class="step-pill" id="pill4">4. Visit</span>
-        <span class="step-pill" id="pill5">5. Tech</span>
-        <span class="step-pill" id="pill6">6. Confirm</span>
-      </div>
+<h2 id="stepTitle" class="hidden" aria-hidden="true"></h2>
+      <div id="stepSubtitle" class="hidden" aria-hidden="true"></div>
 
       <div id="step1">
         <div class="phone-kiosk-layout">
@@ -888,7 +1947,7 @@ body.service-step-active{padding-bottom:106px}
             </div>
             <label class="sms-consent-row">
               <input id="smsConsent" type="checkbox" checked />
-              <span>By checking this box and tapping Continue, I agree to receive appointment updates and promotional text messages from Lumi Nails. Message/data rates may apply. Reply STOP to opt out.</span>
+              <span>By checking this box and tapping Continue, I agree to receive appointment updates and promotional text messages from Lumi Nails.</span>
             </label>
           </div>
 
@@ -909,12 +1968,12 @@ body.service-step-active{padding-bottom:106px}
               <button type="button" class="key-btn" data-key="7">7</button>
               <button type="button" class="key-btn" data-key="8">8</button>
               <button type="button" class="key-btn" data-key="9">9</button>
-              <button type="button" class="key-btn key-delete" data-action="delete">Delete</button>
+              <button type="button" class="key-btn key-delete" data-action="delete" aria-label="Delete one digit" title="Delete">⌫</button>
               <button type="button" class="key-btn" data-key="0">0</button>
-              <button type="button" class="key-btn key-clear" data-action="clear">Clear</button>
+              <button type="button" class="key-btn key-clear" data-action="clear" aria-label="Clear phone number" title="Clear">×</button>
             </div>
 
-            <div class="buttons phone-actions"><button class="btn-primary" id="lookupPhoneBtn" disabled>Continue</button></div>
+            <div class="buttons phone-actions" style="padding-right: 30px !important; margin-right: 20px !important;"><button class="btn-primary" id="lookupPhoneBtn" disabled>Continue</button></div>
           </div>
         </div>
       </div>
@@ -1136,7 +2195,7 @@ const ALL_SKILL='all_services';
 const COMBO_GROUP_NAME='Combo / Multiple Services';
 const els={
  queuePill:document.getElementById('queuePill'),stepTitle:document.getElementById('stepTitle'),stepSubtitle:document.getElementById('stepSubtitle'),
- pills:[1,2,3,4,5,6].map(n=>document.getElementById('pill'+n)),steps:[1,2,3,4,5,6].map(n=>document.getElementById('step'+n)),
+ pills:[1,2,3,4,5,6].map(n=>document.getElementById('pill'+n) || {classList:{add(){},remove(){},toggle(){}}}),steps:[1,2,3,4,5,6].map(n=>document.getElementById('step'+n)),
  clientPhone:document.getElementById('clientPhone'),lookupPhoneBtn:document.getElementById('lookupPhoneBtn'),existingCustomerBox:document.getElementById('existingCustomerBox'),newCustomerFields:document.getElementById('newCustomerFields'),firstName:document.getElementById('firstName'),lastName:document.getElementById('lastName'),clientEmail:document.getElementById('clientEmail'),
  servicesByGroup:document.getElementById('servicesByGroup'),selectedCountText:document.getElementById('selectedCountText'),selectedNamesText:document.getElementById('selectedNamesText'),selectedTotalText:document.getElementById('selectedTotalText'),
  requestedTech:document.getElementById('requestedTech'),techSelectWrap:document.getElementById('techSelectWrap'),flexWrap:document.getElementById('flexWrap'),apptTimeWrap:document.getElementById('apptTimeWrap'),appointmentTime:document.getElementById('appointmentTime'),selectedTimePill:document.getElementById('selectedTimePill'),timeSlotGroups:document.getElementById('timeSlotGroups'),clearTimeBtn:document.getElementById('clearTimeBtn'),summaryBox:document.getElementById('summaryBox'),statusMsg:document.getElementById('statusMsg'),submitBtn:document.getElementById('submitBtn'),formArea:document.getElementById('formArea'),successArea:document.getElementById('successArea'),successText:document.getElementById('successText'),waitText:document.getElementById('waitText'),newCheckinBtn:document.getElementById('newCheckinBtn'),stepQuickCheckin:document.getElementById('stepQuickCheckin'),quickName:document.getElementById('quickName'),quickServiceName:document.getElementById('quickServiceName'),quickServiceMeta:document.getElementById('quickServiceMeta'),quickSameServiceBtn:document.getElementById('quickSameServiceBtn'),quickChooseOtherBtn:document.getElementById('quickChooseOtherBtn'),stepUpsell:document.getElementById('stepUpsell'),upsellList:document.getElementById('upsellList'),upsellSummary:document.getElementById('upsellSummary'),upsellPotentialText:document.getElementById('upsellPotentialText'),skipUpsellBtn:document.getElementById('skipUpsellBtn'),continueUpsellBtn:document.getElementById('continueUpsellBtn'),techAiPanel:document.getElementById('techAiPanel'),techAiBody:document.getElementById('techAiBody'),techAiSub:document.getElementById('techAiSub')
@@ -1604,9 +2663,9 @@ function useLastServiceQuickCheckin(){
   setStep('upsell');
 }
 
-function setStep(n){document.body.classList.toggle('service-step-active', n===3); const isUpsell = n==='upsell'; const isQuick = n==='quick';els.steps.forEach((el,i)=>el.classList.toggle('hidden',isUpsell || isQuick || i+1!==n)); if(els.stepUpsell) els.stepUpsell.classList.toggle('hidden', !isUpsell); if(els.stepQuickCheckin) els.stepQuickCheckin.classList.toggle('hidden', !isQuick);els.pills.forEach((el,i)=>el.classList.toggle('active',(isUpsell || isQuick) ? i+1===3 : i+1===n));
+function setStep(n){document.body.classList.toggle('service-step-active', n===3); const isUpsell = n==='upsell'; const isQuick = n==='quick';els.steps.forEach((el,i)=>{ if(el) el.classList.toggle('hidden',isUpsell || isQuick || i+1!==n); }); if(els.stepUpsell) els.stepUpsell.classList.toggle('hidden', !isUpsell); if(els.stepQuickCheckin) els.stepQuickCheckin.classList.toggle('hidden', !isQuick);els.pills.forEach((el,i)=>{ if(el && el.classList) el.classList.toggle('active',(isUpsell || isQuick) ? i+1===3 : i+1===n); });
   const titles={quick:['Quick check-in','Returning customers can check in faster with the same service.'],upsell:['Enhance your visit','Optional upgrades based on your selected services.'],1:['Your phone number','Enter your phone number so we can find your profile or create a new one.'],2:['Welcome to Lumi','Confirm your profile. Returning customers will continue automatically.'],3:['Select services','Choose one or more services you prefer today.'],4:['Walk-in or appointment?','Tell us whether you have an appointment today.'],5:['Technician preference','Choose first available or request a technician.'],6:['Confirm check-in','Please review your information before submitting.']};
-  els.stepTitle.textContent=titles[n][0]; els.stepSubtitle.textContent=titles[n][1]; if(isQuick) renderQuickCheckin(); if(n===3){ renderServices(); setTimeout(()=>{initSignatureCombos(); renderSignatureCombos();}, 50); } if(isUpsell){ setTimeout(renderUpsells, 0); setTimeout(forceRenderUpsellCards, 80); } if(n===4){ syncVisitUI(); renderTimeSlots(); } if(n===5){ populateTechSelect(); renderTechAIRecommendation(); } if(n===6) renderSummary(); }
+  if(els.stepTitle) els.stepTitle.textContent=titles[n][0]; if(els.stepSubtitle) els.stepSubtitle.textContent=titles[n][1]; if(isQuick) renderQuickCheckin(); if(n===3){ renderServices(); setTimeout(()=>{initSignatureCombos(); renderSignatureCombos();}, 50); } if(isUpsell){ setTimeout(renderUpsells, 0); setTimeout(forceRenderUpsellCards, 80); } if(n===4){ syncVisitUI(); renderTimeSlots(); } if(n===5){ populateTechSelect(); renderTechAIRecommendation(); } if(n===6) renderSummary(); }
 
 function serviceBadge(name){
   const n=String(name||'').toLowerCase();
@@ -1645,33 +2704,85 @@ function makeComboService(card){
     turn_weight: 2,
     duration_minutes: 90,
     is_combo: true,
-    group_name: 'Lumi Signature Combos'
+    group_name: 'Lumi Signature Combos',
+    combo_parts: []
   };
 }
+
+function comboPartsFor(combo){
+  const id = String(combo?.id || combo?.combo_id || '').toLowerCase();
+  const name = String(combo?.name || '').toLowerCase();
+  const price = Number(combo?.price ?? combo?.service_price ?? 0);
+
+  if(id.includes('natural_glow') || name.includes('natural glow')){
+    return [
+      {part:'hands', service_name:'Dip On Natural Nail', service_line:'manicure', service_group_id:null, price:55, turn_weight:1},
+      {part:'feet', service_name:'Lumi Aromatherapy Pedicure', service_line:'pedicure', service_group_id:null, price:55, turn_weight:1}
+    ];
+  }
+
+  if(id.includes('luxe') || name.includes('luxe')){
+    return [
+      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
+      {part:'feet', service_name:'Botanical Pedicure', service_line:'pedicure', service_group_id:null, price:67, turn_weight:1}
+    ];
+  }
+
+  if(id.includes('vip') || name.includes('vip')){
+    return [
+      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
+      {part:'feet', service_name:'Silk Pedicure', service_line:'pedicure', service_group_id:null, price:80, turn_weight:1}
+    ];
+  }
+
+  const half = price ? Math.round(price / 2) : 0;
+  return [
+    {part:'hands', service_name:`${combo?.name || 'Combo'} — Hands`, service_line:'manicure', service_group_id:null, price:half, turn_weight:1},
+    {part:'feet', service_name:`${combo?.name || 'Combo'} — Feet`, service_line:'pedicure', service_group_id:null, price:Math.max(0, price-half), turn_weight:1}
+  ];
+}
+
+function selectedComboServices(){
+  return model.selectedServices.filter(s=>{
+    const id = String(s.id || '').toLowerCase();
+    const name = String(s.name || s.service_name || '').toLowerCase();
+    const line = String(s.service_line || '').toLowerCase();
+    const group = String(s.service_group_id || '').toLowerCase();
+    return !!s.is_combo || line === 'combo' || group === 'combo' || id.includes('combo') || name.includes('combo');
+  });
+}
+
+function shouldSplitComboTickets(){
+  // Strict requested tech = one 2T combo ticket for that requested tech.
+  // Any Tech OR requested-but-flexible = split into hand/feet linked tickets.
+  const strictRequested = model.pref === 'requested' && model.requestedTechId && !model.isFlexible;
+  return !strictRequested;
+}
+
+function newComboGroupId(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'combo_' + Date.now() + '_' + Math.random().toString(16).slice(2);
+}
+
 
 function selectSignatureCombo(card){
   if(!card) return;
 
   const combo = makeComboService(card);
-  const exists = model.selectedServices.some(s=>String(s.id)===String(combo.id));
+  const isAlreadySelected = model.selectedServices.some(s=>String(s.id)===String(combo.id));
 
-  // Selecting a combo should replace any other combo.
+  // Only one signature combo can be active at a time.
   model.selectedServices = model.selectedServices.filter(s=>!s.is_combo && String(s.service_group_id)!=='combo');
 
-  if(!exists){
-    model.selectedServices.push(combo);
-  }
+  // If guest taps the same selected combo, keep it selected.
+  // If guest taps a different combo, switch to the new one.
+  model.selectedServices.push(combo);
 
   model.selectedUpsells = [];
   model.upsellAutoSelected = false;
 
   updateSelectedServices();
   renderSignatureCombos();
-
-  // Re-render service checkboxes below without losing the selected combo state.
-  if(typeof renderServices === 'function'){
-    renderServices();
-  }
 }
 
 function initSignatureCombos(){
@@ -2139,18 +3250,29 @@ function renderSummary(){const techName=appState.techs.find(t=>String(t.id)===St
   <div class="summary-row"><strong>Visit type</strong><span>${model.visitType==='appointment'?'Appointment':'Walk-in'}${model.appointmentTime?' • '+esc(model.appointmentTime):''}</span></div>
   <div class="summary-row"><strong>Preference</strong><span>${esc(pref)}</span></div>`; els.statusMsg.textContent=estimateWait();}
 function queuePayloadBase(customer){
-  const services=model.selectedServices; const multiple=services.length>1; const combo=appState.groups.find(isComboGroup); const primary=services[0]; const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
+  const services=model.selectedServices;
+  const multiple=services.length>1;
+  const combo=appState.groups.find(isComboGroup);
+  const primary=services[0];
+  const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
+  const combos=selectedComboServices();
+  const primaryCombo=combos[0] || null;
   const serviceName=multiple?services.map(s=>s.name).join(' + '):primary.name;
-  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1}));
+  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1,is_combo:!!s.is_combo}));
   return {
     customer_id:customer.id, customer_name:customer.name, customer_phone:customer.phone, customer_email:customer.email||null,
     queue_date:today(), source:'customer_kiosk', status:'waiting', checked_in_at:nowIso(), created_at:nowIso(),
     visit_type:model.visitType, guest_type:model.visitType==='appointment'?'appointment':'walk_in', appointment_time:appointmentTimeValue(),
     request_type:model.pref==='requested'?'requested':'walk_in', requested_tech_id:model.pref==='requested'?model.requestedTechId:null, requested_staff_id:model.pref==='requested'?model.requestedTechId:null,
     is_requested:model.pref==='requested', is_flexible:model.pref==='requested'?!!model.isFlexible:true,
-    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:groupKey(multiple?(combo||group):group),
+    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:primaryCombo?'combo':groupKey(multiple?(combo||group):group),
     service_id:multiple?null:dbId(primary.id), service_name:serviceName, service_price:selectedTotal(), turn_weight:services.reduce((sum,s)=>sum+serviceTurnWeight(s),0),
-    combo_services:multiple?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
+    combo_services:multiple||primaryCombo?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
+    combo_group_id:primaryCombo?newComboGroupId():null,
+    combo_name:primaryCombo?primaryCombo.name:null,
+    combo_part:null,
+    is_combo_child:false,
+    parent_service_name:primaryCombo?primaryCombo.name:null,
     notes:`Checked in from customer-kiosk. Selected services: ${services.map(s=>s.name).join(', ')}`
   };
 }
@@ -2162,7 +3284,7 @@ async function insertQueue(payload){
   const optionalQueueColumns = [
     'customer_email','customer_phone','customer_id','visit_type','guest_type','appointment_time',
     'requested_staff_id','requested_tech_id','is_requested','is_flexible','combo_services',
-    'split_mode','combo_parent_id','combo_index','combo_count','notes','source','checked_in_at',
+    'split_mode','combo_parent_id','combo_index','combo_count','combo_group_id','combo_name','combo_part','is_combo_child','parent_service_name','notes','source','checked_in_at',
     'service_price','service_line','service_group_id','service_id','turn_weight'
   ];
 
@@ -2193,6 +3315,69 @@ async function insertQueue(payload){
   }
   throw new Error('Could not insert queue entry after removing unsupported columns.');
 }
+
+function createComboSplitPayloads(customer){
+  const base = queuePayloadBase(customer);
+  const services = model.selectedServices || [];
+  const comboServices = selectedComboServices();
+
+  // Safety: if the selected service name says Combo, treat it as a combo even if flags are missing.
+  const combo = comboServices[0] || services.find(s=>{
+    const name = String(s.name || s.service_name || '').toLowerCase();
+    const id = String(s.id || '').toLowerCase();
+    return name.includes('combo') || id.includes('combo');
+  });
+
+  if(!combo || !shouldSplitComboTickets()){
+    return [base];
+  }
+
+  const comboGroupId = newComboGroupId();
+  const parts = comboPartsFor(combo);
+  const now = nowIso();
+
+  // Flexible combo: create linked child tickets, each 1T.
+  // Important: each child ticket has its own service_name, service_line, service_price, and turn_weight.
+  return parts.map((part, index)=>({
+    ...base,
+    status:'waiting',
+    created_at:now,
+    checked_in_at:now,
+    service_id:null,
+    service_group_id:null,
+    service_line:part.service_line,
+    service_name:part.service_name,
+    service_price:Number(part.price||0),
+    turn_weight:Number(part.turn_weight||1),
+    split_mode:true,
+    combo_group_id:comboGroupId,
+    combo_name:combo.name || base.service_name,
+    combo_part:part.part,
+    is_combo_child:true,
+    parent_service_name:combo.name || base.service_name,
+    combo_index:index+1,
+    combo_count:parts.length,
+    combo_services:parts.map((p,i)=>({
+      index:i+1,
+      part:p.part,
+      name:p.service_name,
+      price:p.price,
+      service_line:p.service_line,
+      turn_weight:p.turn_weight
+    })),
+    notes:`${combo.name || base.service_name} split ticket ${index+1}/${parts.length}: ${part.service_name}. Checked in from customer-kiosk.`
+  }));
+}
+
+async function insertQueueForCheckin(customer){
+  const payloads = createComboSplitPayloads(customer);
+  const inserted = [];
+  for(const payload of payloads){
+    inserted.push(await insertQueue(payload));
+  }
+  return inserted;
+}
+
 async function ensureCustomer(){
   const data={phone:model.phone,name:model.name,email:model.email};
 
@@ -2221,14 +3406,14 @@ async function submitCheckin(){
     const customer=await ensureCustomer();
     model.customer=customer;
 
-    const payload=queuePayloadBase(customer);
-await insertQueue(payload);
-await loadAll();
+    const insertedTickets = await insertQueueForCheckin(customer);
+    await loadAll();
 
     els.formArea.classList.add('hidden');
     els.successArea.classList.remove('hidden'); updateBirthdayVisibility();
     els.successText.textContent=`Thank you, ${model.name}. Please have a seat — our team will call you shortly.`;
     els.waitText.textContent=estimateWait();
+    if(insertedTickets && insertedTickets.length>1){ els.waitText.textContent = `${estimateWait()} • Combo split into ${insertedTickets.length} tickets`; }
 // Keep screen longer while debugging.
     // setTimeout(resetKiosk,18000)
   }

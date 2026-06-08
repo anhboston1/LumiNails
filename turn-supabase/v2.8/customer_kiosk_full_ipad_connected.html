@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!-- LUMI_KIOSK_VERSION: ipad-connected-real-flow -->
+<!-- LUMI_KIOSK_VERSION: combo-flexible-split-force-v2 -->
+<!-- LUMI_KIOSK_VERSION: combo-flexible-split-ticket-logic -->
+<!-- LUMI_KIOSK_VERSION: combo-first-service-screen -->
 <!-- LUMI_KIOSK_VERSION: service-aware-natural-retreat-upsells-fixed -->
 <html lang="vi">
 <head>
@@ -807,6 +811,369 @@ body.service-step-active{padding-bottom:106px}
   #upsellListLive{grid-template-columns:1fr;}
 }
 
+
+/* Lumi Signature Combo-first service screen */
+.combo-first-section{
+  margin:18px 0 24px;
+  padding:22px;
+  border-radius:30px;
+  border:1px solid rgba(200,166,107,.30);
+  background:
+    radial-gradient(circle at top left,rgba(200,166,107,.16),transparent 34%),
+    linear-gradient(135deg,rgba(255,255,255,.98),rgba(255,250,240,.90));
+  box-shadow:0 18px 50px rgba(88,67,45,.08);
+}
+.combo-first-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.combo-first-kicker{color:var(--gold-deep);font-size:12px;letter-spacing:.17em;text-transform:uppercase;font-weight:950;margin-bottom:7px}
+.combo-first-title{font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,4vw,44px);line-height:1.04;font-weight:900;letter-spacing:-.035em;color:var(--text)}
+.combo-first-sub{color:var(--muted);font-size:16px;line-height:1.55;font-weight:750;margin-top:6px}
+.combo-first-pill{border-radius:999px;padding:9px 12px;background:rgba(200,166,107,.14);color:var(--gold-deep);border:1px solid rgba(200,166,107,.24);font-size:12px;font-weight:950;white-space:nowrap}
+.combo-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.combo-card{
+  position:relative;min-height:220px;padding:20px;border-radius:26px;border:1.5px solid rgba(216,208,196,.95);
+  background:radial-gradient(circle at top right,rgba(200,166,107,.10),transparent 38%),#fff;
+  cursor:pointer;transition:.16s ease;box-shadow:0 12px 32px rgba(88,67,45,.06);
+  display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;
+}
+.combo-card:hover{transform:translateY(-2px);box-shadow:0 18px 44px rgba(88,67,45,.10)}
+.combo-card.selected{
+  border-color:rgba(200,166,107,.72);
+  background:radial-gradient(circle at top right,rgba(200,166,107,.20),transparent 40%),linear-gradient(135deg,#fffaf0,#fff);
+  box-shadow:0 18px 46px rgba(167,131,66,.16);
+}
+.combo-card.featured{border-color:rgba(200,166,107,.44)}
+.combo-card-badges{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.combo-badge{display:inline-flex;width:max-content;border-radius:999px;padding:6px 10px;background:rgba(200,166,107,.13);color:var(--gold-deep);border:1px solid rgba(200,166,107,.20);font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:950}
+.combo-badge.green{background:rgba(85,114,96,.10);color:var(--ready);border-color:rgba(85,114,96,.18)}
+.combo-card-title{font-size:22px;line-height:1.12;font-weight:950;letter-spacing:-.02em;color:var(--text)}
+.combo-card-desc{margin-top:10px;color:var(--muted);line-height:1.5;font-size:14px;font-weight:750}
+.combo-card-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:18px}
+.combo-price{font-family:Georgia,"Times New Roman",serif;font-size:32px;line-height:1;font-weight:900;color:var(--text)}
+.combo-small{color:var(--muted);font-size:12px;font-weight:800;margin-top:5px}
+.combo-select-pill{pointer-events:none;min-width:104px;text-align:center;border-radius:999px;padding:10px 12px;background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#fff;font-size:13px;font-weight:950;box-shadow:0 10px 22px rgba(167,131,66,.18)}
+.combo-card.selected .combo-select-pill{background:rgba(85,114,96,.13);color:var(--ready);border:1px solid rgba(85,114,96,.22);box-shadow:none}
+.combo-selected-check{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:999px;background:rgba(85,114,96,.14);color:var(--ready);border:1px solid rgba(85,114,96,.22);display:none;align-items:center;justify-content:center;font-weight:950}
+.combo-card.selected .combo-selected-check{display:flex}
+.regular-services-divider{margin:24px 0 14px;display:flex;align-items:center;gap:12px;color:var(--muted);font-weight:950;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+.regular-services-divider:before,.regular-services-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(200,166,107,.36),transparent)}
+@media(max-width:980px){.combo-card-grid{grid-template-columns:1fr}.combo-card{min-height:190px}}
+
+
+/* LUMI IPAD CONNECTED MODE — real kiosk flow, compact phone screen */
+@media (min-width: 900px) and (max-width: 1366px) and (orientation: landscape) {
+  html, body {
+    height: 100%;
+    overflow: hidden !important;
+  }
+
+  body {
+    margin: 0 !important;
+  }
+
+  .shell {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    padding: 10px 14px !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-rows: 130px 1fr !important;
+    gap: 12px !important;
+  }
+
+  .topbar {
+    margin: 0 !important;
+    padding: 16px 26px !important;
+    border-radius: 28px !important;
+    min-height: 0 !important;
+    max-height: 130px !important;
+    overflow: hidden !important;
+  }
+
+  .topbar h1 {
+    font-size: clamp(54px, 6vw, 76px) !important;
+    line-height: .88 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .topbar .muted {
+    font-size: 18px !important;
+    margin-top: 8px !important;
+  }
+
+  .topbar .eyebrow {
+    font-size: 13px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #formArea {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #formArea > .card {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 18px 26px 18px !important;
+    border-radius: 28px !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto 1fr !important;
+    gap: 8px !important;
+  }
+
+  #stepTitle {
+    font-size: clamp(38px, 4.2vw, 52px) !important;
+    line-height: .92 !important;
+    margin: 0 !important;
+  }
+
+  #stepSubtitle {
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+  }
+
+  .step-row {
+    gap: 8px !important;
+    margin: 8px 0 4px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .step-pill {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  #step1 {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .phone-kiosk-layout {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-top: 10px !important;
+    display: grid !important;
+    grid-template-columns: 430px 1fr !important;
+    gap: 26px !important;
+    align-items: stretch !important;
+  }
+
+  .phone-offer-panel,
+  .phone-keypad-panel {
+    min-height: 0 !important;
+    height: 100% !important;
+    border-radius: 28px !important;
+    padding: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .offer-kicker {
+    font-size: 13px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .offer-card {
+    min-height: 185px !important;
+    height: 185px !important;
+    border-radius: 26px !important;
+    padding: 18px !important;
+  }
+
+  .offer-number {
+    font-size: 66px !important;
+  }
+
+  .offer-small {
+    font-size: 12px !important;
+  }
+
+  .offer-title {
+    font-size: 24px !important;
+    line-height: 1.08 !important;
+    max-width: 310px !important;
+  }
+
+  .sms-consent-row {
+    margin-top: 20px !important;
+    font-size: 13px !important;
+    line-height: 1.42 !important;
+    gap: 12px !important;
+  }
+
+  .sms-consent-row input {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .phone-keypad-panel {
+    display: grid !important;
+    grid-template-rows: auto 1fr auto !important;
+    gap: 12px !important;
+  }
+
+  .phone-display-wrap {
+    min-height: 108px !important;
+    padding: 18px 24px !important;
+    border-radius: 26px !important;
+  }
+
+  .phone-display-label {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  #phoneDisplay.phone-display {
+    font-size: clamp(46px, 5vw, 60px) !important;
+    line-height: .95 !important;
+    letter-spacing: .035em !important;
+    white-space: nowrap !important;
+  }
+
+  .keypad {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(120px, 1fr)) !important;
+    gap: 12px !important;
+    align-content: stretch !important;
+    max-width: 590px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  .key-btn {
+    aspect-ratio: unset !important;
+    min-height: 58px !important;
+    height: 100% !important;
+    max-height: 72px !important;
+    border-radius: 999px !important;
+    font-size: 32px !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+  }
+
+  .key-delete,
+  .key-clear {
+    font-size: 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .phone-actions {
+    margin-top: 0 !important;
+  }
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn {
+    min-height: 58px !important;
+    height: 58px !important;
+    border-radius: 22px !important;
+    font-size: 21px !important;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1366px) and (max-height: 780px) and (orientation: landscape) {
+  .shell {
+    grid-template-rows: 112px 1fr !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+
+  .topbar {
+    padding: 12px 24px !important;
+    max-height: 112px !important;
+  }
+
+  .topbar h1 {
+    font-size: 58px !important;
+  }
+
+  .topbar .muted {
+    font-size: 16px !important;
+    margin-top: 5px !important;
+  }
+
+  #formArea > .card {
+    padding: 14px 24px !important;
+    gap: 6px !important;
+  }
+
+  #stepTitle {
+    font-size: 42px !important;
+  }
+
+  #stepSubtitle {
+    font-size: 16px !important;
+  }
+
+  .step-row {
+    margin: 6px 0 2px !important;
+  }
+
+  .phone-kiosk-layout {
+    grid-template-columns: 405px 1fr !important;
+    gap: 20px !important;
+    margin-top: 8px !important;
+  }
+
+  .phone-offer-panel,
+  .phone-keypad-panel {
+    padding: 18px !important;
+  }
+
+  .offer-card {
+    height: 160px !important;
+    min-height: 160px !important;
+  }
+
+  .offer-number {
+    font-size: 56px !important;
+  }
+
+  .offer-title {
+    font-size: 21px !important;
+  }
+
+  .sms-consent-row {
+    margin-top: 14px !important;
+    font-size: 12px !important;
+    line-height: 1.34 !important;
+  }
+
+  .phone-display-wrap {
+    min-height: 88px !important;
+    padding: 14px 22px !important;
+  }
+
+  #phoneDisplay.phone-display {
+    font-size: 46px !important;
+  }
+
+  .keypad {
+    gap: 10px !important;
+    max-width: 560px !important;
+  }
+
+  .key-btn {
+    min-height: 50px !important;
+    max-height: 62px !important;
+    font-size: 29px !important;
+  }
+
+  .key-delete,
+  .key-clear {
+    font-size: 15px !important;
+  }
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn {
+    min-height: 52px !important;
+    height: 52px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1558,7 +1925,7 @@ function useLastServiceQuickCheckin(){
 
 function setStep(n){document.body.classList.toggle('service-step-active', n===3); const isUpsell = n==='upsell'; const isQuick = n==='quick';els.steps.forEach((el,i)=>el.classList.toggle('hidden',isUpsell || isQuick || i+1!==n)); if(els.stepUpsell) els.stepUpsell.classList.toggle('hidden', !isUpsell); if(els.stepQuickCheckin) els.stepQuickCheckin.classList.toggle('hidden', !isQuick);els.pills.forEach((el,i)=>el.classList.toggle('active',(isUpsell || isQuick) ? i+1===3 : i+1===n));
   const titles={quick:['Quick check-in','Returning customers can check in faster with the same service.'],upsell:['Enhance your visit','Optional upgrades based on your selected services.'],1:['Your phone number','Enter your phone number so we can find your profile or create a new one.'],2:['Welcome to Lumi','Confirm your profile. Returning customers will continue automatically.'],3:['Select services','Choose one or more services you prefer today.'],4:['Walk-in or appointment?','Tell us whether you have an appointment today.'],5:['Technician preference','Choose first available or request a technician.'],6:['Confirm check-in','Please review your information before submitting.']};
-  els.stepTitle.textContent=titles[n][0]; els.stepSubtitle.textContent=titles[n][1]; if(isQuick) renderQuickCheckin(); if(n===3) renderServices(); if(isUpsell){ setTimeout(renderUpsells, 0); setTimeout(forceRenderUpsellCards, 80); } if(n===4){ syncVisitUI(); renderTimeSlots(); } if(n===5){ populateTechSelect(); renderTechAIRecommendation(); } if(n===6) renderSummary(); }
+  els.stepTitle.textContent=titles[n][0]; els.stepSubtitle.textContent=titles[n][1]; if(isQuick) renderQuickCheckin(); if(n===3){ renderServices(); setTimeout(()=>{initSignatureCombos(); renderSignatureCombos();}, 50); } if(isUpsell){ setTimeout(renderUpsells, 0); setTimeout(forceRenderUpsellCards, 80); } if(n===4){ syncVisitUI(); renderTimeSlots(); } if(n===5){ populateTechSelect(); renderTechAIRecommendation(); } if(n===6) renderSummary(); }
 
 function serviceBadge(name){
   const n=String(name||'').toLowerCase();
@@ -1585,12 +1952,189 @@ function scrollToServiceGroup(groupId){
   if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+
+function makeComboService(card){
+  return {
+    id: card.dataset.comboId,
+    name: card.dataset.comboName,
+    price: Number(card.dataset.comboPrice || 0),
+    service_price: Number(card.dataset.comboPrice || 0),
+    service_line: 'combo',
+    service_group_id: 'combo',
+    turn_weight: 2,
+    duration_minutes: 90,
+    is_combo: true,
+    group_name: 'Lumi Signature Combos',
+    combo_parts: []
+  };
+}
+
+function comboPartsFor(combo){
+  const id = String(combo?.id || combo?.combo_id || '').toLowerCase();
+  const name = String(combo?.name || '').toLowerCase();
+  const price = Number(combo?.price ?? combo?.service_price ?? 0);
+
+  if(id.includes('natural_glow') || name.includes('natural glow')){
+    return [
+      {part:'hands', service_name:'Dip On Natural Nail', service_line:'manicure', service_group_id:null, price:55, turn_weight:1},
+      {part:'feet', service_name:'Lumi Aromatherapy Pedicure', service_line:'pedicure', service_group_id:null, price:55, turn_weight:1}
+    ];
+  }
+
+  if(id.includes('luxe') || name.includes('luxe')){
+    return [
+      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
+      {part:'feet', service_name:'Botanical Pedicure', service_line:'pedicure', service_group_id:null, price:67, turn_weight:1}
+    ];
+  }
+
+  if(id.includes('vip') || name.includes('vip')){
+    return [
+      {part:'hands', service_name:'Gel Manicure', service_line:'manicure', service_group_id:null, price:50, turn_weight:1},
+      {part:'feet', service_name:'Silk Pedicure', service_line:'pedicure', service_group_id:null, price:80, turn_weight:1}
+    ];
+  }
+
+  const half = price ? Math.round(price / 2) : 0;
+  return [
+    {part:'hands', service_name:`${combo?.name || 'Combo'} — Hands`, service_line:'manicure', service_group_id:null, price:half, turn_weight:1},
+    {part:'feet', service_name:`${combo?.name || 'Combo'} — Feet`, service_line:'pedicure', service_group_id:null, price:Math.max(0, price-half), turn_weight:1}
+  ];
+}
+
+function selectedComboServices(){
+  return model.selectedServices.filter(s=>{
+    const id = String(s.id || '').toLowerCase();
+    const name = String(s.name || s.service_name || '').toLowerCase();
+    const line = String(s.service_line || '').toLowerCase();
+    const group = String(s.service_group_id || '').toLowerCase();
+    return !!s.is_combo || line === 'combo' || group === 'combo' || id.includes('combo') || name.includes('combo');
+  });
+}
+
+function shouldSplitComboTickets(){
+  // Strict requested tech = one 2T combo ticket for that requested tech.
+  // Any Tech OR requested-but-flexible = split into hand/feet linked tickets.
+  const strictRequested = model.pref === 'requested' && model.requestedTechId && !model.isFlexible;
+  return !strictRequested;
+}
+
+function newComboGroupId(){
+  if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'combo_' + Date.now() + '_' + Math.random().toString(16).slice(2);
+}
+
+
+function selectSignatureCombo(card){
+  if(!card) return;
+
+  const combo = makeComboService(card);
+  const exists = model.selectedServices.some(s=>String(s.id)===String(combo.id));
+
+  // Selecting a combo should replace any other combo.
+  model.selectedServices = model.selectedServices.filter(s=>!s.is_combo && String(s.service_group_id)!=='combo');
+
+  if(!exists){
+    model.selectedServices.push(combo);
+  }
+
+  model.selectedUpsells = [];
+  model.upsellAutoSelected = false;
+
+  updateSelectedServices();
+  renderSignatureCombos();
+
+  // Re-render service checkboxes below without losing the selected combo state.
+  if(typeof renderServices === 'function'){
+    renderServices();
+  }
+}
+
+function initSignatureCombos(){
+  const grid = document.getElementById('signatureComboGrid');
+  if(!grid || grid.dataset.comboDelegated === 'true') return;
+
+  grid.dataset.comboDelegated = 'true';
+
+  grid.addEventListener('click', (event)=>{
+    const card = event.target.closest('.combo-card');
+    if(!card || !grid.contains(card)) return;
+    event.preventDefault();
+    selectSignatureCombo(card);
+  });
+
+  grid.addEventListener('keydown', (event)=>{
+    if(event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest('.combo-card');
+    if(!card || !grid.contains(card)) return;
+    event.preventDefault();
+    selectSignatureCombo(card);
+  });
+}
+
+function renderSignatureCombos(){
+  document.querySelectorAll('#signatureComboGrid .combo-card').forEach(card=>{
+    const selected = model.selectedServices.some(s=>String(s.id)===String(card.dataset.comboId));
+    card.classList.toggle('selected', selected);
+    card.setAttribute('tabindex','0');
+    card.setAttribute('role','button');
+    card.setAttribute('aria-pressed', selected ? 'true' : 'false');
+
+    const pill = card.querySelector('.combo-select-pill');
+    if(pill) pill.textContent = selected ? 'Selected ✓' : 'Select';
+  });
+}
+
 function renderServices(){
+  initSignatureCombos();
+  renderSignatureCombos();
   if(!els.servicesByGroup) return;
   let groups=appState.groups.filter(g=>!isComboGroup(g));
   if(!groups.length){useFallbackMenu(); groups=appState.groups.filter(g=>!isComboGroup(g));}
 
-  const tabs = `<div class="service-category-tabs">
+  const tabs = `
+        <div class="combo-first-section" id="comboFirstSection">
+          <div class="combo-first-head">
+            <div>
+              <div class="combo-first-kicker">Lumi Signature Combos</div>
+              <div class="combo-first-title">Popular bundles for a complete visit</div>
+              <div class="combo-first-sub">Choose a curated combo, or scroll down to select individual services.</div>
+            </div>
+            <div class="combo-first-pill">Best value • Easy check-in</div>
+          </div>
+          <div class="combo-card-grid" id="signatureComboGrid">
+            <div class="combo-card" data-combo-id="natural_glow_combo" data-combo-name="Natural Glow Combo" data-combo-price="110" data-combo-line="combo">
+              <div class="combo-selected-check">✓</div>
+              <div>
+                <div class="combo-card-badges"><span class="combo-badge green">Natural Glow</span><span class="combo-badge">Best for dip lovers</span></div>
+                <div class="combo-card-title">Natural Glow Combo</div>
+                <div class="combo-card-desc">Dip On Natural Nail + Lumi Aromatherapy Pedicure</div>
+              </div>
+              <div class="combo-card-bottom"><div><div class="combo-price">$110</div><div class="combo-small">Fresh nails + relaxing pedicure</div></div><div class="combo-select-pill">Select</div></div>
+            </div>
+            <div class="combo-card featured" data-combo-id="luxe_combo" data-combo-name="Luxe Combo" data-combo-price="117" data-combo-line="combo">
+              <div class="combo-selected-check">✓</div>
+              <div>
+                <div class="combo-card-badges"><span class="combo-badge">Most Popular</span><span class="combo-badge green">Best Value</span></div>
+                <div class="combo-card-title">Luxe Combo</div>
+                <div class="combo-card-desc">Gel Manicure + Botanical Pedicure</div>
+              </div>
+              <div class="combo-card-bottom"><div><div class="combo-price">$117</div><div class="combo-small">Polished hands + spa pedicure</div></div><div class="combo-select-pill">Select</div></div>
+            </div>
+            <div class="combo-card" data-combo-id="vip_combo" data-combo-name="VIP Combo" data-combo-price="130" data-combo-line="combo">
+              <div class="combo-selected-check">✓</div>
+              <div>
+                <div class="combo-card-badges"><span class="combo-badge">VIP</span><span class="combo-badge green">Luxury Choice</span></div>
+                <div class="combo-card-title">VIP Combo</div>
+                <div class="combo-card-desc">Gel Manicure + Silk Pedicure</div>
+              </div>
+              <div class="combo-card-bottom"><div><div class="combo-price">$130</div><div class="combo-small">Elevated manicure + signature pedicure</div></div><div class="combo-select-pill">Select</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="regular-services-divider">Or choose individual services</div>
+
+        <div class="service-category-tabs">
     <button type="button" class="service-tab active" data-service-tab="all">All Services</button>
     ${groups.map(g=>`<button type="button" class="service-tab" data-service-tab="${esc(g.id)}">${groupIcon(g.name)} ${esc(g.name)}</button>`).join('')}
   </div>`;
@@ -1667,8 +2211,9 @@ function getUpsellSuggestions(){
   const has = (txt)=>selectedText.includes(String(txt).toLowerCase());
   const hasAny = (...items)=>items.some(has);
 
-  const mani = hasAny('mani','manicure','hand');
-  const pedi = hasAny('pedi','pedicure','toe','toes');
+  const combo = hasAny('combo');
+  const mani = combo || hasAny('mani','manicure','hand');
+  const pedi = combo || hasAny('pedi','pedicure','toe','toes');
   const enhancement = hasAny('gel x','gel-x','gelx','hybrid','dip','dipping','full set','refill','builder','polish','nail');
 
   // Service upgrade logic — real Lumi menu choices.
@@ -1918,7 +2463,8 @@ function applySelectedUpsellsToServices(){
   updateSelectedServices();
 }
 
-function updateSelectedServices(){const n=model.selectedServices.length;els.selectedCountText.textContent=`${n} service${n===1?'':'s'} selected`;els.selectedNamesText.textContent=n?model.selectedServices.map(s=>s.name).join(' • '):'Please select at least one service.';els.selectedTotalText.textContent=`Total: ${selectedTotal()?('$'+selectedTotal().toFixed(0)):'Price varies'}`;
+function updateSelectedServices(){
+  if(typeof renderSignatureCombos === 'function') renderSignatureCombos();const n=model.selectedServices.length;els.selectedCountText.textContent=`${n} service${n===1?'':'s'} selected`;els.selectedNamesText.textContent=n?model.selectedServices.map(s=>s.name).join(' • '):'Please select at least one service.';els.selectedTotalText.textContent=`Total: ${selectedTotal()?('$'+selectedTotal().toFixed(0)):'Price varies'}`;
 if(els.quickSameServiceBtn) els.quickSameServiceBtn.addEventListener('click',useLastServiceQuickCheckin);
 if(els.quickChooseOtherBtn) els.quickChooseOtherBtn.addEventListener('click',goToGuidedServices);
 
@@ -1969,18 +2515,29 @@ function renderSummary(){const techName=appState.techs.find(t=>String(t.id)===St
   <div class="summary-row"><strong>Visit type</strong><span>${model.visitType==='appointment'?'Appointment':'Walk-in'}${model.appointmentTime?' • '+esc(model.appointmentTime):''}</span></div>
   <div class="summary-row"><strong>Preference</strong><span>${esc(pref)}</span></div>`; els.statusMsg.textContent=estimateWait();}
 function queuePayloadBase(customer){
-  const services=model.selectedServices; const multiple=services.length>1; const combo=appState.groups.find(isComboGroup); const primary=services[0]; const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
+  const services=model.selectedServices;
+  const multiple=services.length>1;
+  const combo=appState.groups.find(isComboGroup);
+  const primary=services[0];
+  const group=appState.groups.find(g=>String(g.id)===String(primary.service_group_id));
+  const combos=selectedComboServices();
+  const primaryCombo=combos[0] || null;
   const serviceName=multiple?services.map(s=>s.name).join(' + '):primary.name;
-  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1}));
+  const comboServices=services.map((s,i)=>({id:s.id,name:s.name,price:Number(s.price??s.service_price??0),service_group_id:s.service_group_id,group_name:s.group_name,index:i+1,is_combo:!!s.is_combo}));
   return {
     customer_id:customer.id, customer_name:customer.name, customer_phone:customer.phone, customer_email:customer.email||null,
     queue_date:today(), source:'customer_kiosk', status:'waiting', checked_in_at:nowIso(), created_at:nowIso(),
     visit_type:model.visitType, guest_type:model.visitType==='appointment'?'appointment':'walk_in', appointment_time:appointmentTimeValue(),
     request_type:model.pref==='requested'?'requested':'walk_in', requested_tech_id:model.pref==='requested'?model.requestedTechId:null, requested_staff_id:model.pref==='requested'?model.requestedTechId:null,
     is_requested:model.pref==='requested', is_flexible:model.pref==='requested'?!!model.isFlexible:true,
-    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:groupKey(multiple?(combo||group):group),
+    service_group_id:multiple?dbId(combo?.id||primary.service_group_id):dbId(primary.service_group_id), service_line:primaryCombo?'combo':groupKey(multiple?(combo||group):group),
     service_id:multiple?null:dbId(primary.id), service_name:serviceName, service_price:selectedTotal(), turn_weight:services.reduce((sum,s)=>sum+serviceTurnWeight(s),0),
-    combo_services:multiple?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
+    combo_services:multiple||primaryCombo?comboServices:null, split_mode:false, combo_parent_id:null, combo_index:null, combo_count:null,
+    combo_group_id:primaryCombo?newComboGroupId():null,
+    combo_name:primaryCombo?primaryCombo.name:null,
+    combo_part:null,
+    is_combo_child:false,
+    parent_service_name:primaryCombo?primaryCombo.name:null,
     notes:`Checked in from customer-kiosk. Selected services: ${services.map(s=>s.name).join(', ')}`
   };
 }
@@ -1992,7 +2549,7 @@ async function insertQueue(payload){
   const optionalQueueColumns = [
     'customer_email','customer_phone','customer_id','visit_type','guest_type','appointment_time',
     'requested_staff_id','requested_tech_id','is_requested','is_flexible','combo_services',
-    'split_mode','combo_parent_id','combo_index','combo_count','notes','source','checked_in_at',
+    'split_mode','combo_parent_id','combo_index','combo_count','combo_group_id','combo_name','combo_part','is_combo_child','parent_service_name','notes','source','checked_in_at',
     'service_price','service_line','service_group_id','service_id','turn_weight'
   ];
 
@@ -2023,6 +2580,69 @@ async function insertQueue(payload){
   }
   throw new Error('Could not insert queue entry after removing unsupported columns.');
 }
+
+function createComboSplitPayloads(customer){
+  const base = queuePayloadBase(customer);
+  const services = model.selectedServices || [];
+  const comboServices = selectedComboServices();
+
+  // Safety: if the selected service name says Combo, treat it as a combo even if flags are missing.
+  const combo = comboServices[0] || services.find(s=>{
+    const name = String(s.name || s.service_name || '').toLowerCase();
+    const id = String(s.id || '').toLowerCase();
+    return name.includes('combo') || id.includes('combo');
+  });
+
+  if(!combo || !shouldSplitComboTickets()){
+    return [base];
+  }
+
+  const comboGroupId = newComboGroupId();
+  const parts = comboPartsFor(combo);
+  const now = nowIso();
+
+  // Flexible combo: create linked child tickets, each 1T.
+  // Important: each child ticket has its own service_name, service_line, service_price, and turn_weight.
+  return parts.map((part, index)=>({
+    ...base,
+    status:'waiting',
+    created_at:now,
+    checked_in_at:now,
+    service_id:null,
+    service_group_id:null,
+    service_line:part.service_line,
+    service_name:part.service_name,
+    service_price:Number(part.price||0),
+    turn_weight:Number(part.turn_weight||1),
+    split_mode:true,
+    combo_group_id:comboGroupId,
+    combo_name:combo.name || base.service_name,
+    combo_part:part.part,
+    is_combo_child:true,
+    parent_service_name:combo.name || base.service_name,
+    combo_index:index+1,
+    combo_count:parts.length,
+    combo_services:parts.map((p,i)=>({
+      index:i+1,
+      part:p.part,
+      name:p.service_name,
+      price:p.price,
+      service_line:p.service_line,
+      turn_weight:p.turn_weight
+    })),
+    notes:`${combo.name || base.service_name} split ticket ${index+1}/${parts.length}: ${part.service_name}. Checked in from customer-kiosk.`
+  }));
+}
+
+async function insertQueueForCheckin(customer){
+  const payloads = createComboSplitPayloads(customer);
+  const inserted = [];
+  for(const payload of payloads){
+    inserted.push(await insertQueue(payload));
+  }
+  return inserted;
+}
+
 async function ensureCustomer(){
   const data={phone:model.phone,name:model.name,email:model.email};
 
@@ -2051,14 +2671,14 @@ async function submitCheckin(){
     const customer=await ensureCustomer();
     model.customer=customer;
 
-    const payload=queuePayloadBase(customer);
-await insertQueue(payload);
-await loadAll();
+    const insertedTickets = await insertQueueForCheckin(customer);
+    await loadAll();
 
     els.formArea.classList.add('hidden');
     els.successArea.classList.remove('hidden'); updateBirthdayVisibility();
     els.successText.textContent=`Thank you, ${model.name}. Please have a seat — our team will call you shortly.`;
     els.waitText.textContent=estimateWait();
+    if(insertedTickets && insertedTickets.length>1){ els.waitText.textContent = `${estimateWait()} • Combo split into ${insertedTickets.length} tickets`; }
 // Keep screen longer while debugging.
     // setTimeout(resetKiosk,18000)
   }

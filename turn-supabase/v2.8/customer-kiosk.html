@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- LUMI_KIOSK_VERSION: ipad-connected-real-flow -->
 <!-- LUMI_KIOSK_VERSION: combo-flexible-split-force-v2 -->
 <!-- LUMI_KIOSK_VERSION: combo-flexible-split-ticket-logic -->
 <!-- LUMI_KIOSK_VERSION: combo-first-service-screen -->
@@ -856,6 +857,322 @@ body.service-step-active{padding-bottom:106px}
 .regular-services-divider{margin:24px 0 14px;display:flex;align-items:center;gap:12px;color:var(--muted);font-weight:950;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
 .regular-services-divider:before,.regular-services-divider:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(200,166,107,.36),transparent)}
 @media(max-width:980px){.combo-card-grid{grid-template-columns:1fr}.combo-card{min-height:190px}}
+
+
+/* LUMI IPAD CONNECTED MODE — real kiosk flow, compact phone screen */
+@media (min-width: 900px) and (max-width: 1366px) and (orientation: landscape) {
+  html, body {
+    height: 100%;
+    overflow: hidden !important;
+  }
+
+  body {
+    margin: 0 !important;
+  }
+
+  .shell {
+    width: 100vw !important;
+    max-width: none !important;
+    height: 100vh !important;
+    padding: 10px 14px !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-rows: 130px 1fr !important;
+    gap: 12px !important;
+  }
+
+  .topbar {
+    margin: 0 !important;
+    padding: 16px 26px !important;
+    border-radius: 28px !important;
+    min-height: 0 !important;
+    max-height: 130px !important;
+    overflow: hidden !important;
+  }
+
+  .topbar h1 {
+    font-size: clamp(54px, 6vw, 76px) !important;
+    line-height: .88 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .topbar .muted {
+    font-size: 18px !important;
+    margin-top: 8px !important;
+  }
+
+  .topbar .eyebrow {
+    font-size: 13px !important;
+    margin-bottom: 6px !important;
+  }
+
+  #formArea {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #formArea > .card {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 18px 26px 18px !important;
+    border-radius: 28px !important;
+    overflow: hidden !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto 1fr !important;
+    gap: 8px !important;
+  }
+
+  #stepTitle {
+    font-size: clamp(38px, 4.2vw, 52px) !important;
+    line-height: .92 !important;
+    margin: 0 !important;
+  }
+
+  #stepSubtitle {
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    margin: 0 !important;
+  }
+
+  .step-row {
+    gap: 8px !important;
+    margin: 8px 0 4px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .step-pill {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+
+  #step1 {
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .phone-kiosk-layout {
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-top: 10px !important;
+    display: grid !important;
+    grid-template-columns: 430px 1fr !important;
+    gap: 26px !important;
+    align-items: stretch !important;
+  }
+
+  .phone-offer-panel,
+  .phone-keypad-panel {
+    min-height: 0 !important;
+    height: 100% !important;
+    border-radius: 28px !important;
+    padding: 22px !important;
+    overflow: hidden !important;
+  }
+
+  .offer-kicker {
+    font-size: 13px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .offer-card {
+    min-height: 185px !important;
+    height: 185px !important;
+    border-radius: 26px !important;
+    padding: 18px !important;
+  }
+
+  .offer-number {
+    font-size: 66px !important;
+  }
+
+  .offer-small {
+    font-size: 12px !important;
+  }
+
+  .offer-title {
+    font-size: 24px !important;
+    line-height: 1.08 !important;
+    max-width: 310px !important;
+  }
+
+  .sms-consent-row {
+    margin-top: 20px !important;
+    font-size: 13px !important;
+    line-height: 1.42 !important;
+    gap: 12px !important;
+  }
+
+  .sms-consent-row input {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  .phone-keypad-panel {
+    display: grid !important;
+    grid-template-rows: auto 1fr auto !important;
+    gap: 12px !important;
+  }
+
+  .phone-display-wrap {
+    min-height: 108px !important;
+    padding: 18px 24px !important;
+    border-radius: 26px !important;
+  }
+
+  .phone-display-label {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  #phoneDisplay.phone-display {
+    font-size: clamp(46px, 5vw, 60px) !important;
+    line-height: .95 !important;
+    letter-spacing: .035em !important;
+    white-space: nowrap !important;
+  }
+
+  .keypad {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(120px, 1fr)) !important;
+    gap: 12px !important;
+    align-content: stretch !important;
+    max-width: 590px !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  .key-btn {
+    aspect-ratio: unset !important;
+    min-height: 58px !important;
+    height: 100% !important;
+    max-height: 72px !important;
+    border-radius: 999px !important;
+    font-size: 32px !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+  }
+
+  .key-delete,
+  .key-clear {
+    font-size: 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .phone-actions {
+    margin-top: 0 !important;
+  }
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn {
+    min-height: 58px !important;
+    height: 58px !important;
+    border-radius: 22px !important;
+    font-size: 21px !important;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1366px) and (max-height: 780px) and (orientation: landscape) {
+  .shell {
+    grid-template-rows: 112px 1fr !important;
+    padding: 8px 12px !important;
+    gap: 8px !important;
+  }
+
+  .topbar {
+    padding: 12px 24px !important;
+    max-height: 112px !important;
+  }
+
+  .topbar h1 {
+    font-size: 58px !important;
+  }
+
+  .topbar .muted {
+    font-size: 16px !important;
+    margin-top: 5px !important;
+  }
+
+  #formArea > .card {
+    padding: 14px 24px !important;
+    gap: 6px !important;
+  }
+
+  #stepTitle {
+    font-size: 42px !important;
+  }
+
+  #stepSubtitle {
+    font-size: 16px !important;
+  }
+
+  .step-row {
+    margin: 6px 0 2px !important;
+  }
+
+  .phone-kiosk-layout {
+    grid-template-columns: 405px 1fr !important;
+    gap: 20px !important;
+    margin-top: 8px !important;
+  }
+
+  .phone-offer-panel,
+  .phone-keypad-panel {
+    padding: 18px !important;
+  }
+
+  .offer-card {
+    height: 160px !important;
+    min-height: 160px !important;
+  }
+
+  .offer-number {
+    font-size: 56px !important;
+  }
+
+  .offer-title {
+    font-size: 21px !important;
+  }
+
+  .sms-consent-row {
+    margin-top: 14px !important;
+    font-size: 12px !important;
+    line-height: 1.34 !important;
+  }
+
+  .phone-display-wrap {
+    min-height: 88px !important;
+    padding: 14px 22px !important;
+  }
+
+  #phoneDisplay.phone-display {
+    font-size: 46px !important;
+  }
+
+  .keypad {
+    gap: 10px !important;
+    max-width: 560px !important;
+  }
+
+  .key-btn {
+    min-height: 50px !important;
+    max-height: 62px !important;
+    font-size: 29px !important;
+  }
+
+  .key-delete,
+  .key-clear {
+    font-size: 15px !important;
+  }
+
+  .phone-actions .btn-primary,
+  #lookupPhoneBtn {
+    min-height: 52px !important;
+    height: 52px !important;
+  }
+}
 
 </style>
 </head>

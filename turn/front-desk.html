@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<!-- FRONT_DESK_VERSION: final-polish-pass -->
+<!-- FRONT_DESK_VERSION: ai-assistant-mode-beyond-10 -->
 <!-- FRONT_DESK_VERSION: trust-layer-nan-wait-fix -->
 <!-- FRONT_DESK_VERSION: live-assignment-feed -->
 <!-- FRONT_DESK_VERSION: single-brain-trust-layer-only-fixed-idle -->
@@ -1093,6 +1095,139 @@ button.disabled:hover {
   color:var(--gold-deep);
 }
 
+
+/* Lumi AI Assistant Mode */
+.ai-assistant-strip{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.ai-insight-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+.ai-insight-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:950;
+  border:1px solid rgba(200,166,107,.24);
+  background:rgba(200,166,107,.10);
+  color:var(--gold-deep);
+}
+.ai-insight-chip.green{
+  background:rgba(41,153,73,.12);
+  color:rgb(41,153,73);
+  border-color:rgba(41,153,73,.24);
+}
+.ai-insight-chip.blue{
+  background:rgba(111,127,154,.12);
+  color:#526179;
+  border-color:rgba(111,127,154,.22);
+}
+.ai-insight-chip.red{
+  background:rgba(180,91,91,.12);
+  color:#9f3f3f;
+  border-color:rgba(180,91,91,.22);
+}
+.ai-intervention{
+  margin-top:10px;
+  padding:12px 13px;
+  border-radius:16px;
+  border:1px solid rgba(200,166,107,.25);
+  background:linear-gradient(135deg,rgba(200,166,107,.10),rgba(255,255,255,.88));
+}
+.ai-intervention-title{
+  color:var(--gold-deep);
+  font-size:12px;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  font-weight:950;
+  margin-bottom:5px;
+}
+.ai-intervention-body{
+  color:var(--text);
+  font-size:13px;
+  line-height:1.45;
+  font-weight:850;
+}
+.ai-intervention-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.ai-mini-btn{
+  min-height:34px;
+  padding:8px 10px;
+  border-radius:12px;
+  font-size:12px;
+  font-weight:950;
+}
+.ai-btn-primary{
+  background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+  color:#fff;
+}
+.ai-btn-secondary{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--text);
+}
+.ai-system-insight{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:14px;
+  background:rgba(111,127,154,.08);
+  border:1px solid rgba(111,127,154,.16);
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.45;
+  font-weight:850;
+}
+.ai-priority-banner{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(200,166,107,.16);
+  color:var(--gold-deep);
+  border:1px solid rgba(200,166,107,.28);
+  font-size:12px;
+  font-weight:950;
+  margin-right:6px;
+}
+.ai-assistant-mode-pill{
+  background:rgba(41,153,73,.12)!important;
+  color:rgb(41,153,73)!important;
+  border-color:rgba(41,153,73,.24)!important;
+}
+
+
+/* Lumi Final Polish Pass */
+.trust-match-chip.wait-chip-muted{
+  background:rgba(111,127,154,.08)!important;
+  color:#6f7f9a!important;
+  border-color:rgba(111,127,154,.16)!important;
+}
+.ai-insight-chip.team-status{
+  background:rgba(200,166,107,.10)!important;
+  color:var(--gold-deep)!important;
+  border-color:rgba(200,166,107,.20)!important;
+}
+.ai-system-insight{
+  max-width:760px;
+}
+.trust-confidence{
+  white-space:nowrap;
+}
+
 </style>
 </head>
 <body>
@@ -1132,7 +1267,7 @@ button.disabled:hover {
         <span class="pill success-dot">Đang đồng bộ</span>
         <span class="pill" id="updatedAt">Cập nhật --:--:--</span>
         <input type="hidden" id="sourceKey" value="lumi-turn-manager-v5" />
-        <span class="pill session-pill" id="frontDeskSessionPill">Not logged in</span>
+        <span class="pill session-pill" id="frontDeskSessionPill">Not logged in</span><span class="pill ai-assistant-mode-pill" id="aiAssistantModePill">AI Assistant Mode</span>
         <button class="btn-secondary" id="frontDeskLogoutBtn" type="button">Logout</button>
         <button id="autoFlowToggleBtn" class="btn-secondary auto-flow-off" type="button">Auto Flow: OFF</button>
         <button class="btn-secondary" id="refreshBtn">Làm mới</button>
@@ -1405,7 +1540,7 @@ button.disabled:hover {
     const DEFAULT_TURN_SETTINGS = { simple_mode:true, requested_threshold:65, requested_below_turn:0.5, requested_at_or_above_turn:1, walk_in_turn:1 };
 
     const els = {
-      loginGate: document.getElementById("loginGate"), fdLoginUsername: document.getElementById("fdLoginUsername"), fdLoginPin: document.getElementById("fdLoginPin"), fdLoginBtn: document.getElementById("fdLoginBtn"), fdLoginError: document.getElementById("fdLoginError"), frontDeskSessionPill: document.getElementById("frontDeskSessionPill"), frontDeskLogoutBtn: document.getElementById("frontDeskLogoutBtn"),
+      loginGate: document.getElementById("loginGate"), fdLoginUsername: document.getElementById("fdLoginUsername"), fdLoginPin: document.getElementById("fdLoginPin"), fdLoginBtn: document.getElementById("fdLoginBtn"), fdLoginError: document.getElementById("fdLoginError"), frontDeskSessionPill: document.getElementById("frontDeskSessionPill"), frontDeskLogoutBtn: document.getElementById("frontDeskLogoutBtn"), aiAssistantModePill: document.getElementById("aiAssistantModePill"),
       refreshBtn: document.getElementById("refreshBtn"), updatedAt: document.getElementById("updatedAt"), statQueue: document.getElementById("statQueue"), statServing: document.getElementById("statServing"), statAvailable: document.getElementById("statAvailable"), statDone: document.getElementById("statDone"), statNext: document.getElementById("statNext"),
       clientName: document.getElementById("clientName"), serviceLine: document.getElementById("serviceLine"), serviceSelect: document.getElementById("serviceSelect"), comboList: document.getElementById("comboList"), addServiceBtn: document.getElementById("addServiceBtn"), splitMode: document.getElementById("splitMode"), comboTotal: document.getElementById("comboTotal"), splitModeBox: document.getElementById("splitModeBox"), singleServiceBox: document.getElementById("singleServiceBox"), comboServiceBox: document.getElementById("comboServiceBox"), servicePrice: document.getElementById("servicePrice"), guestType: document.getElementById("guestType"), appointmentTime: document.getElementById("appointmentTime"), appointmentTimeBox: document.getElementById("appointmentTimeBox"), requestType: document.getElementById("requestType"), requestedFlexMode: document.getElementById("requestedFlexMode"), requestedFlexBox: document.getElementById("requestedFlexBox"), priorityTag: document.getElementById("priorityTag"), requestedTech: document.getElementById("requestedTech"), addBtn: document.getElementById("addBtn"), headerAssignNextBtn: document.getElementById("headerAssignNextBtn"), suggestionText: document.getElementById("suggestionText"), dayModeText: document.getElementById("dayModeText"), dayModePill: document.getElementById("dayModePill"), storageKeyText: document.getElementById("storageKeyText"), queueOrderText: document.getElementById("queueOrderText"), queueCountPill: document.getElementById("queueCountPill"), statusArea: document.getElementById("statusArea"), queueBody: document.getElementById("queueBody"), queueEmpty: document.getElementById("queueEmpty"), servingList: document.getElementById("servingList"), servingEmpty: document.getElementById("servingEmpty"), servingCountPill: document.getElementById("servingCountPill"), doneBody: document.getElementById("doneBody"), doneEmpty: document.getElementById("doneEmpty"), doneCountPill: document.getElementById("doneCountPill"), fairnessReport: document.getElementById("fairnessReport"), copyReportBtn: document.getElementById("copyReportBtn"), reportDatePill: document.getElementById("reportDatePill"), lockOverlay: document.getElementById("lockOverlay"), toastWrap: document.getElementById("toastWrap"), aiSuggestionPanel: document.getElementById("aiSuggestionPanel"), trustLayerPanel: document.getElementById("trustLayerPanel"), trustLayerTitle: document.getElementById("trustLayerTitle"), trustLayerSub: document.getElementById("trustLayerSub"), trustConfidence: document.getElementById("trustConfidence"), trustReasons: document.getElementById("trustReasons"), trustLog: document.getElementById("trustLog"),
       requestTechModal: document.getElementById("requestTechModal"), requestTechSelect: document.getElementById("requestTechSelect"), requestTechPreview: document.getElementById("requestTechPreview"), requestTechCancelBtn: document.getElementById("requestTechCancelBtn"), requestTechConfirmBtn: document.getElementById("requestTechConfirmBtn"),
@@ -2598,6 +2733,150 @@ button.disabled:hover {
       }
     }
 
+
+    function safeClientTime(client){
+      return client?.checked_in_at || client?.checkedInAt || client?.created_at || client?.createdAt || client?.queue_time || client?.queueTime || client?.time || null;
+    }
+
+    function aiWaitMinutes(client){
+      try{
+        const value = safeClientTime(client);
+        if(!value) return 0;
+        const mins = waitMinutes(value);
+        if(!Number.isFinite(mins) || Number.isNaN(mins) || mins < 0) return 0;
+        return mins;
+      }catch(_){ return 0; }
+    }
+
+    function aiWaitText(client){
+      return `${aiWaitMinutes(client)} min wait`;
+    }
+
+    function aiPredictedStart(client, tech){
+      if(!client) return "No guest waiting";
+      if(!tech) return "Waiting for eligible tech";
+
+      const waiting = (appState.queue || []).filter(q => String(q.status || "").toLowerCase() === "waiting");
+      const idx = waiting.findIndex(q => String(q.id) === String(client.id));
+      const ahead = idx > 0 ? idx : 0;
+      const activeForTech = (appState.serving || []).filter(q => String(q.assigned_tech_id || "") === String(tech.id)).length;
+
+      const baseService = Number(client.duration_minutes || client.service_duration || 35) || 35;
+      const estimate = activeForTech > 0 ? Math.min(45, Math.max(10, baseService)) : ahead > 0 ? Math.min(35, ahead * 8) : 0;
+
+      if(estimate <= 0) return "Starting soon";
+      if(estimate <= 10) return "~5–10 min";
+      if(estimate <= 25) return "~10–25 min";
+      return "~30+ min";
+    }
+
+
+    function aiStartRangeFromWait(client, tech){
+      if(!client) return "No guest waiting";
+      if(!tech) return "Waiting for eligible tech";
+
+      const waited = aiWaitMinutes(client);
+      const prediction = aiPredictedStart(client, tech);
+
+      // If guest has already been waiting, don't show a conflicting "Starting soon".
+      if(waited >= 30) return "~30+ min";
+      if(waited >= 15) return "~15–20 min";
+      if(waited >= 10) return "~10–15 min";
+      if(waited >= 5) return "~5–10 min";
+
+      return prediction;
+    }
+
+    function aiModeLabel(){
+      return autoFlowEnabled ? "Auto Flow active" : "Manager assigning";
+    }
+
+    function aiTeamStatusText(){
+      const techs = appState.technicians || [];
+      const ready = readyTechs().length;
+      const busy = techs.filter(t => String(t.status || "").toLowerCase() === "busy").length;
+      const refreshing = techs.filter(t => ["cooldown","refreshing"].includes(String(t.status || "").toLowerCase())).length;
+      const waiting = (appState.queue || []).length;
+      return `Team status: ${ready} ready • ${busy} busy • ${refreshing} refreshing • ${waiting} waiting`;
+    }
+
+    function aiSystemInsight(){
+      return aiTeamStatusText();
+    }
+
+    function aiPriorityLabel(client){
+      const tag = String(client?.priority_tag || "none").toLowerCase();
+      if(tag === "vip") return "👑 VIP priority";
+      if(tag === "owner") return "★ Owner guest";
+      if(tag === "fix") return "🛠 Fix priority";
+      if(tag === "redo") return "↻ Redo priority";
+      if(getGuestType(client) === "appointment") return "◷ Appointment priority";
+      return "";
+    }
+
+    function aiFindAlternativeTech(client, currentTech){
+      try{
+        const ready = readyTechs().filter(t => !currentTech || String(t.id) !== String(currentTech.id));
+        const eligible = ready.filter(t => techCanDo(t, client));
+        if(!eligible.length) return null;
+        return eligible.sort(fairTechCompare)[0] || null;
+      }catch(_){ return null; }
+    }
+
+    function aiAssistantBlock(client, tech){
+      if(!client) return `
+        <div class="ai-assistant-strip">
+          <div class="ai-insight-row">
+            <span class="ai-insight-chip green">✨ System ready</span>
+            <span class="ai-insight-chip">${aiSystemInsight()}</span>
+          </div>
+        </div>
+      `;
+
+      const predicted = aiStartRangeFromWait(client, tech);
+      const priority = aiPriorityLabel(client);
+      const alt = !tech ? aiFindAlternativeTech(client, null) : null;
+      const autoText = aiModeLabel();
+
+      let intervention = "";
+      if(!tech && alt){
+        intervention = `
+          <div class="ai-intervention">
+            <div class="ai-intervention-title">Smart suggestion</div>
+            <div class="ai-intervention-body">
+              ${escapeHtml(alt.name)} appears available and may be able to help sooner.
+              Staff can switch if the guest agrees.
+            </div>
+            <div class="ai-intervention-actions">
+              <button type="button" class="ai-mini-btn ai-btn-secondary" disabled>Ask guest first</button>
+            </div>
+          </div>
+        `;
+      }else if(!tech){
+        intervention = `
+          <div class="ai-intervention">
+            <div class="ai-intervention-title">Smart suggestion</div>
+            <div class="ai-intervention-body">
+              Keep guest in queue. Lumi will update automatically when a matching technician becomes available.
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="ai-assistant-strip">
+          <div class="ai-insight-row">
+            ${priority ? `<span class="ai-priority-banner">${escapeHtml(priority)}</span>` : ""}
+            <span class="ai-insight-chip green">✨ Est. start: ${escapeHtml(predicted)}</span>
+            <span class="ai-insight-chip blue">${escapeHtml(autoText)}</span>
+            <span class="ai-insight-chip team-status">${escapeHtml(aiSystemInsight())}</span>
+          </div>
+          ${intervention}
+          <div class="ai-system-insight">⚙️ Lumi is checking turn fairness, service skills, request rules, and live technician status.</div>
+        </div>
+      `;
+    }
+
     function updateTrustLayer(){
       if(!els.trustLayerPanel) return;
       const client = nextClient();
@@ -2605,10 +2884,11 @@ button.disabled:hover {
       const confidence = trustConfidenceFor(client, tech);
 
       if(!client){
-        els.trustLayerTitle.textContent = autoFlowEnabled ? "Auto Flow ON • standing by" : "Manual mode • standing by";
-        els.trustLayerSub.innerHTML = autoFlowEnabled
-          ? `No clients waiting. Lumi will assign automatically when a guest checks in.`
-          : `No clients waiting. Use “Gọi khách tiếp theo” when a guest is added.`;
+        els.trustLayerTitle.textContent = autoFlowEnabled ? "Auto Flow ON • standing by" : "Manager assigning • standing by";
+        els.trustLayerSub.innerHTML = `
+          <div>No clients waiting. ${autoFlowEnabled ? "Lumi will assign automatically when a guest checks in." : "Use “Gọi khách tiếp theo” when a guest is added."}</div>
+          ${aiAssistantBlock(null, null)}
+        `;
         els.trustConfidence.textContent = autoFlowEnabled ? "Auto ready" : "Manual";
         els.trustReasons.innerHTML = `<div class="trust-empty">No waiting client yet.</div>`;
         renderTrustLog();
@@ -2617,7 +2897,7 @@ button.disabled:hover {
 
       const serviceName = client.service_name || "Service";
       const turnText = `${Number(client.turn_weight || 1)}T`;
-      const waitText = trustWaitText(client);
+      const waitText = aiWaitText(client);
 
       if(!tech){
         els.trustLayerTitle.textContent = `${client.customer_name} → waiting for eligible tech`;
@@ -2625,23 +2905,25 @@ button.disabled:hover {
           <div class="trust-match-line">
             <span class="trust-match-chip">${escapeHtml(serviceName)}</span>
             <span class="trust-match-chip blue">${escapeHtml(turnText)}</span>
-            <span class="trust-match-chip">${escapeHtml(waitText)}</span>
+            <span class="trust-match-chip wait-chip-muted">${escapeHtml(waitText)}</span>
           </div>
           <div style="margin-top:8px;">No eligible ready tech is available yet. Requested-tech and skill rules are protected.</div>
+          ${aiAssistantBlock(client, null)}
         `;
         els.trustConfidence.textContent = "Waiting for tech";
       }else{
         els.trustLayerTitle.textContent = `${client.customer_name} → ${tech.name}`;
         els.trustLayerSub.innerHTML = `
           <div class="trust-match-line">
-            <span class="trust-match-chip green">Best match</span>
+            <span class="trust-match-chip green">Recommended</span>
             <span class="trust-match-chip">${escapeHtml(serviceName)}</span>
             <span class="trust-match-chip blue">${escapeHtml(turnText)}</span>
-            <span class="trust-match-chip">${escapeHtml(waitText)}</span>
+            <span class="trust-match-chip wait-chip-muted">${escapeHtml(waitText)}</span>
           </div>
-          <div style="margin-top:8px;">${autoFlowEnabled ? "Auto Flow will assign this match automatically." : "Ready for manual assignment."}</div>
+          <div style="margin-top:8px;">${autoFlowEnabled ? "Auto Flow will assign this match automatically." : "Ready — tap “Assign Best” to proceed."}</div>
+          ${aiAssistantBlock(client, tech)}
         `;
-        els.trustConfidence.textContent = confidence.label;
+        els.trustConfidence.textContent = confidence.score ? `High confidence • ${confidence.score}%` : confidence.label;
       }
 
       const reasons = trustReasonsFor(client, tech);
@@ -2650,7 +2932,6 @@ button.disabled:hover {
       `).join("");
       renderTrustLog();
     }
-
 
     function safeUpdateTrustLayer(){
       try{ updateTrustLayer(); }

@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<!-- LUMI_DISPLAY_VERSION: customer-facing-luxury-display-v1 -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi Nails • Customer Display</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./lumi_shared_config.js"></script>
+  <script>
+    if (!window.supabaseClient) {
+      throw new Error("Lumi setup error: supabaseClient was not created. Check lumi_shared_config.js.");
+    }
+    const supabaseClient = window.supabaseClient;
+  </script>
+  <style>
+    :root{
+      --bg:#f7f4ef;
+      --bg2:#fbf9f5;
+      --panel:rgba(255,255,255,.92);
+      --line:#ded5c8;
+      --line2:#eee6db;
+      --text:#3c342d;
+      --muted:#7c746a;
+      --gold:#c8a66b;
+      --gold-deep:#a78342;
+      --green:#557260;
+      --green2:rgb(41,153,73);
+      --soft-green:rgba(41,153,73,.12);
+      --blue:#6f7f9a;
+      --shadow:0 28px 90px rgba(88,67,45,.12);
+      --soft-shadow:0 12px 34px rgba(88,67,45,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.18),transparent 25%),
+        radial-gradient(circle at bottom right,rgba(85,114,96,.12),transparent 28%),
+        linear-gradient(180deg,var(--bg2),var(--bg));
+      overflow:hidden;
+    }
+    .display{
+      width:100vw;
+      height:100vh;
+      padding:34px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:24px;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:24px;
+      padding:24px 28px;
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.84);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+    }
+    .brand-kicker{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:var(--gold-deep);
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      font-size:14px;
+      font-weight:950;
+      margin-bottom:7px;
+    }
+    .brand-kicker::before{
+      content:"";
+      width:42px;
+      height:1px;
+      background:linear-gradient(90deg,var(--gold),transparent);
+    }
+    .brand-title{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(44px,5vw,78px);
+      line-height:.95;
+      letter-spacing:-.045em;
+      font-weight:950;
+    }
+    .brand-sub{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:clamp(17px,1.6vw,24px);
+      font-weight:700;
+    }
+    .top-meta{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:12px 16px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--text);
+      font-size:clamp(14px,1.2vw,18px);
+      font-weight:900;
+      box-shadow:0 8px 22px rgba(88,67,45,.05);
+      white-space:nowrap;
+    }
+    .pill.live{
+      color:var(--green);
+      background:rgba(85,114,96,.12);
+      border-color:rgba(85,114,96,.20);
+    }
+    .live-dot{
+      width:10px;height:10px;border-radius:999px;background:var(--green2);
+      box-shadow:0 0 0 5px rgba(41,153,73,.12);
+      animation:pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1);opacity:1}
+      50%{transform:scale(.75);opacity:.7}
+    }
+
+    .main-grid{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:24px;
+      min-height:0;
+    }
+    .hero-card{
+      background:
+        radial-gradient(circle at top left,rgba(200,166,107,.18),transparent 34%),
+        linear-gradient(135deg,rgba(255,250,240,.98),rgba(255,255,255,.95));
+      border:1px solid rgba(200,166,107,.28);
+      border-radius:42px;
+      box-shadow:var(--shadow);
+      padding:42px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height:0;
+      overflow:hidden;
+      position:relative;
+    }
+    .hero-card::after{
+      content:"";
+      position:absolute;
+      width:320px;
+      height:320px;
+      border-radius:999px;
+      right:-110px;
+      bottom:-130px;
+      background:rgba(200,166,107,.10);
+    }
+    .section-kicker{
+      color:var(--gold-deep);
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      font-size:clamp(14px,1.3vw,18px);
+      font-weight:950;
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+    .now-serving-name{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(70px,9vw,142px);
+      line-height:.9;
+      letter-spacing:-.07em;
+      font-weight:950;
+      position:relative;
+      z-index:1;
+      word-break:break-word;
+    }
+    .now-serving-sub{
+      margin-top:22px;
+      color:var(--muted);
+      font-size:clamp(22px,2.5vw,36px);
+      line-height:1.18;
+      font-weight:850;
+      position:relative;
+      z-index:1;
+    }
+    .now-serving-tech{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      margin-top:24px;
+      padding:16px 20px;
+      border-radius:999px;
+      background:var(--soft-green);
+      color:var(--green);
+      border:1px solid rgba(85,114,96,.22);
+      font-size:clamp(20px,2vw,30px);
+      font-weight:950;
+      position:relative;
+      z-index:1;
+      width:max-content;
+      max-width:100%;
+    }
+    .sparkle{animation:sparkle 2.8s ease-in-out infinite}
+    @keyframes sparkle{
+      0%,100%{filter:brightness(1)}
+      50%{filter:brightness(1.25)}
+    }
+
+    .side{
+      display:grid;
+      grid-template-rows:auto 1fr;
+      gap:24px;
+      min-height:0;
+    }
+    .next-card,.up-card{
+      background:var(--panel);
+      border:1px solid rgba(255,255,255,.84);
+      border-radius:34px;
+      box-shadow:var(--shadow);
+      padding:30px;
+      overflow:hidden;
+      backdrop-filter:blur(12px);
+    }
+    .next-name{
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:clamp(42px,5vw,72px);
+      line-height:.98;
+      letter-spacing:-.045em;
+      font-weight:950;
+    }
+    .next-sub{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:clamp(17px,1.6vw,24px);
+      line-height:1.35;
+      font-weight:800;
+    }
+    .wait-chip{
+      margin-top:18px;
+      display:inline-flex;
+      padding:13px 16px;
+      border-radius:999px;
+      background:rgba(200,166,107,.12);
+      border:1px solid rgba(200,166,107,.24);
+      color:var(--gold-deep);
+      font-size:clamp(15px,1.4vw,22px);
+      font-weight:950;
+    }
+    .up-card{
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .up-list{
+      display:grid;
+      gap:14px;
+      margin-top:12px;
+      overflow:hidden;
+    }
+    .up-item{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:18px 18px;
+      border-radius:24px;
+      background:rgba(255,255,255,.78);
+      border:1px solid rgba(216,208,196,.72);
+      box-shadow:0 8px 20px rgba(88,67,45,.04);
+    }
+    .num{
+      width:44px;height:44px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(200,166,107,.16);
+      color:var(--gold-deep);
+      font-size:20px;
+      font-weight:950;
+      flex:0 0 auto;
+    }
+    .up-name{
+      font-size:clamp(22px,2.2vw,34px);
+      font-weight:950;
+      line-height:1.1;
+    }
+    .up-service{
+      margin-top:4px;
+      color:var(--muted);
+      font-size:clamp(14px,1.1vw,18px);
+      font-weight:800;
+    }
+    .empty{
+      color:var(--muted);
+      font-size:clamp(18px,1.7vw,26px);
+      font-weight:800;
+      line-height:1.45;
+      padding:20px;
+      border-radius:24px;
+      border:1px dashed rgba(200,166,107,.25);
+      background:rgba(255,255,255,.50);
+    }
+
+    .bottom{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:20px;
+      padding:18px 26px;
+      border-radius:30px;
+      background:rgba(255,255,255,.76);
+      border:1px solid rgba(255,255,255,.84);
+      box-shadow:var(--soft-shadow);
+      backdrop-filter:blur(10px);
+      color:var(--muted);
+      font-size:clamp(16px,1.4vw,22px);
+      font-weight:850;
+    }
+    .brand-line{
+      color:var(--gold-deep);
+      font-weight:950;
+      letter-spacing:.05em;
+    }
+    .ticker{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      white-space:nowrap;
+      overflow:hidden;
+    }
+
+    .fade-in{
+      animation:fadeIn .45s ease both;
+    }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @media(max-width:1000px){
+      body{overflow:auto}
+      .display{height:auto;min-height:100vh;padding:18px}
+      .topbar,.bottom{border-radius:24px}
+      .main-grid{grid-template-columns:1fr}
+      .hero-card{min-height:420px;border-radius:30px;padding:30px}
+      .side{grid-template-rows:auto auto}
+    }
+  </style>
+</head>
+<body>
+  <main class="display">
+    <header class="topbar">
+      <div>
+        <div class="brand-kicker">Lumi Nails • Guest Display</div>
+        <div class="brand-title">Welcome to Lumi</div>
+        <div class="brand-sub">Please relax — our team will call you shortly.</div>
+      </div>
+      <div class="top-meta">
+        <span class="pill live"><span class="live-dot"></span> Live</span>
+        <span class="pill" id="clock">--:--</span>
+        <span class="pill" id="waitingCount">0 guests waiting</span>
+      </div>
+    </header>
+
+    <section class="main-grid">
+      <section class="hero-card" id="nowCard">
+        <div>
+          <div class="section-kicker">Now serving</div>
+          <div class="now-serving-name fade-in" id="nowName">Welcome</div>
+          <div class="now-serving-sub" id="nowSub">We’ll call your name when your technician is ready.</div>
+          <div class="now-serving-tech sparkle" id="nowTech" style="display:none;">Ready</div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <section class="next-card">
+          <div class="section-kicker">Next guest</div>
+          <div class="next-name fade-in" id="nextName">Checking queue…</div>
+          <div class="next-sub" id="nextSub">Live queue is syncing.</div>
+          <div class="wait-chip" id="nextWait" style="display:none;">Estimated start soon</div>
+        </section>
+
+        <section class="up-card">
+          <div class="section-kicker">Up next</div>
+          <div class="up-list" id="upList">
+            <div class="empty">No guests waiting yet.</div>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <footer class="bottom">
+      <div class="brand-line">Vegan • Non‑Toxic • Organic</div>
+      <div class="ticker">✨ Feel natural. Be beautiful.</div>
+    </footer>
+  </main>
+
+  <script>
+    const DISPLAY_REFRESH_MS = 15000;
+    const state = {
+      queue: [],
+      serving: [],
+      technicians: [],
+      channel: null
+    };
+
+    const els = {
+      clock: document.getElementById("clock"),
+      waitingCount: document.getElementById("waitingCount"),
+      nowName: document.getElementById("nowName"),
+      nowSub: document.getElementById("nowSub"),
+      nowTech: document.getElementById("nowTech"),
+      nextName: document.getElementById("nextName"),
+      nextSub: document.getElementById("nextSub"),
+      nextWait: document.getElementById("nextWait"),
+      upList: document.getElementById("upList")
+    };
+
+    function escapeHtml(value){
+      return String(value ?? "").replace(/[&<>"']/g, m => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[m]));
+    }
+
+    function todayISODate(){
+      return new Date().toISOString().slice(0,10);
+    }
+
+    function timeOnly(value){
+      if(!value) return "";
+      try{return new Date(value).toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});}
+      catch{return "";}
+    }
+
+    function waitMinutes(value){
+      if(!value) return 0;
+      const ms = new Date(value).getTime();
+      if(!Number.isFinite(ms)) return 0;
+      return Math.max(0, Math.floor((Date.now() - ms) / 60000));
+    }
+
+    function statusOf(row){
+      return String(row.status || "").toLowerCase();
+    }
+
+    function entryDate(row){
+      const value = row.queue_date || row.checked_in_at || row.created_at || row.started_at || row.assigned_at || row.completed_at;
+      return value ? String(value).slice(0,10) : todayISODate();
+    }
+
+    function isToday(row){
+      return entryDate(row) === todayISODate();
+    }
+
+    function nameOf(row){
+      return row.customer_name || row.name || "Guest";
+    }
+
+    function serviceOf(row){
+      return row.service_name || row.service || "Service";
+    }
+
+    function techName(id){
+      const t = state.technicians.find(x => String(x.id) === String(id));
+      return t?.name || t?.tech_name || "your technician";
+    }
+
+    function normalizeQueue(row){
+      return {
+        ...row,
+        customer_name: row.customer_name || row.name || "Guest",
+        service_name: row.service_name || row.service || "Service",
+        checked_in_at: row.checked_in_at || row.created_at || new Date().toISOString()
+      };
+    }
+
+    function getWaiting(){
+      return state.queue
+        .filter(isToday)
+        .filter(q => ["waiting","assigned"].includes(statusOf(q)))
+        .sort((a,b)=>{
+          const pa = Number(a.priority_score || a.priority || 0);
+          const pb = Number(b.priority_score || b.priority || 0);
+          if(pb !== pa) return pb - pa;
+          return new Date(a.checked_in_at || a.created_at || 0) - new Date(b.checked_in_at || b.created_at || 0);
+        });
+    }
+
+    function getServing(){
+      return state.queue
+        .filter(isToday)
+        .filter(q => ["serving","in_service"].includes(statusOf(q)))
+        .sort((a,b)=> new Date(b.started_at || b.assigned_at || b.created_at || 0) - new Date(a.started_at || a.assigned_at || a.created_at || 0));
+    }
+
+    function estimateWaitText(row, index=0){
+      const waited = waitMinutes(row?.checked_in_at || row?.created_at);
+      if(index <= 0 && waited < 5) return "Starting soon";
+      const estimate = Math.max(5, (index + 1) * 8);
+      if(estimate <= 10) return "~5–10 min";
+      if(estimate <= 20) return "~10–20 min";
+      return "~20+ min";
+    }
+
+    function updateClock(){
+      els.clock.textContent = new Date().toLocaleTimeString([], {hour:"numeric", minute:"2-digit"});
+    }
+
+    function render(){
+      const waiting = getWaiting();
+      const serving = getServing();
+
+      els.waitingCount.textContent = `${waiting.length} ${waiting.length === 1 ? "guest" : "guests"} waiting`;
+
+      const current = serving[0];
+      if(current){
+        els.nowName.textContent = nameOf(current);
+        els.nowSub.textContent = `${serviceOf(current)} is now in service.`;
+        const tech = current.assigned_tech_name || current.tech_name || techName(current.assigned_tech_id);
+        els.nowTech.style.display = "inline-flex";
+        els.nowTech.textContent = `With ${tech}`;
+      }else{
+        els.nowName.textContent = "Welcome";
+        els.nowSub.textContent = waiting.length
+          ? "We are preparing for the next guest."
+          : "Please check in at the kiosk when you arrive.";
+        els.nowTech.style.display = "none";
+      }
+
+      const next = waiting[0];
+      if(next){
+        els.nextName.textContent = nameOf(next);
+        els.nextSub.textContent = `${serviceOf(next)} • Thank you for your patience.`;
+        els.nextWait.style.display = "inline-flex";
+        els.nextWait.textContent = `Est. start: ${estimateWaitText(next, 0)}`;
+      }else{
+        els.nextName.textContent = "No guests waiting";
+        els.nextSub.textContent = "Our team is ready to welcome you.";
+        els.nextWait.style.display = "none";
+      }
+
+      const up = waiting.slice(1,5);
+      if(!up.length){
+        els.upList.innerHTML = `<div class="empty">${waiting.length ? "No additional guests waiting." : "No guests waiting yet."}</div>`;
+      }else{
+        els.upList.innerHTML = up.map((q,i)=>`
+          <div class="up-item fade-in">
+            <div class="num">${i+2}</div>
+            <div>
+              <div class="up-name">${escapeHtml(nameOf(q))}</div>
+              <div class="up-service">${escapeHtml(serviceOf(q))} • ${estimateWaitText(q, i+1)}</div>
+            </div>
+          </div>
+        `).join("");
+      }
+    }
+
+    async function loadData(){
+      try{
+        const [queueRes, techRes] = await Promise.all([
+          supabaseClient
+            .from("queue_entries")
+            .select("*")
+            .order("created_at", {ascending:true})
+            .limit(250),
+          supabaseClient
+            .from("technicians")
+            .select("*")
+            .order("name", {ascending:true})
+        ]);
+
+        if(queueRes.error) throw queueRes.error;
+        if(techRes.error) throw techRes.error;
+
+        state.queue = (queueRes.data || []).map(normalizeQueue);
+        state.technicians = techRes.data || [];
+        render();
+      }catch(error){
+        console.warn("Display load error", error);
+        els.nextName.textContent = "Syncing…";
+        els.nextSub.textContent = "Live display will update shortly.";
+      }
+    }
+
+    function setupRealtime(){
+      if(state.channel) supabaseClient.removeChannel(state.channel);
+
+      state.channel = supabaseClient.channel("lumi_customer_display_live")
+        .on("postgres_changes", {event:"*", schema:"public", table:"queue_entries"}, () => loadData())
+        .on("postgres_changes", {event:"*", schema:"public", table:"technicians"}, () => loadData())
+        .subscribe();
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+    loadData();
+    setupRealtime();
+    setInterval(loadData, DISPLAY_REFRESH_MS);
+  </script>
+</body>
+</html>
