@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumi Nails | Grand Opening Offer</title>
+  <meta name="description" content="Clean, non-toxic, luxury nail care in Plaistow, NH. Grand Opening offer: 30% off your first service of $50 or more at Lumi Nails." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f7f2ef;
+      --bg-soft: #fbf8f6;
+      --card: rgba(255,255,255,0.78);
+      --card-strong: #ffffff;
+      --text: #30354a;
+      --muted: #666d83;
+      --gold: #b58d49;
+      --gold-soft: rgba(181, 141, 73, 0.14);
+      --rose: #ea4c93;
+      --rose-deep: #cf3a7c;
+      --line: rgba(48,53,74,0.08);
+      --shadow: 0 24px 56px rgba(45, 38, 47, 0.10);
+      --shadow-soft: 0 12px 26px rgba(45, 38, 47, 0.06);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --container: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(181,141,73,0.08), transparent 26%),
+        linear-gradient(180deg, #faf6f3 0%, #f4efec 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(calc(100% - 40px), var(--container));
+      margin: 0 auto;
+    }
+
+    .promo-bar {
+      background: rgba(248, 243, 239, 0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .promo-inner {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .promo-label {
+      color: #886522;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(181,141,73,0.7);
+    }
+
+    .hero-wrap {
+      padding: 22px 0 52px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 16px 22px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.66);
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(181,141,73,0.65);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-style: italic;
+      font-weight: 700;
+      background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,255,255,0.78));
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      line-height: 0.95;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    .top-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 0 28px;
+      border-radius: 999px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(207, 58, 124, 0.22);
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .top-cta:hover,
+    .btn-primary:hover,
+    .sticky-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 36px rgba(207, 58, 124, 0.28);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 44px;
+      align-items: center;
+      padding: 48px 0 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      font-size: 0.92rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 1px;
+      background: rgba(181,141,73,0.65);
+    }
+
+    h1 {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.6rem, 7vw, 6rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      font-weight: 600;
+      max-width: 700px;
+    }
+
+    .hero-copy p.lead {
+      margin: 24px 0 0;
+      font-size: 1.18rem;
+      line-height: 1.75;
+      color: #5b6178;
+      max-width: 620px;
+    }
+
+    .offer-box {
+      margin-top: 28px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(181,141,73,0.18);
+      box-shadow: var(--shadow-soft);
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .offer-box .offer-mini {
+      color: #886522;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 0 28px;
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 800;
+      transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      color: white;
+      box-shadow: 0 14px 28px rgba(207, 58, 124, 0.22);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.72);
+      color: var(--text);
+      border: 1px solid rgba(48,53,74,0.08);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.95);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      background: white;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.98rem;
+      font-weight: 600;
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .trust-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(48,53,74,0.08);
+      color: var(--text);
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 740px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(237,231,226,0.96), rgba(217,214,217,0.84));
+      border: 1px solid rgba(255,255,255,0.74);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 48%;
+      overflow: hidden;
+    }
+
+    .hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(1.04) contrast(0.94);
+    }
+
+    .stat-stack {
+      position: absolute;
+      top: 26px;
+      right: 26px;
+      display: grid;
+      gap: 12px;
+      width: 224px;
+      z-index: 2;
+    }
+
+    .stat-card,
+    .floating-card,
+    .feature-card,
+    .step-card,
+    .testimonial-card,
+    .faq-card,
+    .contact-card {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .stat-card {
+      padding: 16px 18px;
+      border-radius: 20px;
+    }
+
+    .stat-card strong {
+      display: block;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--text);
+      font-size: 1.02rem;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .floating-card {
+      position: absolute;
+      left: 28px;
+      bottom: 28px;
+      max-width: 360px;
+      padding: 28px;
+      border-radius: 28px;
+      z-index: 2;
+    }
+
+    .mini-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      color: #7d5f21;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .floating-card h3,
+    h2,
+    .faq-card h3,
+    .contact-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .floating-card h3 {
+      margin: 14px 0 12px;
+      font-size: 2.4rem;
+      line-height: 0.98;
+    }
+
+    .floating-card p {
+      margin: 0;
+      color: #5f657b;
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    section {
+      scroll-margin-top: 100px;
+    }
+
+    .section {
+      padding: 54px 0;
+    }
+
+    .section-heading {
+      max-width: 860px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(2.6rem, 5vw, 4.25rem);
+      line-height: 0.98;
+    }
+
+    .section-heading p {
+      margin: 18px 0 0;
+      color: #5d6278;
+      font-size: 1.06rem;
+      line-height: 1.85;
+      max-width: 720px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 26px 24px;
+      border-radius: 24px;
+      transition: transform 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .feature-card:hover,
+    .step-card:hover,
+    .testimonial-card:hover,
+    .faq-card:hover,
+    .contact-card:hover,
+    .stat-card:hover,
+    .floating-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 52px rgba(45, 38, 47, 0.11);
+    }
+
+    .feature-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.18rem;
+      font-weight: 800;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #5f657b;
+      line-height: 1.75;
+    }
+
+    .offer-layout {
+      display: grid;
+      grid-template-columns: 1fr 0.94fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .offer-card,
+    .offer-side {
+      border-radius: 30px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,243,240,0.86));
+      border: 1px solid rgba(255,255,255,0.74);
+      box-shadow: var(--shadow);
+    }
+
+    .offer-card {
+      padding: 34px 32px;
+    }
+
+    .offer-card p,
+    .offer-side p {
+      color: #5e647a;
+      line-height: 1.82;
+      font-size: 1rem;
+    }
+
+    .offer-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0 28px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(48,53,74,0.08);
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .offer-side {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .offer-side .contact-card {
+      padding: 24px;
+      border-radius: 24px;
+    }
+
+    .offer-side strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 1.16rem;
+      line-height: 1.45;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .step-card {
+      padding: 28px 24px;
+      border-radius: 24px;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(181,141,73,0.1);
+      color: #805d1f;
+      font-weight: 800;
+      margin-bottom: 18px;
+      border: 1px solid rgba(181,141,73,0.16);
+    }
+
+    .step-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.16rem;
+      font-weight: 800;
+    }
+
+    .step-card p {
+      margin: 0;
+      color: #5f657b;
+      line-height: 1.76;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .testimonial-card {
+      padding: 26px 24px;
+      border-radius: 24px;
+    }
+
+    .stars {
+      color: #cf3a7c;
+      letter-spacing: 0.1em;
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .testimonial-card p {
+      margin: 0;
+      color: #586076;
+      line-height: 1.8;
+    }
+
+    .testimonial-name {
+      margin-top: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .faq-card {
+      padding: 24px;
+      border-radius: 24px;
+    }
+
+    .faq-card h3 {
+      margin: 0 0 12px;
+      font-size: 1.5rem;
+      line-height: 1.05;
+    }
+
+    .faq-card p {
+      margin: 0;
+      color: #5f657b;
+      line-height: 1.78;
+    }
+
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+    }
+
+    .contact-card {
+      padding: 34px 32px;
+      border-radius: 30px;
+    }
+
+    .contact-card p {
+      color: #5d6278;
+      line-height: 1.82;
+      font-size: 1rem;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(48,53,74,0.08);
+    }
+
+    .contact-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .contact-item span {
+      display: block;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .contact-link {
+      color: var(--rose-deep);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .sticky-cta {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 40;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 18px 36px rgba(207, 58, 124, 0.26);
+    }
+
+    .footer {
+      padding: 34px 0 90px;
+      color: #777d92;
+      font-size: 0.94rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .offer-layout,
+      .contact-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid,
+      .steps-grid,
+      .testimonials-grid,
+      .faq-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-visual {
+        min-height: 660px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(calc(100% - 28px), var(--container));
+      }
+
+      .promo-inner {
+        gap: 8px;
+        font-size: 0.86rem;
+      }
+
+      .topbar {
+        padding: 14px 16px;
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+        font-size: 28px;
+      }
+
+      .brand-name {
+        font-size: 1.7rem;
+      }
+
+      .brand-tag {
+        font-size: 0.62rem;
+        letter-spacing: 0.18em;
+      }
+
+      .top-cta {
+        display: none;
+      }
+
+      .hero {
+        gap: 24px;
+        padding-top: 28px;
+      }
+
+      h1 {
+        font-size: clamp(3rem, 12vw, 4.3rem);
+      }
+
+      .hero-copy p.lead {
+        font-size: 1.04rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn,
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+      .features-grid,
+      .steps-grid,
+      .testimonials-grid,
+      .faq-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-visual {
+        min-height: 580px;
+      }
+
+      .hero-photo {
+        height: 43%;
+      }
+
+      .stat-stack {
+        top: 18px;
+        right: 18px;
+        width: 180px;
+      }
+
+      .floating-card {
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        max-width: none;
+        padding: 22px;
+      }
+
+      .floating-card h3 {
+        font-size: 2rem;
+      }
+
+      .section {
+        padding: 42px 0;
+      }
+
+      .sticky-cta {
+        left: 14px;
+        right: 14px;
+        bottom: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="promo-bar">
+    <div class="container promo-inner">
+      <span class="promo-label">Grand Opening</span>
+      <span class="dot"></span>
+      <span>30% off your first service of $50 or more</span>
+      <span class="dot"></span>
+      <span>Luxury nail care in Plaistow, NH</span>
+    </div>
+  </div>
+
+  <div class="hero-wrap">
+    <div class="container">
+      <header class="topbar">
+        <a href="#top" class="brand" aria-label="Lumi Nails Home">
+          <div class="brand-mark">L</div>
+          <div>
+            <div class="brand-name">Lumi Nails</div>
+            <div class="brand-tag">Luxury Nail Care</div>
+          </div>
+        </a>
+        <a class="top-cta" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book Your Experience</a>
+      </header>
+
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <div class="eyebrow">Clean beauty starts here</div>
+          <h1>Clean. Non-Toxic. Luxury Nail Care.</h1>
+          <p class="lead">A refined, spa-inspired nail experience in Plaistow, NH — designed to feel calm, clean, and naturally beautiful from the moment you walk in.</p>
+
+          <div class="offer-box">
+            <span class="offer-mini">Grand Opening Offer</span>
+            <span>30% off your first service of $50 or more</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book Your Experience</a>
+            <a class="btn btn-secondary" href="#offer">See Offer Details</a>
+          </div>
+
+          <div class="hero-note">Online booking available now. Reserve your first visit before opening-week spots fill up.</div>
+
+          <div class="trust-row">
+            <div class="trust-pill">Booking available online</div>
+            <div class="trust-pill">Non-toxic focus</div>
+            <div class="trust-pill">Acrylic-free approach</div>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Luxury manicure showcase">
+          <div class="hero-photo">
+            <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1200&q=80" alt="Soft clean manicure in a bright luxury setting" />
+          </div>
+
+          <div class="stat-stack">
+            <div class="stat-card">
+              <strong>Non-Toxic</strong>
+              <span>Cleaner products, elevated results</span>
+            </div>
+            <div class="stat-card">
+              <strong>Luxury Feel</strong>
+              <span>Calm, fresh, and refined from start to finish</span>
+            </div>
+          </div>
+
+          <div class="floating-card">
+            <div class="mini-label">Signature Experience</div>
+            <h3>Relax. Refresh. Glow.</h3>
+            <p>A cleaner, healthier nail experience designed around comfort, care, and beautiful results that still feel naturally you.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="features-grid">
+        <article class="feature-card">
+          <h3>Non-toxic focus</h3>
+          <p>Carefully selected products for a cleaner, healthier nail care experience.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Acrylic-free approach</h3>
+          <p>Modern alternatives that feel lighter, look elegant, and wear beautifully.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Spa-inspired comfort</h3>
+          <p>Calm, fresh, and welcoming from the moment you walk in to the moment you leave.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="offer">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">Grand opening offer</div>
+        <h2>A beautiful first visit starts here.</h2>
+        <p>Designed to make your first Lumi experience feel effortless, elevated, and worth booking now — before your ideal time disappears.</p>
+      </div>
+
+      <div class="offer-layout">
+        <div class="offer-card">
+          <div class="mini-label">Limited-Time Welcome</div>
+          <h2 style="margin-top: 14px; font-size: clamp(2.4rem, 5vw, 4rem);">30% off your first service of $50 or more.</h2>
+          <p>Experience Lumi Nails with a thoughtful opening offer created for new guests who want a cleaner, more luxurious nail salon experience in Plaistow, NH.</p>
+
+          <div class="offer-tags">
+            <span class="tag">New Guests Welcome</span>
+            <span class="tag">Booking Available Online</span>
+            <span class="tag">Luxury Nail Care</span>
+          </div>
+
+          <div class="hero-actions" style="margin-top: 0;">
+            <a class="btn btn-primary" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Claim Offer & Book</a>
+            <a class="btn btn-secondary" href="#how-it-works">How It Works</a>
+          </div>
+        </div>
+
+        <div class="offer-side">
+          <div class="contact-card" style="padding: 24px; border-radius: 24px;">
+            <div class="mini-label">Best First Visit</div>
+            <strong>Lumi Botanical Pedicure or Non-Toxic Gel Manicure</strong>
+            <p>These are our most recommended starting services for guests discovering Lumi for the first time.</p>
+          </div>
+          <div class="contact-card" style="padding: 24px; border-radius: 24px;">
+            <div class="mini-label">Why Book Early</div>
+            <strong>Grand opening weeks fill faster than normal.</strong>
+            <p>Secure your preferred time now and avoid last-minute availability limits after launch traffic picks up.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">How it works</div>
+        <h2>Simple, elegant, and easy to book.</h2>
+        <p>Your first Lumi experience should feel smooth from the first click to the final polish.</p>
+      </div>
+
+      <div class="steps-grid">
+        <article class="step-card">
+          <div class="step-number">01</div>
+          <h3>Choose your service</h3>
+          <p>Browse the booking menu and select the experience that fits your first Lumi visit best.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">02</div>
+          <h3>Select your time</h3>
+          <p>Pick the date and time that works for you before prime opening-week spots are gone.</p>
+        </article>
+        <article class="step-card">
+          <div class="step-number">03</div>
+          <h3>Enjoy your Lumi experience</h3>
+          <p>Arrive, relax, and enjoy a cleaner, calmer nail salon experience designed around comfort and beauty.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">Why guests choose Lumi</div>
+        <h2>Luxury that feels lighter, cleaner, and easier to love.</h2>
+        <p>We designed Lumi Nails for guests who want beautiful results without the heavy smell, heavy feel, or overwhelming salon experience.</p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-card">
+          <h3>Cleaner environment</h3>
+          <p>Fresh, airy, and thoughtfully designed for a more comfortable salon visit.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Modern techniques</h3>
+          <p>Gel-X, Hybrid Gel, and Dipping that feel elegant, lightweight, and refined.</p>
+        </article>
+        <article class="feature-card">
+          <h3>Luxury without harsh acrylics</h3>
+          <p>A premium nail experience centered on wellness, softness, and wearable beauty.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="google-reviews">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">Google reviews</div>
+        <h2>Real guest love for Lumi Nails.</h2>
+        <p>Fresh reviews from guests who visited Lumi Nails. Reviews are loaded from Google when available.</p>
+      </div>
+
+      <div class="testimonials-grid" id="google-reviews-grid" aria-live="polite">
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>Fantastic experience and highly recommend.</p>
+          <div class="testimonial-name">Chris D. — Google Review</div>
+        </article>
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>Great experience. The salon is clean, modern, and welcoming.</p>
+          <div class="testimonial-name">Jenn T. — Google Review</div>
+        </article>
+        <article class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>Amazing service and atmosphere.</p>
+          <div class="testimonial-name">Nichole — Google Review</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <div class="eyebrow">Frequently asked</div>
+        <h2>Questions guests may ask before booking.</h2>
+      </div>
+
+      <div class="faq-grid">
+        <article class="faq-card">
+          <h3>Is online booking available now?</h3>
+          <p>Yes. You can reserve your appointment online and secure your preferred time before opening-week availability gets tighter.</p>
+        </article>
+        <article class="faq-card">
+          <h3>Does the 30% offer apply to every service?</h3>
+          <p>The current offer applies to your first service of $50 or more. Add your exact terms in the final version before launch.</p>
+        </article>
+        <article class="faq-card">
+          <h3>Do you offer acrylic?</h3>
+          <p>Lumi focuses on cleaner, more modern alternatives such as Gel-X, Hybrid Gel, Dipping, and non-toxic polish systems.</p>
+        </article>
+        <article class="faq-card">
+          <h3>What should I book for my first visit?</h3>
+          <p>We recommend starting with the Lumi Botanical Pedicure or the Non-Toxic Gel Manicure for the best first Lumi experience.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-layout">
+        <div class="contact-card">
+          <div class="eyebrow">Book your first visit</div>
+          <h2>Reserve your Lumi experience now.</h2>
+          <p>Luxury, clean beauty, and a limited-time offer — all in one first appointment. Book now and be part of Lumi Nails from the beginning.</p>
+
+          <div class="hero-actions" style="margin-top: 24px;">
+            <a class="btn btn-primary" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book Your Experience</a>
+            <a class="btn btn-secondary" href="tel:+16034411250">Call Salon</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <div class="mini-label">Contact</div>
+          <div class="contact-list">
+            <div class="contact-item">
+              <div>
+                <strong>Phone</strong>
+                <span>(603) 441-1250</span>
+              </div>
+              <a class="contact-link" href="tel:+16034411250">Call</a>
+            </div>
+            <div class="contact-item">
+              <div>
+                <strong>Location</strong>
+                <span>37 Plaistow Rd, Unit #1, Plaistow, NH 03865</span>
+              </div>
+              <a class="contact-link" href="https://maps.google.com/?q=37+Plaistow+Rd+Unit+1+Plaistow+NH+03865" target="_blank" rel="noopener noreferrer">Directions</a>
+            </div>
+            <div class="contact-item">
+              <div>
+                <strong>Booking</strong>
+                <span>Reserve online for the smoothest first visit.</span>
+              </div>
+              <a class="contact-link" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="container">Lumi Nails • Plaistow, NH • Clean • Non-Toxic • Luxury Nail Care</div>
+  </div>
+
+  <a class="sticky-cta" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book Now</a>
+  <script>
+    // Google does not allow direct browser scraping of reviews.
+    // Connect this to a small backend endpoint that uses the official Google Places API.
+    // Expected JSON shape from /api/google-reviews:
+    // [{ "author_name": "Chris D.", "rating": 5, "text": "...", "relative_time_description": "..." }]
+    async function loadGoogleReviews() {
+      const grid = document.getElementById('google-reviews-grid');
+      if (!grid) return;
+
+      try {
+        const response = await fetch('/api/google-reviews', { headers: { 'Accept': 'application/json' } });
+        if (!response.ok) return;
+
+        const reviews = await response.json();
+        if (!Array.isArray(reviews) || reviews.length === 0) return;
+
+        const topReviews = reviews
+          .filter(review => Number(review.rating) >= 4 && review.text)
+          .slice(0, 3);
+
+        if (topReviews.length === 0) return;
+
+        grid.innerHTML = topReviews.map(review => {
+          const rating = Math.max(1, Math.min(5, Number(review.rating) || 5));
+          const stars = '★★★★★'.slice(0, rating);
+          const name = escapeHtml(review.author_name || 'Google Reviewer');
+          const text = escapeHtml(review.text);
+          const time = review.relative_time_description ? ` · ${escapeHtml(review.relative_time_description)}` : '';
+
+          return `
+            <article class="testimonial-card">
+              <div class="stars">${stars}</div>
+              <p>${text}</p>
+              <div class="testimonial-name">${name}${time}</div>
+            </article>
+          `;
+        }).join('');
+      } catch (error) {
+        console.warn('Google reviews could not be loaded:', error);
+      }
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    loadGoogleReviews();
+  </script>
+
+</body>
+</html>
