@@ -1,0 +1,30 @@
+LUMI NAILS — MONTHLY PROMOTION POPUP
+
+The popup is already configured for the September 2026 promotion.
+
+HOW TO CHANGE IT NEXT MONTH
+
+1. Prepare the new promotion artwork as a PNG image.
+2. Rename it exactly: monthly-promotion.png
+3. Replace the existing monthly-promotion.png file with the new image.
+4. Open index.html and search for: MONTHLY PROMOTION — UPDATE THIS BLOCK EACH MONTH
+5. Change these four items:
+   - The hidden promotion title (for example, October Special)
+   - The image alt description
+   - The short promotion summary
+   - PROMOTION_ID, PROMOTION_START, and PROMOTION_END
+
+EXAMPLE FOR OCTOBER 2026
+
+const PROMOTION_ID = 'lumi-october-2026';
+const PROMOTION_START = new Date('2026-10-01T00:00:00-04:00');
+const PROMOTION_END = new Date('2026-11-01T00:00:00-04:00');
+
+IMPORTANT
+
+- Keep index.html and monthly-promotion.png in the same website folder.
+- Change PROMOTION_ID every month. This resets the dismissal memory for the new offer.
+- The popup shows only between the start and end dates.
+- It opens 0.9 seconds after page load.
+- After a visitor closes it, it stays closed for that browser session.
+- The Book This Special button opens the Lumi Nails Vagaro booking page.
