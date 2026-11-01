@@ -38,7 +38,7 @@ Required public files:
 - nail-care-tips.html
 - robots.txt
 - sitemap.xml
-- assets/styles.css
+- assets/styles.css?v=20261022-3
 - assets/site.js
 - assets/lumi-nails-logo.jpg
 

@@ -76,8 +76,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="assets/styles.css" />
+  <link rel="stylesheet" href="assets/styles.css?v=20261022-3?v=20261022-2" />
 
+
+<style id="monthly-promotion-styles">
+.monthly-promotion{border:0;padding:0;border-radius:20px;width:min(92vw,560px);max-height:90vh;max-height:90dvh;overflow:auto;background:#fffaf3;color:#33271f;box-shadow:0 24px 80px #0005}
+.monthly-promotion::backdrop{background:rgba(25,20,15,.65)}
+.monthly-promotion-image{display:block;width:100%;height:auto}
+.monthly-promotion-close{position:absolute;top:10px;right:10px;width:44px;height:44px;border:1px solid #bfa47d;border-radius:50%;background:#fffaf3;color:#33271f;font-size:28px;line-height:1;cursor:pointer}
+.monthly-promotion-content{padding:18px 22px 22px;text-align:center}
+.monthly-promotion-content p{margin:0 0 14px;line-height:1.5}
+.monthly-promotion-book{display:inline-block;padding:13px 22px;background:#976b2e;color:white;border-radius:9px;text-decoration:none;font-weight:700}
+.monthly-promotion-close:focus-visible,.monthly-promotion-book:focus-visible{outline:3px solid #33271f;outline-offset:3px}
+.monthly-promotion-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+</style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -112,7 +124,6 @@
           <a href="#hours">Hours</a>
           <a href="#guarantee">Our Guarantee</a>
           <a href="contact.html">Contact</a>
-          <a href="tel:+16034411250">Call (603) 441-1250</a>
         </nav>
 
         <a class="btn btn-primary" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book Now</a>
@@ -791,5 +802,61 @@
   </div>
 
   <script src="assets/site.js" defer></script>
+
+<!-- MONTHLY PROMOTION — UPDATE THIS BLOCK EACH MONTH -->
+<dialog id="monthly-promotion" class="monthly-promotion" aria-labelledby="monthly-promotion-title" aria-describedby="monthly-promotion-summary">
+  <h2 id="monthly-promotion-title" class="monthly-promotion-sr">October Special</h2>
+  <button type="button" class="monthly-promotion-close" aria-label="Close monthly promotion" autofocus>&times;</button>
+  <img class="monthly-promotion-image" src="monthly-promotion.png" width="1122" height="1402" alt="October Fall Pedi Special: Silk Milk Pedicure with a free Dazzle Dry upgrade. $110 value for $95, Monday through Thursday at Lumi Nails in Plaistow, NH.">
+  <div class="monthly-promotion-content">
+    <p id="monthly-promotion-summary">Silk Milk Pedicure + FREE Dazzle Dry upgrade. $110 value for only $95. Available Monday–Thursday during October.</p>
+    <a class="monthly-promotion-book" href="https://www.vagaro.com/luminailspa" target="_blank" rel="noopener noreferrer">Book This Special</a>
+  </div>
+</dialog>
+<script id="monthly-promotion-script">
+(() => {
+  const PROMOTION_ID = 'lumi-october-2026';
+  const PROMOTION_START = new Date('2026-10-01T00:00:00-04:00');
+  const PROMOTION_END = new Date('2026-11-01T00:00:00-04:00');
+  const popup = document.getElementById('monthly-promotion');
+  const storageKey = PROMOTION_ID + '-dismissed';
+  let previousFocus;
+  const dismissed = () => {
+    try { return sessionStorage.getItem(storageKey) === 'true'; }
+    catch { return false; }
+  };
+  const dismiss = () => {
+    try { sessionStorage.setItem(storageKey, 'true'); } catch {}
+    if (popup.open) popup.close();
+  };
+  popup.querySelector('.monthly-promotion-close').addEventListener('click', dismiss);
+  popup.addEventListener('cancel', event => { event.preventDefault(); dismiss(); });
+  popup.addEventListener('click', event => {
+    if (event.target !== popup) return;
+    const bounds = popup.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dismiss();
+  });
+  popup.addEventListener('close', () => {
+    document.documentElement.style.overflow = previousOverflow;
+    if (previousFocus && previousFocus.isConnected) previousFocus.focus();
+  });
+  let previousOverflow = '';
+  const schedule = () => {
+    const now = new Date();
+    if (now < PROMOTION_START || now >= PROMOTION_END || dismissed()) return;
+    window.setTimeout(() => {
+      const current = new Date();
+      if (current < PROMOTION_START || current >= PROMOTION_END || dismissed() || typeof popup.showModal !== 'function') return;
+      previousFocus = document.activeElement;
+      previousOverflow = document.documentElement.style.overflow;
+      popup.showModal();
+      document.documentElement.style.overflow = 'hidden';
+    }, 900);
+  };
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule, { once: true });
+})();
+</script>
+<!-- END MONTHLY PROMOTION -->
 </body>
 </html>
